@@ -1,0 +1,67 @@
+@import "../../../styles/var.less";
+@import "../../../styles/mixin.less";
+
+#nav {
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4rem;
+  border-top: 1px solid #d7d7d7;
+  background: #fff;
+
+  ul {
+    .display-box;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      .box-flex(1);
+      height: 100%;
+
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0.5rem;
+        box-sizing: border-box;
+
+        color: #888;
+        text-align: center;
+        text-decoration: none;
+
+        .icon {
+          height: 1.8rem;
+
+          font-size: 1.6rem;
+          line-height: 1.8rem;
+        }
+
+        .title {
+          height: 1.2rem;
+
+          font-size: 1.0rem;
+          line-height: 1.2rem;
+        }
+
+
+        p{
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      &.active {
+        a {
+          color: @theme-color;
+        }
+      }
+    }
+
+
+  }
+}

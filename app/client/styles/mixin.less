@@ -1,0 +1,62 @@
+.border-red {
+  border: 1px solid red;
+}
+
+.border-radius (@radius: 5px) {
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.box-flex (@flex) {
+  -moz-box-flex: @flex;
+  -webkit-box-flex: @flex;
+  box-flex: @flex;
+}
+
+.box-pack (@pack) {
+  -moz-box-pack: @pack;
+  -webkit-box-pack: @pack;
+  -o-box-pack: @pack;
+  box-pack: @pack;
+}
+
+.display-box {
+  display: -moz-box; /* Firefox */
+  display: -ms-flexbox; /* IE10 */
+  display: -webkit-box; /* Safari */
+  display: box;
+}
+
+.transition(@arg) {
+  -moz-transition: @arg; /* Firefox 4 */
+  -webkit-transition: @arg; /* Safari 和 Chrome */
+  -o-transition: @arg; /* Opera */
+  transition: @arg;
+}
+
+.transform(@arg) {
+  -ms-transform: @arg; 	/* IE 9 */
+  -moz-transform: @arg; 	/* Firefox */
+  -webkit-transform: @arg; /* Safari 和 Chrome */
+  -o-transform: @arg;  	/* Opera */
+  transform: @arg;
+}
+
+.wrapper {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multi-line-text-ellipsis(@line: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: @line;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
