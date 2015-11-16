@@ -1,0 +1,41 @@
+@import "../../../styles/var.less";
+@import "../../../styles/mixin.less";
+
+.terminal-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0 0.8rem;
+    border: 1px solid #d7d7d7;
+    box-sizing: border-box;
+    background: #fff;
+    text-align: center;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    p.online {
+      color: lightseagreen;
+    }
+
+    p.offline {
+      color: #aaa;
+    }
+
+    a {
+      display: inline-block;
+      margin: 0 5px;
+      text-decoration: none;
+    }
+  }
+}

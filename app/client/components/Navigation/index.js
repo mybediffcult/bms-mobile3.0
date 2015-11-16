@@ -1,61 +1,56 @@
 import React from 'react';
 import Icon from 'react-fa';
-import './styles/main.less';
+import './styles/index.less';
 
 export default class Navigation extends React.Component {
     render() {
+        var list = this.props.navList.map((nav, index)=>{
+            return (
+                <li key={"nav_" + index}>
+                    <a href={nav.url}>
+                        <p className="icon">
+                            <Icon name={nav.icon}/>
+                        </p>
+
+                        <p className="title">
+                            {nav.title}
+                        </p>
+                    </a>
+                </li>
+            );
+        });
+
         return (
             <nav id="nav" style={this.props.style}>
                 <ul>
-                    <li className="active">
-                        <a href="#">
-                            <p className="icon">
-                                <Icon name="home"/>
-                            </p>
-
-                            <p className="title">
-                                首页
-                            </p>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#">
-                            <p className="icon">
-                                <Icon name="wifi"/>
-                            </p>
-
-                            <p className="title">
-                                设备
-                            </p>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#">
-                            <p className="icon">
-                                <Icon name="tasks"/>
-                            </p>
-
-                            <p className="title">
-                                任务
-                            </p>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#">
-                            <p className="icon">
-                                <Icon name="user"/>
-                            </p>
-
-                            <p className="title">
-                                机构
-                            </p>
-                        </a>
-                    </li>
+                    {list}
                 </ul>
             </nav>
         );
     }
 }
+
+Navigation.defaultProps = {
+    navList: [
+        {
+            title: '首页',
+            icon: 'home',
+            url: '/home'
+        },
+        {
+            title: '设备',
+            icon: 'wifi',
+            url: '/terminal/index'
+        },
+        {
+            title: '任务',
+            icon: 'tasks',
+            url: '#'
+        },
+        {
+            title: '机构',
+            icon: 'user',
+            url: '#'
+        }
+    ]
+};

@@ -1,0 +1,33 @@
+@import "../../../styles/var.less";
+@import "../../../styles/mixin.less";
+
+
+.round-button {
+  display: block;
+  padding: 0;
+
+  border: 0.5rem solid #ccc;
+  border-radius: 50%;
+  background: @primary-color;
+
+  color: #fff;
+  font-size: 1.0rem;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+
+  -webkit-user-select:none;
+  -webkit-user-drag:none;
+  -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+
+  &:active {
+    background: darken(@primary-color, 10%);
+  }
+
+  .label {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: inherit;
+    line-height: 1.4rem;
+  }
+}

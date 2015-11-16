@@ -1,3 +1,4 @@
+
 .border-red {
   border: 1px solid red;
 }
@@ -59,4 +60,15 @@
   -webkit-line-clamp: @line;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.btn(@padding: 10px 20px, @radius: 2px, @background: @theme-color, @color: #fff, @font-size: 1.0rem) {
+  padding: @padding;
+  border-radius: @radius;
+  background: @background;
+  color: @color;
+  font-size: @font-size;
+  text-decoration: none;
+  cursor: pointer;
+
 }

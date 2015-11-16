@@ -1,0 +1,23 @@
+@import "./mixin";
+@import "./var";
+.btn-primary {
+  .btn(10px 20px, 2px, @primary-color)
+}
+
+.btn-secondary {
+  .btn(10px 20px, 2px, lighten(@primary-color, 3%));
+}
+
+.btn-danger {
+  .btn(10px 20px, 2px, @danger-color);
+}
+
+.btn-warning {
+  .btn(10px 20px, 2px, @warning-color);
+}
+
+.btn-fashion {
+  .btn(10px 20px, 2px, @fashion-color);
+}
+
+
