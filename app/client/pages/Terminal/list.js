@@ -5,8 +5,8 @@ import './styles/list.less';
 export default class list extends React.Component {
     render() {
         return (
-            <div className="terminal-list-page">
-                <h2 className="title">设备列表</h2>
+            <div className="terminal-list-page page">
+                <h2 className="title no-border">设备列表</h2>
                 <TerminalList/>
             </div>
         );

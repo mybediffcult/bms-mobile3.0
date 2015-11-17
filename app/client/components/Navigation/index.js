@@ -6,7 +6,7 @@ export default class Navigation extends React.Component {
     render() {
         var list = this.props.navList.map((nav, index)=>{
             return (
-                <li key={"nav_" + index}>
+                <li key={"nav_" + index} className={index == 0 ? "active" : ""}>
                     <a href={nav.url}>
                         <p className="icon">
                             <Icon name={nav.icon}/>
@@ -45,12 +45,12 @@ Navigation.defaultProps = {
         {
             title: '任务',
             icon: 'tasks',
-            url: '#'
+            url: '/task/index'
         },
         {
             title: '机构',
             icon: 'user',
-            url: '#'
+            url: '/administration/index'
         }
     ]
 };

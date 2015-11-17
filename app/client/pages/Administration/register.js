@@ -1,12 +1,12 @@
 import React from 'react';
 import {RaisedButton, FlatButton, TextField, SelectField} from 'material-ui';
+import '../../styles/form.less';
 import './styles/register.less';
-import './styles/common.less';
 
 export default class register extends React.Component {
     render() {
         return (
-            <div className="ad-register-page ad-full-page">
+            <div className="ad-register-page form-page">
 
                 <h2 className="title">
                     <a href="/login">返回</a>

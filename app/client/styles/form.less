@@ -1,9 +1,9 @@
-@import "../../../styles/var";
-@import "../../../styles/mixin";
+@import './mixin';
+@import './var';
 
-.ad-full-page {
+.form-page {
 
-   .title {
+  .title {
     width: 100%;
     height: 4rem;
     margin: 0;
@@ -13,6 +13,7 @@
     .text-overflow-ellipsis;
 
     background: #fff;
+    font-size: 1.4rem;
     font-weight: normal;
     text-align: center;
     line-height: 4rem;
@@ -33,44 +34,16 @@
   }
 
   form {
+    min-height: 90vh;
+    box-sizing: border-box;
     margin: 1rem 0 0 0;
     padding: 1rem 2rem;
     border-bottom: 1px solid #d7d7d7;
     border-top: 1px solid #d7d7d7;
     background: #fff;
+    overflow: auto;
 
     font-size: 1.4rem!important;
     text-align: center;
-
-    footer {
-      width: 100%;
-      height: 2rem;
-      margin-top: 0.5rem;
-      font-size: 1.0rem;
-      line-height: 2rem;
-
-      a {
-        display: inline-block;
-        height: 100%;
-        padding: 0 0.5rem;
-        color: @primary-color;
-        text-decoration: none;
-
-        &.left {
-          float: left;
-        }
-
-        &.right {
-          float: right;
-        }
-      }
-    }
-  }
-
-  .copyright {
-    margin-top: 3rem;
-    text-align: center;
-    line-height: 1.6rem;
   }
 }
-

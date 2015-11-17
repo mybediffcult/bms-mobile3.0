@@ -1,0 +1,47 @@
+@import './mixin';
+@import './var';
+
+.page {
+  height: 100%;
+
+  &.bg-white {
+    background: #fff;
+  }
+
+  .title {
+    height: 4rem;
+    margin: 0;
+    border-bottom: 1px solid #d7d7d7;
+    background: #eee;
+    font-size: 1.4rem;
+    font-weight: normal;
+    text-align: center;
+    line-height: 4rem;
+
+    &.no-border {
+      border: none;
+    }
+
+    a {
+      position: absolute;
+      top: 1rem;
+      left: 0.5rem;
+      display: block;
+      padding: 0 0.5rem;
+      height: 2rem;
+
+      color: @primary-color;
+      font-size: 1.0rem;
+      text-decoration: none;
+      line-height: 2rem;
+    }
+  }
+
+  .subtitle {
+    margin: 0;
+    background: #fff;
+    font-size: 1.0rem;
+    text-align: center;
+    line-height: 3rem;
+  }
+}

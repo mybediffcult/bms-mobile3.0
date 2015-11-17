@@ -14,7 +14,7 @@ export default class index extends React.Component {
                 </RoundButton>
 
                 <p>
-                    <a className="btn-add-terminal btn-danger" href="#">
+                    <a className="btn-add-terminal btn-danger" href="/terminal/edit">
                         <Icon name="plus" />&nbsp;添加设备
                     </a>
                 </p>
