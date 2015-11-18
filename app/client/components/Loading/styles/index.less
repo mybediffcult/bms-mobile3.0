@@ -1,0 +1,26 @@
+.loading {
+  &:after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: #333;
+    opacity: 0.3;
+    z-index: 9999;
+  }
+
+  color: #fff;
+
+  .loading-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+    z-index: 10000;
+    font-size: 40px;
+  }
+}
+

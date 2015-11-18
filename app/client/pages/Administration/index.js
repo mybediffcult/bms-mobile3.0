@@ -21,7 +21,7 @@ export default class index extends React.Component {
                     <ListItem primaryText="邮箱" secondaryText="tsyeyuanfeng@126.com" leftIcon={<Icon name="send" />} />
                 </List>
 
-                <RaisedButton style={{width: '90%', margin: '2rem 5%'}} label="编辑机构信息"  secondary={true} />
+                <RaisedButton style={{width: '90%', margin: '2rem 5%'}} backgroundColor="#d9534f" labelColor="#fff" label="退出登录" />
             </div>
         );
     }
