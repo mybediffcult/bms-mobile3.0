@@ -8,19 +8,19 @@ export default class index extends React.Component {
         return (
             <div className="task-index-page">
                 <List>
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
-                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} />
+                    <ListItem primaryText="推送节目" secondaryText="明天推送饮水健康节目" leftIcon={<Icon name="bars" />} disabled={true} />
                 </List>
             </div>
         );

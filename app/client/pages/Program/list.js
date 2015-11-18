@@ -4,10 +4,6 @@ import {List, ListItem, ListDivider, RaisedButton, Avatar} from 'material-ui';
 import '../../styles/page.less';
 
 export default class list extends React.Component {
-    touch(event) {
-        console.log(event);
-        event.preventDefault();
-    }
     render() {
         return (
             <div className="program-list-page page bg-white">
