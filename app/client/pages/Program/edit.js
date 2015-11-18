@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-fa';
 import {SelectField, List, ListItem, ListDivider, RaisedButton, Avatar, Checkbox} from 'material-ui';
-import '../../styles/form.less';
+import '../../styles/page.less';
 import './styles/edit.less';
 
 export default class edit extends React.Component {
@@ -78,7 +78,7 @@ export default class edit extends React.Component {
         return (
             <div className="program-edit-page page bg-white">
                 <h2 className="title">
-                    <a href="/terminal/list">返回</a>
+                    <a href="#terminal/list">返回</a>
                     创建节目单
                 </h2>
                 <p className="subtitle">北京市海淀区神舟大厦-测</p>

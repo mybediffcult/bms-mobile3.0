@@ -1,6 +1,7 @@
 import React from 'react';
 import TerminalList from '../../components/TerminalList';
 import './styles/list.less';
+import '../../styles/page.less';
 
 export default class list extends React.Component {
     render() {

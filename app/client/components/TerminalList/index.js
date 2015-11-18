@@ -18,10 +18,10 @@ export default class TerminalList extends React.Component {
                     {terminal.online_state ? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
 
                     <p>
-                        <a className="btn-warning" href={"/terminal/" + index + "/program/list"}>
+                        <a className="btn-warning" href={"#terminal/" + index + "/program/list"}>
                             <Icon name="search" />&nbsp;查看节目单
                         </a>
-                        <a className="btn-primary" href={"/terminal/" + index + "/program/edit"}>
+                        <a className="btn-primary" href={"#terminal/" + index + "/program/edit"}>
                             <Icon name="plus" />&nbsp;创建节目单
                         </a>
                     </p>

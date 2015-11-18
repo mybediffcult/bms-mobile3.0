@@ -129,7 +129,7 @@ export default class register extends React.Component {
             <div className="ad-register-page form-page">
 
                 <h2 className="title">
-                    <a href="/login">返回</a>
+                    <a href="#login">返回</a>
                     机构注册
                 </h2>
 

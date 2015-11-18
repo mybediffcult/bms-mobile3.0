@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import createHashHistory from 'history/lib/createHashHistory.js';
 import App from './pages/App';
 import HomeIndexPage from './pages/Home/index';
 import TerminalIndexPage from './pages/Terminal/index';
@@ -19,7 +19,9 @@ import TaskIndexPage from './pages/Task/index';
 import './styles/base.less';
 import './styles/common.less';
 
-let history = createBrowserHistory();
+let history = createHashHistory({
+    queryKey: false
+});
 
 let routes = (
     <Router history={history}>

@@ -4,9 +4,10 @@ import './styles/index.less';
 
 export default class Navigation extends React.Component {
     render() {
+        console.log(window.location.hash);
         var list = this.props.navList.map((nav, index)=>{
             return (
-                <li key={"nav_" + index} className={index == 0 ? "active" : ""}>
+                <li key={"nav_" + index} className={window.location.hash.indexOf(nav.pattern) != -1 ? "active" : ""}>
                     <a href={nav.url}>
                         <p className="icon">
                             <Icon name={nav.icon}/>
@@ -35,22 +36,26 @@ Navigation.defaultProps = {
         {
             title: '首页',
             icon: 'home',
-            url: '/home'
+            url: '#/home',
+            pattern: '#/home'
         },
         {
             title: '设备',
             icon: 'wifi',
-            url: '/terminal/index'
+            url: '#/terminal/index',
+            pattern: '#/terminal'
         },
         {
             title: '任务',
             icon: 'tasks',
-            url: '/task/index'
+            url: '#/task/index',
+            pattern: '#/task'
         },
         {
             title: '机构',
             icon: 'user',
-            url: '/administration/index'
+            url: '#/administration/index',
+            pattern: '#/administration'
         }
     ]
 };
