@@ -4,24 +4,23 @@ import './styles/index.less';
 
 export default class TerminalList extends React.Component {
     render() {
-
         var list = this.props.terminalList.map((terminal, index) => {
             return (
                 <li key={"terminal_" + index}>
                     <p>
-                        {terminal.terminal_no}
+                        {terminal.terminalid}
                     </p>
                     <p>
                         {terminal.name}
                     </p>
 
-                    {terminal.online_state ? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
+                    {terminal.onlinestate == 1 ? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
 
                     <p>
-                        <a className="btn-warning" href={"#terminal/" + index + "/program/list"}>
+                        <a className="btn-warning" href={"#terminal/" + terminal.terminalid + "/program/list"}>
                             <Icon name="search" />&nbsp;查看节目单
                         </a>
-                        <a className="btn-primary" href={"#terminal/" + index + "/program/edit"}>
+                        <a className="btn-primary" href={"#terminal/" + terminal.terminalid + "/program/edit"}>
                             <Icon name="plus" />&nbsp;创建节目单
                         </a>
                     </p>

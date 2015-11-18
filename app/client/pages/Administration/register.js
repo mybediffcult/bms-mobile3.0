@@ -1,6 +1,7 @@
 import React from 'react';
 import {RaisedButton, FlatButton, TextField, SelectField} from 'material-ui';
-import request from 'superagent-bluebird-promise';
+import request from 'superagent';
+import md5 from 'md5';
 import Loading from '../../components/Loading';
 import Notification from '../../mixins/Notification';
 import '../../styles/form.less';
@@ -34,8 +35,8 @@ export default class register extends React.Component {
                 conPassword: ''
             },
 
-            provinces: [{id: 1, name: '广西'}, {id: 2, name: '广东'}, {id: 3, name: '北京'}],
-            cities: [{id: 1, name: '广西'}, {id: 2, name: '广东'}, {id: 3, name: '北京'}]
+            provinces: [],
+            cities: []
         };
     }
 
@@ -43,15 +44,25 @@ export default class register extends React.Component {
      * 拉取省份列表数据
      */
     componentWillMount() {
-        console.log('拉取省份列表数据');
-        this.setState({loading: false});
+        request.get('http://106.38.138.61:3000/api/provinces').end((error, res)=>{
+            var result = res.body;
+            if(result.status == 200) {
+                this.setState({loading: false, provinces: result.data});
+            }
+        })
     }
 
     /**
      * 拉取城市列表数据
      */
-    onProvinceChange() {
+    onProvinceChange(province) {
         console.log('拉取城市列表数据');
+        request.get('http://106.38.138.61:3000/api/province/' + province + '/cities').end((error, res)=>{
+            var result = res.body;
+            if(result.status == 200) {
+                this.setState({loading: false, cities: result.data});
+            }
+        })
     }
 
     /**
@@ -65,7 +76,7 @@ export default class register extends React.Component {
         this.setState({fields: fields});
 
         if(field == 'province') {
-            this.onProvinceChange();
+            this.onProvinceChange(event.target.value);
         }
     }
 
@@ -115,8 +126,26 @@ export default class register extends React.Component {
         }
 
         if(isValid) {
-            notification.show('机构注册成功');
-            console.log('提交表单');
+
+            request.post('http://106.38.138.61:3000/api/administration').send({
+                provinceCode: this.state.fields.province,
+                cityCode: this.state.fields.city,
+                administrationName: this.state.fields.name,
+                address: this.state.fields.address,
+                telephone: this.state.fields.phone,
+                password: md5(this.state.fields.password),
+                name: '机构管理员'
+            }).end((error, res)=>{
+                var result = res.body;
+                if(result.status == 200) {
+                    notification.show('机构注册成功', function() {
+                        window.location.hash = '#/login';
+                    });
+                }
+                else {
+                    notification.show(result.message);
+                }
+            })
         }
     }
 
@@ -137,7 +166,7 @@ export default class register extends React.Component {
                     <SelectField
                         floatingLabelText="* 所在省(必填)"
                         fullWidth={true}
-                        valueMember="id"
+                        valueMember="provincecode"
                         displayMember="name"
                         value={this.state.fields.province}
                         errorText={this.state.errors.province}
@@ -148,7 +177,7 @@ export default class register extends React.Component {
                     <SelectField
                         floatingLabelText="* 所在市(必填)"
                         fullWidth={true}
-                        valueMember="id"
+                        valueMember="citycode"
                         displayMember="name"
                         value={this.state.fields.city}
                         errorText={this.state.errors.city}

@@ -4,6 +4,11 @@ import {List, ListItem, ListDivider, RaisedButton} from 'material-ui';
 import './styles/index.less';
 
 export default class index extends React.Component {
+    logout() {
+        window.localStorage.removeItem('isLogin');
+        window.localStorage.removeItem('administration');
+        window.location.hash = '#/login';
+    }
     render() {
         return (
             <div className="ad-index-page">
@@ -21,7 +26,7 @@ export default class index extends React.Component {
                     <ListItem primaryText="邮箱" secondaryText="tsyeyuanfeng@126.com" leftIcon={<Icon name="send" />} disabled={true} />
                 </List>
 
-                <RaisedButton style={{width: '90%', margin: '2rem 5%', textAlign: 'center'}} backgroundColor="#d9534f" labelColor="#fff" label="退出登录" linkButton={true} href="#login" />
+                <RaisedButton style={{width: '90%', margin: '2rem 5%', textAlign: 'center'}} backgroundColor="#d9534f" labelColor="#fff" label="退出登录" onClick={this.logout.bind(this)} />
             </div>
         );
     }
