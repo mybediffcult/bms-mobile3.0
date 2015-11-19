@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from 'react-fa';
 import {List, ListItem, ListDivider, RaisedButton, Avatar} from 'material-ui';
 import request from 'superagent';
+import $ from 'jquery';
 import Notification from '../../mixins/Notification'
 import '../../styles/page.less';
 
@@ -27,14 +28,22 @@ export default class list extends React.Component {
     }
 
     push() {
-        //request
-        //    .post('http://106.38.138.61:8088/bms/public/index.php?controller=terminal&action=AjaxPush')
-        //    .send({
-        //        terminalid: this.props.params.tid
-        //    }).end((error, res)=>{
-        //        console.log(res);
-        //
-        //    })
+        $.ajax({
+            url: 'http://106.38.138.61:8088/bms/public/index.php?controller=api&action=push',
+            type: 'POST',
+            data: {terminalid: this.props.params.tid},
+            success: function(data) {
+                data = JSON.parse(data);
+                if(data.status == 200) {
+                    notification.show('推送成功', function() {
+                        window.location.hash = '#/terminal/list';
+                    });
+                }
+                else {
+                    notification.show(data.message);
+                }
+            }
+        });
     }
 
     getPrograms(programs, levelStr) {
