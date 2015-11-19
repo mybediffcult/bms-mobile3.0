@@ -26,6 +26,17 @@ export default class list extends React.Component {
         })
     }
 
+    push() {
+        //request
+        //    .post('http://106.38.138.61:8088/bms/public/index.php?controller=terminal&action=AjaxPush')
+        //    .send({
+        //        terminalid: this.props.params.tid
+        //    }).end((error, res)=>{
+        //        console.log(res);
+        //
+        //    })
+    }
+
     getPrograms(programs, levelStr) {
         return programs.map((program)=>{
 
@@ -57,7 +68,7 @@ export default class list extends React.Component {
                 {this.state.loading ? '' : this.getPrograms(this.state.programList.provinceProgram, '省节目')}
                 {this.state.loading ? '' : this.getPrograms(this.state.programList.cityProgram, '市节目')}
                 {this.state.loading ? '' : this.getPrograms(this.state.programList.terminalProgram, '设备自有节目')}
-
+                <RaisedButton style={{width: '90%', margin: '1rem 5%'}} label="推送节目单" secondary={true} onClick={this.push.bind(this)} />
             </div>
         );
     }
