@@ -20,6 +20,7 @@ export default class TerminalList extends React.Component {
                         <a className="btn-warning" href={"#terminal/" + terminal.terminalid + "/program/list"}>
                             <Icon name="search" />&nbsp;查看节目单
                         </a>
+                        &nbsp;&nbsp;
                         <a className="btn-primary" href={"#terminal/" + terminal.terminalid + "/program/edit"}>
                             <Icon name="plus" />&nbsp;创建节目单
                         </a>
