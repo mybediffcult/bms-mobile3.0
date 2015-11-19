@@ -17,15 +17,7 @@ export default class list extends React.Component {
     }
 
     componentWillMount() {
-        var aid = JSON.parse(window.localStorage.getItem('administration'));
-        if(!aid) {
-            notification.show('未登录', function() {
-                window.location.hash = '#/login';
-            });
-            return;
-        }
-        aid = aid.administrationid;
-
+        var aid = JSON.parse(window.localStorage.getItem('administration')).administrationid;
         request.get('http://106.38.138.61:3000/api/administration/' + aid + '/terminals').end((error, res)=>{
             var result = res.body;
             if(result.status == 200) {

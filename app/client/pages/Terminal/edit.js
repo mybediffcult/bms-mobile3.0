@@ -11,7 +11,6 @@ export default class edit extends React.Component {
         super();
 
         this.state = {
-            administration: null,
             fields: {
                 tid: '',
                 disk: '',
@@ -36,16 +35,7 @@ export default class edit extends React.Component {
     }
 
     componentWillMount() {
-        //检查登录状态
-        var ad = window.localStorage.getItem('administration');
-        if(!ad) {
-            notification.show('未登录', function() {
-                window.location.hash = '#/login';
-            });
-        }
-        else {
-            this.setState({administration: JSON.parse(ad)});
-        }
+        this.administration = JSON.parse(window.localStorage.getItem('administration'));
     }
 
     onMacChange(mac) {
@@ -108,9 +98,8 @@ export default class edit extends React.Component {
         }
 
         if(isValid) {
-            console.log(this.state.administration.administrationid);
             request.post('http://106.38.138.61:3000/api/terminal').send({
-                administrationId: this.state.administration.administrationid,
+                administrationId: this.administration.administrationid,
                 terminalId: this.state.fields.tid,
                 diskId: this.state.fields.disk,
                 intelligencecardId: this.state.fields.intel,

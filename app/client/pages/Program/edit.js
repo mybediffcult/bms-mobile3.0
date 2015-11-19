@@ -12,7 +12,6 @@ export default class edit extends React.Component {
     constructor() {
         super();
         this.state = {
-            administration: null,
             timebucketId: '',
             timebucketList: [
 
@@ -41,39 +40,31 @@ export default class edit extends React.Component {
     }
 
     componentWillMount() {
-        //检查登录状态
-        var ad = window.localStorage.getItem('administration');
-        if(!ad) {
-            notification.show('未登录', function() {
-                window.location.hash = '#/login';
-            });
-        }
-        else {
-            this.setState({administration: JSON.parse(ad)});
+        this.administration = JSON.parse(window.localStorage.getItem('administration'));
 
-            request.get('http://106.38.138.61:3000/api/terminal/' + this.props.params.tid + '/content').end((error, res)=>{
-                var result = res.body;
+        request.get('http://106.38.138.61:3000/api/terminal/' + this.props.params.tid + '/content').end((error, res)=>{
+            var result = res.body;
 
-                if(result.status == 200) {
-                    var data = result.data;
-                    var materialList = data.map((item)=>{
-                        item.checked = false;
-                        return item;
-                    });
-                    console.log(materialList);
-                    this.setState({materialList: materialList});
-                }
-            });
+            if(result.status == 200) {
+                var data = result.data;
+                var materialList = data.map((item)=>{
+                    item.checked = false;
+                    return item;
+                });
+                console.log(materialList);
+                this.setState({materialList: materialList});
+            }
+        });
 
-            request.get('http://106.38.138.61:3000/api/administration/7aa8da96de72eeeee95a72f4701382ac/timebuckets').end((error, res)=>{
-                var result = res.body;
+        request.get('http://106.38.138.61:3000/api/administration/7aa8da96de72eeeee95a72f4701382ac/timebuckets').end((error, res)=>{
+            var result = res.body;
 
-                if(result.status == 200) {
-                    var data = result.data;
-                    this.setState({timebucketList: data});
-                }
-            })
-        }
+            if(result.status == 200) {
+                var data = result.data;
+                this.setState({timebucketList: data});
+            }
+        });
+
     }
 
     handleSelectMaterialItem(index) {
@@ -133,7 +124,7 @@ export default class edit extends React.Component {
         }).join(',');
 
         request
-            .put('http://106.38.138.61:3000/api/administration/' + this.state.administration.administrationid + '/terminal/' + this.props.params.tid + '/timeBucket/' + this.state.timebucketId + '/program')
+            .put('http://106.38.138.61:3000/api/administration/' + this.administration.administrationid + '/terminal/' + this.props.params.tid + '/timeBucket/' + this.state.timebucketId + '/program')
             .send({
                 sequence: sequence
             }).end((error, res)=>{
