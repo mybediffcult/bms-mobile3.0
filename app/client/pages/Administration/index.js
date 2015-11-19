@@ -4,12 +4,28 @@ import {List, ListItem, ListDivider, RaisedButton} from 'material-ui';
 import './styles/index.less';
 
 export default class index extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            loading: true,
+            administration: {}
+        };
+    }
+
     logout() {
         window.localStorage.removeItem('isLogin');
         window.localStorage.removeItem('administration');
         window.location.hash = '#/login';
     }
+
+    componentWillMount() {
+        this.setState({loading: false, administration: JSON.parse(window.localStorage.getItem('administration'))});
+
+    }
+
     render() {
+        if(!this.state.loading)
         return (
             <div className="ad-index-page">
                 <List subheader="机构归属地信息">
@@ -28,6 +44,10 @@ export default class index extends React.Component {
 
                 <RaisedButton style={{width: '90%', margin: '2rem 5%', textAlign: 'center'}} backgroundColor="#d9534f" labelColor="#fff" label="退出登录" onClick={this.logout.bind(this)} />
             </div>
+        );
+        else
+        return (
+            <div className="blank-page"></div>
         );
     }
 }
