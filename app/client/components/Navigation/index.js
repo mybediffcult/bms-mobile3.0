@@ -46,13 +46,13 @@ Navigation.defaultProps = {
             pattern: '#/terminal'
         },
         {
-            title: '任务',
+            title: '消息',
             icon: 'tasks',
             url: '#/task/index',
             pattern: '#/task'
         },
         {
-            title: '机构',
+            title: '我',
             icon: 'user',
             url: '#/administration/index',
             pattern: '#/administration'
