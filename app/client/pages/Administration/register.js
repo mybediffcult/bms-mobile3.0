@@ -4,6 +4,13 @@ import request from 'superagent';
 import md5 from 'md5';
 import Loading from '../../components/Loading';
 import Notification from '../../mixins/Notification';
+
+import ProvinceStore from '../../stores/Province';
+import ProvinceActions from '../../actions/Province';
+import CityStore from '../../stores/City';
+import CityActions from '../../actions/City';
+import AdministrationActions from '../../actions/Administration';
+
 import '../../styles/form.less';
 import './styles/register.less';
 
@@ -40,29 +47,39 @@ export default class register extends React.Component {
         };
     }
 
-    /**
-     * 拉取省份列表数据
-     */
     componentWillMount() {
-        request.get('http://106.38.138.61:3000/api/provinces').end((error, res)=>{
-            var result = res.body;
-            if(result.status == 200) {
-                this.setState({loading: false, provinces: result.data});
-            }
-        })
+        this.unsubscribeProvinceStore = ProvinceStore.listen(this.onProvinceStoreChange.bind(this));
+        this.unsubscribeCityStore = CityStore.listen(this.onCityStoreChange.bind(this));
+        ProvinceActions.fetchAll();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribeProvinceStore();
+        this.unsubscribeCityStore();
     }
 
     /**
-     * 拉取城市列表数据
+     * 城市Store变化事件
+     * @param data
+     */
+    onCityStoreChange(data) {
+        console.log(data);
+        this.setState({cities: data});
+    }
+
+    /**
+     * 省份Store变化事件
+     * @param data
+     */
+    onProvinceStoreChange(data) {
+        this.setState({loading: false, provinces: data});
+    }
+
+    /**
+     * 城市选择变化事件
      */
     onProvinceChange(province) {
-        console.log('拉取城市列表数据');
-        request.get('http://106.38.138.61:3000/api/province/' + province + '/cities').end((error, res)=>{
-            var result = res.body;
-            if(result.status == 200) {
-                this.setState({loading: false, cities: result.data});
-            }
-        })
+        CityActions.fetch(province);
     }
 
     /**
@@ -127,7 +144,7 @@ export default class register extends React.Component {
 
         if(isValid) {
 
-            request.post('http://106.38.138.61:3000/api/administration').send({
+            var administration = {
                 provinceCode: this.state.fields.province,
                 cityCode: this.state.fields.city,
                 administrationName: this.state.fields.name,
@@ -135,17 +152,9 @@ export default class register extends React.Component {
                 telephone: this.state.fields.phone,
                 password: md5(this.state.fields.password),
                 name: '机构管理员'
-            }).end((error, res)=>{
-                var result = res.body;
-                if(result.status == 200) {
-                    notification.show('机构注册成功', function() {
-                        window.location.hash = '#/login';
-                    });
-                }
-                else {
-                    notification.show(result.message);
-                }
-            })
+            };
+
+            AdministrationActions.create(administration);
         }
     }
 

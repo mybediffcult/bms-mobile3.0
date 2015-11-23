@@ -3,6 +3,9 @@ import {RaisedButton, FlatButton, TextField, SelectField} from 'material-ui';
 import request from 'superagent';
 import md5 from 'md5';
 import Notification from '../../mixins/Notification';
+
+import AdministrationActions from '../../actions/Administration';
+
 import '../../styles/form.less';
 import './styles/login.less';
 
@@ -27,28 +30,7 @@ export default class login extends React.Component {
             return;
         }
 
-        var localStorage = window.localStorage;
-        request.post('http://106.38.138.61:3000/api/login').send({
-            username: this.state.phone,
-            password: md5(this.state.password)
-        }).end((error, res)=>{
-            var result = res.body;
-            if(result.status == 200) {
-                localStorage.setItem('isLogin', true);
-                localStorage.setItem('administration', JSON.stringify(result.data));
-
-
-                notification.show('登录成功', function() {
-                    window.location.hash = '#/';
-                });
-            }
-            else if(result.status == 404) {
-                notification.show('用户名或者密码错误');
-            }
-            else {
-                notification.show(result.message);
-            }
-        })
+        AdministrationActions.login(this.state.phone, md5(this.state.password));
     }
 
     /**

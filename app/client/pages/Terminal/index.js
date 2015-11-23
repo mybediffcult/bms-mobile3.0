@@ -2,6 +2,10 @@ import React from 'react';
 import Icon from 'react-fa';
 import request from 'superagent';
 import RoundButton from '../../components/RoundButton';
+
+import TerminalStore from '../../stores/Terminal';
+import TerminalActions from '../../actions/Terminal';
+
 import './styles/index.less';
 
 export default class index extends React.Component {
@@ -17,13 +21,16 @@ export default class index extends React.Component {
 
     componentWillMount() {
         var aid = JSON.parse(window.localStorage.getItem('administration')).administrationid;
-        request.get('http://106.38.138.61:3000/api/administration/' + aid + '/terminal_num').end((error, res)=>{
-            var result = res.body;
-            if(result.status == 200) {
-                this.setState({onlineNum: result.data.onlineNum, offlineNum: result.data.offlineNum});
-            }
-            this.setState({loading: false});
-        })
+        this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalChange.bind(this));
+        TerminalActions.getOnlineNum(aid);
+    }
+
+    componentWillUnmount() {
+        this.unsubscribeTerminalStore();
+    }
+
+    onTerminalChange(data) {
+        this.setState({loading: false, onlineNum: data.onlineNum, offlineNum: data.offlineNum});
     }
 
     render() {

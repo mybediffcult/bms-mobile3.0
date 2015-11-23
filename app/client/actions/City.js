@@ -4,11 +4,12 @@ import Notification from '../mixins/Notification';
 var notification = new Notification();
 
 var actions = Reflux.createActions({
-    'fetchAll': {children: ['completed']}
+    'fetch': {children: ['completed']}
 });
 
-actions.fetchAll.listen(function() {
-    request.get('http://106.38.138.61:3000/api/provinces').end((error, res)=>{
+actions.fetch.listen(function(provinceCode) {
+    console.log(provinceCode);
+    request.get('http://106.38.138.61:3000/api/province/' + provinceCode + '/cities').end((error, res)=>{
         if(error) {
             notification.show(error);
         }

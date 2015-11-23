@@ -1,10 +1,10 @@
 import Reflux from 'reflux';
-import provinceActions from '../actions/Province';
+import cityActions from '../actions/City';
 
 var store = Reflux.createStore({
-    listenables: [provinceActions],
+    listenables: [cityActions],
 
-    onFetchAllCompleted(data) {
+    onFetchCompleted(data) {
         this.trigger(data);
     }
 });

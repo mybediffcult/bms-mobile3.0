@@ -2,6 +2,9 @@ import React from 'react';
 import {RaisedButton, FlatButton, TextField, SelectField} from 'material-ui';
 import request from 'superagent';
 import Notification from '../../mixins/Notification';
+
+import TerminalActions from '../../actions/Terminal';
+
 import '../../styles/form.less';
 
 var notification = new Notification();
@@ -98,7 +101,9 @@ export default class edit extends React.Component {
         }
 
         if(isValid) {
-            request.post('http://106.38.138.61:3000/api/terminal').send({
+
+
+            var terminal = {
                 administrationId: this.administration.administrationid,
                 terminalId: this.state.fields.tid,
                 diskId: this.state.fields.disk,
@@ -108,17 +113,10 @@ export default class edit extends React.Component {
                 installplace: this.state.fields.installPlace,
                 netcardId: this.state.fields.netcard,
                 factoryId: this.state.fields.factory
-            }).end((error, res)=>{
-                var result = res.body;
-                if(result.status == 200) {
-                    notification.show('设备添加成功', function() {
-                        window.location.hash = '#/terminal/index';
-                    });
-                }
-                else {
-                    notification.show(result.message);
-                }
-            })
+            };
+
+            TerminalActions.create(terminal);
+
         }
 
     }

@@ -1,12 +1,11 @@
 import React from 'react';
 import TerminalList from '../../components/TerminalList';
-import request from 'superagent';
-import Loading from '../../components/Loading';
-import Notification from '../../mixins/Notification';
+
+import TerminalStore from '../../stores/Terminal';
+import TerminalActions from '../../actions/Terminal';
+
 import './styles/list.less';
 import '../../styles/page.less';
-
-var notification = new Notification();
 
 export default class list extends React.Component {
     constructor() {
@@ -18,14 +17,16 @@ export default class list extends React.Component {
 
     componentWillMount() {
         var aid = JSON.parse(window.localStorage.getItem('administration')).administrationid;
-        request.get('http://106.38.138.61:3000/api/administration/' + aid + '/terminals').end((error, res)=>{
-            var result = res.body;
-            if(result.status == 200) {
-                var terminalList = result.data;
-                this.setState({terminalList: terminalList});
-            }
-        })
+        this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalChange.bind(this));
+        TerminalActions.fetchAll(aid);
+    }
 
+    componentWillUnmount() {
+        this.unsubscribeTerminalStore();
+    }
+
+    onTerminalChange(data) {
+        this.setState({terminalList: data});
     }
 
     render() {
