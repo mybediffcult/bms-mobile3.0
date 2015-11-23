@@ -1,8 +1,8 @@
 import Reflux from 'reflux';
-import programActions from '../actions/Program';
+import materialActions from '../actions/Material';
 
 var store = Reflux.createStore({
-    listenables: [programActions],
+    listenables: [materialActions],
 
     onFetchCompleted: function(data) {
         this.trigger(data);

@@ -4,6 +4,10 @@ import {List, ListItem, ListDivider, RaisedButton, Avatar} from 'material-ui';
 import request from 'superagent';
 import $ from 'jquery';
 import Notification from '../../mixins/Notification'
+
+import ProgramActions from '../../actions/Program';
+import ProgramStore from '../../stores/Program';
+
 import '../../styles/page.less';
 
 var notification = new Notification();
@@ -18,32 +22,20 @@ export default class list extends React.Component {
     }
 
     componentWillMount() {
-        request.get('http://106.38.138.61:3000/api/terminal/' + this.props.params.tid + '/programs').end((error, res)=>{
-            var result = res.body;
-            if(result.status == 200) {
-                console.log(result.data);
-                this.setState({loading: false, programList: result.data});
-            }
-        })
+        this.unsubscribeProgramStore = ProgramStore.listen(this.onProgramStoreChange.bind(this));
+        ProgramActions.fetch(this.props.params.tid);
+    }
+
+    componentWillUnMount() {
+        this.unsubscribeProgramStore();
+    }
+
+    onProgramStoreChange(data) {
+        this.setState({loading: false, programList: data});
     }
 
     push() {
-        $.ajax({
-            url: 'http://106.38.138.61:8088/bms/public/index.php?controller=api&action=push',
-            type: 'POST',
-            data: {terminalid: this.props.params.tid},
-            success: function(data) {
-                data = JSON.parse(data);
-                if(data.status == 200) {
-                    notification.show('推送成功', function() {
-                        window.location.hash = '#/terminal/list';
-                    });
-                }
-                else {
-                    notification.show(data.message);
-                }
-            }
-        });
+        ProgramActions.push(this.props.params.tid);
     }
 
     getPrograms(programs, levelStr) {

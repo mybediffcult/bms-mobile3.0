@@ -3,6 +3,13 @@ import Icon from 'react-fa';
 import {SelectField, List, ListItem, ListDivider, RaisedButton, Avatar, Checkbox} from 'material-ui';
 import request from 'superagent';
 import Notification from '../../mixins/Notification';
+
+import ProgramActions from '../../actions/Program';
+import TimebucketActions from '../../actions/Timebucket';
+import MaterialActions from '../../actions/Material';
+import TimebucketStore from '../../stores/Timebucket';
+import MaterialStore from '../../stores/Material';
+
 import '../../styles/page.less';
 import './styles/edit.less';
 
@@ -41,30 +48,28 @@ export default class edit extends React.Component {
 
     componentWillMount() {
         this.administration = JSON.parse(window.localStorage.getItem('administration'));
+        this.unsubscribeTimebucketStore = TimebucketStore.listen(this.onTimebucketStoreChange.bind(this));
+        this.unsubscribeMaterialStore = MaterialStore.listen(this.onMaterialStoreChange.bind(this));
 
-        request.get('http://106.38.138.61:3000/api/terminal/' + this.props.params.tid + '/content').end((error, res)=>{
-            var result = res.body;
+        TimebucketActions.fetch('7aa8da96de72eeeee95a72f4701382ac');
+        MaterialActions.fetch(this.props.params.tid);
+    }
 
-            if(result.status == 200) {
-                var data = result.data;
-                var materialList = data.map((item)=>{
-                    item.checked = false;
-                    return item;
-                });
-                console.log(materialList);
-                this.setState({materialList: materialList});
-            }
+    componentWillUnMount() {
+        this.unsubscribeTimebucketStore();
+        this.unsubscribeMaterialStore();
+    }
+
+    onTimebucketStoreChange(data) {
+        this.setState({timebucketList: data});
+    }
+
+    onMaterialStoreChange(data) {
+        var materialList = data.map((item)=>{
+            item.checked = false;
+            return item;
         });
-
-        request.get('http://106.38.138.61:3000/api/administration/7aa8da96de72eeeee95a72f4701382ac/timebuckets').end((error, res)=>{
-            var result = res.body;
-
-            if(result.status == 200) {
-                var data = result.data;
-                this.setState({timebucketList: data});
-            }
-        });
-
+        this.setState({materialList: materialList});
     }
 
     handleSelectMaterialItem(index) {
@@ -123,21 +128,7 @@ export default class edit extends React.Component {
             return material.productid + '-' + material.length;
         }).join(',');
 
-        request
-            .put('http://106.38.138.61:3000/api/administration/' + this.administration.administrationid + '/terminal/' + this.props.params.tid + '/timeBucket/' + this.state.timebucketId + '/program')
-            .send({
-                sequence: sequence
-            }).end((error, res)=>{
-                var result = res.body;
-                if(result.status == 200) {
-                    notification.show('节目单创建成功', function() {
-                        window.location.hash = '#/terminal/list';
-                    });
-                }
-                else {
-                    notification.show(result.message);
-                }
-            })
+        ProgramActions.create(this.administration.administrationid, this.props.params.tid, this.state.timebucketId, sequence);
     }
 
     render() {

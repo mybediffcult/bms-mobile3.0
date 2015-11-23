@@ -1,8 +1,8 @@
 import Reflux from 'reflux';
-import programActions from '../actions/Program';
+import timebucketActions from '../actions/Timebucket';
 
 var store = Reflux.createStore({
-    listenables: [programActions],
+    listenables: [timebucketActions],
 
     onFetchCompleted: function(data) {
         this.trigger(data);
