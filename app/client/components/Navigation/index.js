@@ -34,7 +34,7 @@ export default class Navigation extends React.Component {
 Navigation.defaultProps = {
     navList: [
         {
-            title: '首页',
+            title: '巡检',
             icon: 'home',
             url: '#/home',
             pattern: '#/home'
@@ -42,7 +42,7 @@ Navigation.defaultProps = {
         {
             title: '设备',
             icon: 'wifi',
-            url: '#/terminal/index',
+            url: '#/terminal/list',
             pattern: '#/terminal'
         },
         {

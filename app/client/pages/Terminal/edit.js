@@ -126,7 +126,7 @@ export default class edit extends React.Component {
             <div className="terminal-edit-page form-page">
 
                 <h2 className="title">
-                    <a href="#terminal/index">返回</a>
+                    <a className="left" href="#terminal/list">返回</a>
                     添加设备
                 </h2>
 

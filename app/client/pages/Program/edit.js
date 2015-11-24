@@ -147,7 +147,7 @@ export default class edit extends React.Component {
         return (
             <div className="program-edit-page page bg-white">
                 <h2 className="title">
-                    <a href="#terminal/list">返回</a>
+                    <a className="left" href="#terminal/list">返回</a>
                     创建节目单
                 </h2>
                 <p className="subtitle">北京市海淀区神舟大厦-测</p>

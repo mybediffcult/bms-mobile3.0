@@ -35,7 +35,7 @@ export default class list extends React.Component {
             <div className="terminal-list-page page">
                 <h2 className="title no-border">
                     设备列表
-                    <a href="#/terminal/index">返回</a>
+                    <a className="right" href="#/terminal/edit">创建设备</a>
                 </h2>
                 <TerminalList terminalList={this.state.terminalList}/>
             </div>

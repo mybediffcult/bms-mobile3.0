@@ -2,11 +2,15 @@ import React from 'react';
 import Icon from 'react-fa';
 import {List, ListItem, ListDivider, RaisedButton} from 'material-ui';
 import './styles/index.less';
+import '../../styles/page.less';
 
 export default class index extends React.Component {
     render() {
         return (
-            <div className="task-index-page">
+            <div className="task-index-page page">
+                <h2 className="title">
+                    消息列表
+                </h2>
                 <List>
                     <ListItem primaryText="任务1" secondaryText="您有一台设备离线，请及时处理。" leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />

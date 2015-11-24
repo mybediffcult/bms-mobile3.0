@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from 'react-fa';
 import {List, ListItem, ListDivider, RaisedButton} from 'material-ui';
 import './styles/index.less';
+import '../../styles/page.less';
 
 export default class index extends React.Component {
 
@@ -26,7 +27,11 @@ export default class index extends React.Component {
     render() {
         if(!this.state.loading)
         return (
-            <div className="ad-index-page">
+            <div className="ad-index-page page">
+                <h2 className="title">
+                    机构信息
+                </h2>
+
                 <List subheader="机构归属地信息">
                     <ListItem primaryText="省份" secondaryText={this.state.administration.province} leftIcon={<Icon name="bars" />} disabled={true} />
                     <ListDivider inset={true} />
