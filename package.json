@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./app/server/server",
-    "build": "webpack --config webpack.config.dist.js",
+    "build": "NODE_ENV=production webpack -p --config webpack.config.dist.js",
     "watch": "supervisor -w ./app/server ./app/server/server",
     "webpackDevServer": "webpack-dev-server --devtool eval --progress --colors --hot --inline --config webpack.config.dev.js --content-base dist/",
     "dev": "npm run webpackDevServer & npm run watch"
