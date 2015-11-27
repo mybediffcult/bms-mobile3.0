@@ -6,7 +6,8 @@ var notification = new Notification();
 var actions = Reflux.createActions({
     'fetchAll': {children: ['completed']},
     'create': {children: ['completed']},
-    'getOnlineNum': {children: ['completed']}
+    'getOnlineNum': {children: ['completed']},
+    'getNPNum': {children: ['completed']}
 });
 
 /**
@@ -57,6 +58,24 @@ actions.create.listen(function(terminal) {
 
 actions.getOnlineNum.listen(function(administrationId) {
     request.get('http://106.38.138.61:3000/api/administration/' + administrationId + '/terminal_num').end((error, res)=>{
+        if(error) {
+            notification.show(error);
+        }
+        else {
+            var result = res.body;
+            if (result.status == 200) {
+                this.completed(result.data);
+            }
+            else {
+                notification.show(result.message);
+            }
+        }
+    })
+});
+
+
+actions.getNPNum.listen(function(administrationId) {
+    request.get('http://106.38.138.61:3000/api/administration/' + administrationId + '/np_terminal_num').end((error, res)=>{
         if(error) {
             notification.show(error);
         }

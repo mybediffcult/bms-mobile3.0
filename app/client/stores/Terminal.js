@@ -9,6 +9,9 @@ var store = Reflux.createStore({
     },
     onGetOnlineNumCompleted: function (data) {
         this.trigger(data);
+    },
+    onGetNPNumCompleted: function (data) {
+        this.trigger(data);
     }
 });
 

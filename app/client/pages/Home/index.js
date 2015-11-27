@@ -13,7 +13,7 @@ export default class index extends React.Component {
     constructor() {
         super();
         this.state = {
-            isSigned: window.localStorage.getItem('isSigned'),
+            authorize: window.localStorage.getItem('authorize_state'),
             onlineNum: 0,
             offlineNum: 0
         };
@@ -22,7 +22,8 @@ export default class index extends React.Component {
     componentWillMount() {
         var aid = JSON.parse(window.localStorage.getItem('administration')).administrationid;
         this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalChange.bind(this));
-        TerminalActions.getOnlineNum(aid);
+        //TerminalActions.getOnlineNum(aid);
+        //TerminalActions.getNPNum(aid);
     }
 
     componentWillUnmount() {
@@ -30,17 +31,22 @@ export default class index extends React.Component {
     }
 
     onTerminalChange(data) {
+        console.log(data);
         this.setState({onlineNum: data.onlineNum, offlineNum: data.offlineNum});
     }
 
 
-    signup() {
-        window.localStorage.setItem('isSigned', true);
-        this.setState({isSigned: true});
+    authorize() {
+        var authorizeState = window.localStorage.getItem('authorize_state');
+        if(!authorizeState)
+            window.localStorage.setItem('authorize_state', 1);
+        else if(authorizeState == 1)
+            window.localStorage.setItem('authorize_state', 2);
+        this.setState({authorize: window.localStorage.getItem('authorize_state')});
     }
 
     render() {
-
+        //console.log(JSON.parse(window.localStorage.getItem('administration')));
         return (
             <div className="home-index-page page">
                 <h2 className="title">健康传播卫星网服务管理中心</h2>
@@ -51,18 +57,15 @@ export default class index extends React.Component {
                     在线:{this.state.onlineNum} | 离线: {this.state.offlineNum}
                 </RoundButton>
 
-                <div className="program-info">
-                    <h2>节目信息</h2>
-                    <p>您还没制作明天的节目</p>
-                </div>
-
-                <RoundButton onClick={this.signup.bind(this)} lineHeight="1.8rem" className="btn-terminal">
-                    <Icon name="pencil" />
-                    <br/>
-                    {this.state.isSigned ? '已签到' : '签到'}
+                <RoundButton link={true} href="#terminal/list" className="btn-terminal">
+                    {"节目信息正常"}
                 </RoundButton>
 
-                <RaisedButton style={{width: '90%', margin: '0 5%'}} label="一键委托" secondary={true} />
+                <RoundButton onClick={this.authorize.bind(this)} lineHeight="1.8rem" className="btn-terminal">
+                    <Icon name="pencil" />
+                    <br/>
+                    {!this.state.authorize ? "一键委托" : (this.state.authorize == 1 ? "取消委托" : "取消委托审核中")}
+                </RoundButton>
             </div>
         );
     }
