@@ -25,6 +25,7 @@ export default class index extends React.Component {
     }
 
     render() {
+        console.log(this.state.administration);
         if(!this.state.loading)
         return (
             <div className="ad-index-page page">

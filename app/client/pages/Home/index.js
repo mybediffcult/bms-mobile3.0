@@ -22,7 +22,7 @@ export default class index extends React.Component {
     componentWillMount() {
         var aid = JSON.parse(window.localStorage.getItem('administration')).administrationid;
         this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalChange.bind(this));
-        //TerminalActions.getOnlineNum(aid);
+        TerminalActions.getOnlineNum(aid);
         //TerminalActions.getNPNum(aid);
     }
 
