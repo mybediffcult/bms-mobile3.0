@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import ApiConfig from '../config/api';
 import Notification from '../mixins/Notification';
 var notification = new Notification();
 
@@ -13,7 +14,7 @@ var actions = Reflux.createActions({
  * @param administration Object
  */
 actions.create.listen(function(administration) {
-    request.post('http://106.38.138.61:3000/api/administration').send(administration).end((error, res)=>{
+    request.post(ApiConfig.prefix + 'administration').send(administration).end((error, res)=>{
         if(error) {
             notification.show(error);
         }
@@ -37,7 +38,7 @@ actions.create.listen(function(administration) {
  * @param password String
  */
 actions.login.listen(function(username, password) {
-    request.post('http://106.38.138.61:3000/api/login').send({
+    request.post(ApiConfig.prefix + 'login').send({
         username: username,
         password: password
     }).end((error, res)=>{

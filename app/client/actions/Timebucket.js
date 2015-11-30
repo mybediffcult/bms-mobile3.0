@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import ApiConfig from '../config/api';
 import Notification from '../mixins/Notification';
 var notification = new Notification();
 
@@ -12,7 +13,7 @@ var actions = Reflux.createActions({
  * @param administrationId Number
  */
 actions.fetch.listen(function(administrationId) {
-    request.get('http://106.38.138.61:3000/api/administration/' + administrationId + '/timebuckets').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'administration/' + administrationId + '/timebuckets').end((error, res)=>{
 
         if(error) {
             notification.show(error);

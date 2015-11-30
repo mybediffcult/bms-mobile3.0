@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import ApiConfig from '../config/api';
 import Notification from '../mixins/Notification';
 var notification = new Notification();
 
@@ -9,7 +10,7 @@ var actions = Reflux.createActions({
 
 actions.fetch.listen(function(provinceCode) {
     console.log(provinceCode);
-    request.get('http://106.38.138.61:3000/api/province/' + provinceCode + '/cities').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'province/' + provinceCode + '/cities').end((error, res)=>{
         if(error) {
             notification.show(error);
         }

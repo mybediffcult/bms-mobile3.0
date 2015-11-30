@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import ApiConfig from '../config/api';
 import $ from 'jquery';
 import Notification from '../mixins/Notification';
 var notification = new Notification();
@@ -15,7 +16,7 @@ var actions = Reflux.createActions({
  * @param terminalId String
  */
 actions.fetch.listen(function(terminalId) {
-    request.get('http://106.38.138.61:3000/api/terminal/' + terminalId + '/programs').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/programs').end((error, res)=>{
         if(error) {
             notification.show(error);
         }
@@ -40,7 +41,7 @@ actions.fetch.listen(function(terminalId) {
  */
 actions.create.listen(function(administrationId, terminalId, timebucketId,  sequence) {
     request
-        .put('http://106.38.138.61:3000/api/administration/' + administrationId + '/terminal/' + terminalId + '/timeBucket/' + timebucketId + '/program')
+        .put(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/timeBucket/' + timebucketId + '/program')
         .send({
             sequence: sequence
         }).end((error, res)=>{
@@ -68,7 +69,7 @@ actions.create.listen(function(administrationId, terminalId, timebucketId,  sequ
  */
 actions.push.listen(function(terminalId) {
     $.ajax({
-        url: 'http://106.38.138.61:8088/bms/public/index.php?controller=api&action=push',
+        url: ApiConfig.bms_prefix + 'action=push',
         type: 'POST',
         data: {terminalid: terminalId},
         success: function(data) {

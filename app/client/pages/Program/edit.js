@@ -23,26 +23,7 @@ export default class edit extends React.Component {
             timebucketList: [
 
             ],
-            materialList: [
-                {
-                    name: '火灾爆炸事件',
-                    length: '30',
-                    thumb: 'http://lorempixel.com/100/100/nature/',
-                    checked: false
-                },
-                {
-                    name: '火灾爆炸事件',
-                    length: '30',
-                    thumb: 'http://lorempixel.com/100/100/nature/',
-                    checked: false
-                },
-                {
-                    name: '火灾爆炸事件',
-                    length: '30',
-                    thumb: 'http://lorempixel.com/100/100/nature/',
-                    checked: false
-                }
-            ]
+            materialList: []
         };
     }
 
@@ -55,7 +36,7 @@ export default class edit extends React.Component {
         MaterialActions.fetch(this.props.params.tid);
     }
 
-    componentWillUnMount() {
+    componentWillUnmount() {
         this.unsubscribeTimebucketStore();
         this.unsubscribeMaterialStore();
     }

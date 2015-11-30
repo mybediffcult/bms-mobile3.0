@@ -26,13 +26,14 @@ export default class list extends React.Component {
         ProgramActions.fetch(this.props.params.tid);
     }
 
-    componentWillUnMount() {
+    componentWillUnmount() {
         this.unsubscribeProgramStore();
     }
 
     onProgramStoreChange(data) {
         this.setState({loading: false, programList: data});
     }
+
 
     push() {
         ProgramActions.push(this.props.params.tid);

@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import ApiConfig from '../config/api';
 import Notification from '../mixins/Notification';
 var notification = new Notification();
 
@@ -15,7 +16,7 @@ var actions = Reflux.createActions({
  * @param administrationId Number
  */
 actions.fetchAll.listen(function(administrationId) {
-    request.get('http://106.38.138.61:3000/api/administration/' + administrationId + '/terminals').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'administration/' + administrationId + '/terminals').end((error, res)=>{
 
         if(error) {
             notification.show(error);
@@ -38,7 +39,7 @@ actions.fetchAll.listen(function(administrationId) {
  * @param terminal Object
  */
 actions.create.listen(function(terminal) {
-    request.post('http://106.38.138.61:3000/api/terminal').send(terminal).end((error, res)=>{
+    request.post(ApiConfig.prefix + 'terminal').send(terminal).end((error, res)=>{
         if(error) {
             notification.show(error);
         }
@@ -57,7 +58,7 @@ actions.create.listen(function(terminal) {
 });
 
 actions.getOnlineNum.listen(function(administrationId) {
-    request.get('http://106.38.138.61:3000/api/administration/' + administrationId + '/terminal_num').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'administration/' + administrationId + '/terminal_num').end((error, res)=>{
         if(error) {
             notification.show(error);
         }
@@ -75,7 +76,7 @@ actions.getOnlineNum.listen(function(administrationId) {
 
 
 actions.getNPNum.listen(function(administrationId) {
-    request.get('http://106.38.138.61:3000/api/administration/' + administrationId + '/np_terminal_num').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'administration/' + administrationId + '/np_terminal_num').end((error, res)=>{
         if(error) {
             notification.show(error);
         }

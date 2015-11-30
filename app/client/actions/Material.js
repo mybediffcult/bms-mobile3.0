@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import ApiConfig from '../config/api';
 import Notification from '../mixins/Notification';
 var notification = new Notification();
 
@@ -12,7 +13,7 @@ var actions = Reflux.createActions({
  * @param terminalId String
  */
 actions.fetch.listen(function(terminalId) {
-    request.get('http://106.38.138.61:3000/api/terminal/' + terminalId + '/content').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/content').end((error, res)=>{
 
         if(error) {
             notification.show(error);
