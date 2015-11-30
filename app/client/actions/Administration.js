@@ -42,7 +42,6 @@ actions.login.listen(function(username, password) {
         username: username,
         password: password
     }).end((error, res)=>{
-
         if(error) {
             notification.show(error);
         }
