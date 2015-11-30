@@ -9,7 +9,7 @@ export default class index extends React.Component {
         return (
             <div className="task-index-page page">
                 <h2 className="title">
-                    消息列表
+                    {JSON.parse(window.localStorage.getItem('administration')).administrationName}
                 </h2>
                 <List>
                     <ListItem primaryText="任务1" secondaryText="您有一台设备离线，请及时处理。" leftIcon={<Icon name="bars" />} disabled={true} />

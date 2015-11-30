@@ -1,17 +1,27 @@
 import Reflux from 'reflux';
 import terminalActions from '../actions/Terminal';
 
+
 var store = Reflux.createStore({
     listenables: [terminalActions],
+
+    statistics: {
+        onlineNum: 0,
+        offlineNum: 0,
+        npNum:0
+    },
 
     onFetchAllCompleted: function(data) {
         this.trigger(data);
     },
     onGetOnlineNumCompleted: function (data) {
-        this.trigger(data);
+        this.statistics.onlineNum = data.onlineNum;
+        this.statistics.offlineNum = data.offlineNum;
+        this.trigger(this.statistics);
     },
     onGetNPNumCompleted: function (data) {
-        this.trigger(data);
+        this.statistics.npNum = data.np_terminal_num;
+        this.trigger(this.statistics);
     }
 });
 

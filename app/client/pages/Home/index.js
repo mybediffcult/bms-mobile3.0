@@ -15,7 +15,8 @@ export default class index extends React.Component {
         this.state = {
             authorize: window.localStorage.getItem('authorize_state'),
             onlineNum: 0,
-            offlineNum: 0
+            offlineNum: 0,
+            npNum: 0,
         };
     }
 
@@ -23,7 +24,7 @@ export default class index extends React.Component {
         var aid = JSON.parse(window.localStorage.getItem('administration')).administrationid;
         this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalChange.bind(this));
         TerminalActions.getOnlineNum(aid);
-        //TerminalActions.getNPNum(aid);
+        TerminalActions.getNPNum(aid);
     }
 
     componentWillUnmount() {
@@ -31,8 +32,7 @@ export default class index extends React.Component {
     }
 
     onTerminalChange(data) {
-        console.log(data);
-        this.setState({onlineNum: data.onlineNum, offlineNum: data.offlineNum});
+        this.setState({onlineNum: data.onlineNum, offlineNum: data.offlineNum, npNum: data.npNum});
     }
 
 
@@ -49,16 +49,14 @@ export default class index extends React.Component {
         //console.log(JSON.parse(window.localStorage.getItem('administration')));
         return (
             <div className="home-index-page page">
-                <h2 className="title">健康传播卫星网服务管理中心</h2>
+                <h2 className="title">{JSON.parse(window.localStorage.getItem('administration')).administrationName}</h2>
 
                 <RoundButton link={true} href="#terminal/list" className="btn-terminal">
                     设备
                     <br/>
                     在线:{this.state.onlineNum} | 离线: {this.state.offlineNum}
-                </RoundButton>
-
-                <RoundButton link={true} href="#terminal/list" className="btn-terminal">
-                    {"节目信息正常"}
+                    <br/>
+                    {this.state.npNum ? "无节目单:" + this.state.npNum : "节目信息正常"}
                 </RoundButton>
 
                 <RoundButton onClick={this.authorize.bind(this)} lineHeight="1.8rem" className="btn-terminal">

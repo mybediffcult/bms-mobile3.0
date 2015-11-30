@@ -30,7 +30,7 @@ export default class index extends React.Component {
         return (
             <div className="ad-index-page page">
                 <h2 className="title">
-                    机构信息
+                    {JSON.parse(window.localStorage.getItem('administration')).administrationName}
                 </h2>
 
                 <List subheader="机构归属地信息">
