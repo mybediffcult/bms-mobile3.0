@@ -65,7 +65,7 @@ export default class list extends React.Component {
                     <a className="left" href="#terminal/list">返回</a>
                     设备节目单
                 </h2>
-                <p className="subtitle">北京市海淀区神舟大厦-测</p>
+                <p className="subtitle">{JSON.parse(window.localStorage.getItem('administration')).administrationName}</p>
                 {this.state.loading ? '' : this.getPrograms(this.state.programList.countryProgram, '国家节目')}
                 {this.state.loading ? '' : this.getPrograms(this.state.programList.provinceProgram, '省节目')}
                 {this.state.loading ? '' : this.getPrograms(this.state.programList.cityProgram, '市节目')}
