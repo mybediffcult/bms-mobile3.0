@@ -44,7 +44,7 @@ export default class list extends React.Component {
 
             var contentList = program.contentlist.map((content)=>{
                 return (
-                    <ListItem key={content.productid} primaryText={content.contenttitle} leftAvatar={<Avatar src={'http://106.38.138.61:8088/bms/public/' + content.imagepath} />} disabled={true}  />
+                    <ListItem key={content.productid} primaryText={content.contenttitle} leftAvatar={<Avatar src={'http://106.38.138.99:8080/bms/public/' + content.imagepath} />} disabled={true}  />
                 );
             });
 
