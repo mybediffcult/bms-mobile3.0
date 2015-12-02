@@ -38,15 +38,14 @@ export default class index extends React.Component {
 
     authorize() {
         var authorizeState = window.localStorage.getItem('authorize_state');
-        if(!authorizeState)
+        if(authorizeState == 0)
             window.localStorage.setItem('authorize_state', 1);
-        else if(authorizeState == 1)
-            window.localStorage.setItem('authorize_state', 2);
+        else
+            window.localStorage.setItem('authorize_state', 0);
         this.setState({authorize: window.localStorage.getItem('authorize_state')});
     }
 
     render() {
-        //console.log(JSON.parse(window.localStorage.getItem('administration')));
         return (
             <div className="home-index-page page">
                 <h2 className="title">{JSON.parse(window.localStorage.getItem('administration')).administrationName}</h2>
@@ -62,7 +61,7 @@ export default class index extends React.Component {
                 <RoundButton onClick={this.authorize.bind(this)} lineHeight="1.8rem" className="btn-terminal">
                     <Icon name="pencil" />
                     <br/>
-                    {!this.state.authorize ? "一键委托" : (this.state.authorize == 1 ? "取消委托" : "取消委托审核中")}
+                    {this.state.authorize == 1 ? "取消委托" : "一键委托"}
                 </RoundButton>
             </div>
         );
