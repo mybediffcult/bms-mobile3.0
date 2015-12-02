@@ -119,7 +119,7 @@ export default class edit extends React.Component {
                 <ListItem
                     key={"m_" + index}
                     primaryText={material.contenttitle}
-                    leftAvatar={<Avatar src={'http://106.38.138.61:8088/bms/public/' + material.imagepath} />}
+                    leftAvatar={<Avatar src={'http://106.38.138.99:8080/bms/public/' + material.imagepath} />}
                     rightIcon={material.checked ? <Icon style={{color: '#00bcd4'}} name="check-square-o" /> : <Icon name="square-o" />}
                     onTouchTap={this.handleSelectMaterialItem.bind(this, index)} />
             );
