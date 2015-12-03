@@ -31,8 +31,7 @@ export default class edit extends React.Component {
         this.administration = JSON.parse(window.localStorage.getItem('administration'));
         this.unsubscribeTimebucketStore = TimebucketStore.listen(this.onTimebucketStoreChange.bind(this));
         this.unsubscribeMaterialStore = MaterialStore.listen(this.onMaterialStoreChange.bind(this));
-
-        TimebucketActions.fetch('7aa8da96de72eeeee95a72f4701382ac');
+        TimebucketActions.fetch(this.administration.administrationid);
         MaterialActions.fetch(this.props.params.tid);
     }
 
