@@ -47,7 +47,7 @@ actions.create.listen(function(terminal) {
             var result = res.body;
             if(result.status == 200) {
                 notification.show('设备添加成功', function() {
-                    window.location.hash = '#/terminal/index';
+                    window.location.hash = '#/terminal/list';
                 });
             }
             else {
