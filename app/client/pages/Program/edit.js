@@ -131,7 +131,7 @@ export default class edit extends React.Component {
                     <a className="left" href="#terminal/list">返回</a>
                     创建节目单
                 </h2>
-                <p className="subtitle">北京市海淀区神舟大厦-测</p>
+                <p className="subtitle">{JSON.parse(window.localStorage.getItem('administration')).administrationName}</p>
 
                 <form>
                     <SelectField
