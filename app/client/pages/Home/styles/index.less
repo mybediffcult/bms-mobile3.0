@@ -3,18 +3,23 @@
 
 .home-index-page {
   position: absolute;
-  top: 0rem;
-  bottom: 4rem;
+  top: 4rem;
+  bottom: 0rem;
   width: 100%;
+  box-sizing: border-box;
+  padding-top: 0rem!important;
+  padding-bottom: 4rem!important;
+
   background: #fff;
   text-align: center;
+  overflow: scroll;
 
-  @size: 10rem;
+  @size: 2rem;
   .btn-terminal {
     display: block;
     width: @size;
     height: @size;
-    margin: 5vh auto;
+    margin: 4vh auto;
   }
 
   .btn-sign {
