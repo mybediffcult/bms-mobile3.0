@@ -36,23 +36,17 @@ Navigation.defaultProps = {
         {
             title: '巡检',
             icon: 'home',
-            url: '#/home',
-            pattern: '#/home'
-        },
-        {
-            title: '设备',
-            icon: 'wifi',
             url: '#/terminal/list',
             pattern: '#/terminal'
         },
         {
-            title: '消息',
+            title: '节目单管理',
             icon: 'tasks',
             url: '#/task/index',
             pattern: '#/task'
         },
         {
-            title: '我',
+            title: '用户',
             icon: 'user',
             url: '#/administration/index',
             pattern: '#/administration'
