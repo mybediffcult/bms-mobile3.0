@@ -7,24 +7,17 @@ export default class TerminalList extends React.Component {
         var list = this.props.terminalList.map((terminal, index) => {
             return (
                 <li key={"terminal_" + index}>
-                    <p>
-                        {terminal.terminalid}
-                    </p>
-                    <p>
-                        {terminal.name}
-                    </p>
+                    <div className="name">
+                        <img src={terminal.image}/>
+                        <p>{terminal.name}</p>
+                    </div>
 
-                    {terminal.onlinestate == 1 ? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
-
-                    <p>
-                        <a className="btn-warning" href={"#terminal/" + terminal.terminalid + "/program/list"}>
-                            <Icon name="search" />&nbsp;查看节目单
+                    <div className="state">
+                        <a>
+                           {terminal.state==1? (<p className="border-on"></p>) : (<p className="border-off"></p>)}
+                            {terminal.state==1? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
                         </a>
-                        &nbsp;&nbsp;
-                        <a className="btn-primary" href={"#terminal/" + terminal.terminalid + "/program/edit"}>
-                            <Icon name="plus" />&nbsp;创建节目单
-                        </a>
-                    </p>
+                    </div>
                 </li>
             );
         });
@@ -41,19 +34,19 @@ export default class TerminalList extends React.Component {
 TerminalList.defaultProps = {
     terminalList: [
         {
-            terminal_no: '2EH00003377I',
-            name: '北京市海淀区神舟大厦-测',
-            online_state: 0
+            image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQm1W0mhTI8X6izQirEEAQwUlSqys3a0aSXPzBBfxruv_4v1k9pDA',
+            name: '设备名称',
+            state: 0
         },
         {
-            terminal_no: '2EH00003377I',
-            name: '北京市海淀区神舟大厦-测',
-            online_state: 1
+            image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQm1W0mhTI8X6izQirEEAQwUlSqys3a0aSXPzBBfxruv_4v1k9pDA',
+            name: '设备名称',
+            state: 1
         },
         {
-            terminal_no: '2EH00003377I',
-            name: '北京市海淀区神舟大厦-测',
-            online_state: 0
+            image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQm1W0mhTI8X6izQirEEAQwUlSqys3a0aSXPzBBfxruv_4v1k9pDA',
+            name: '设备名称',
+            state: 0
         }
     ]
 };
