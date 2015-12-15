@@ -34,17 +34,17 @@ export default class TerminalList extends React.Component {
 TerminalList.defaultProps = {
     terminalList: [
         {
-            image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQm1W0mhTI8X6izQirEEAQwUlSqys3a0aSXPzBBfxruv_4v1k9pDA',
+            image: 'http://lorempixel.com/300/300/nature/',
             name: '设备名称',
             state: 0
         },
         {
-            image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQm1W0mhTI8X6izQirEEAQwUlSqys3a0aSXPzBBfxruv_4v1k9pDA',
+            image: 'http://lorempixel.com/300/300/nature/',
             name: '设备名称',
             state: 1
         },
         {
-            image: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQm1W0mhTI8X6izQirEEAQwUlSqys3a0aSXPzBBfxruv_4v1k9pDA',
+            image: 'http://lorempixel.com/300/300/nature/',
             name: '设备名称',
             state: 0
         }
