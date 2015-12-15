@@ -7,17 +7,19 @@ export default class TerminalList extends React.Component {
         var list = this.props.terminalList.map((terminal, index) => {
             return (
                 <li key={"terminal_" + index}>
+                    <a href={"#/terminal/" + terminal.terminalid + "/program/list"}>
                     <div className="name">
-                        <img src={terminal.image}/>
+                        <img src="http://lorempixel.com/300/300/nature/"/>
                         <p>{terminal.name}</p>
                     </div>
 
                     <div className="state">
-                        <a>
-                           {terminal.state==1? (<p className="border-on"></p>) : (<p className="border-off"></p>)}
-                            {terminal.state==1? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
-                        </a>
+                        <div className="light">
+                           {terminal.onlinestate==1? (<p className="border-on"></p>) : (<p className="border-off"></p>)}
+                            {terminal.onlinestate==1? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
+                        </div>
                     </div>
+                    </a>
                 </li>
             );
         });

@@ -37,7 +37,7 @@ export default class list extends React.Component {
                     {JSON.parse(window.localStorage.getItem('administration')).administrationName}
                     <a className="right" href="#/terminal/edit">创建设备</a>
                 </h2>
-                <TerminalList />
+                <TerminalList terminalList={this.state.terminalList} />
             </div>
         );
     }
