@@ -1,12 +1,16 @@
 import React from 'react';
 import Icon from 'react-fa';
-import {SelectField, List, ListItem, ListDivider, RaisedButton, Avatar, Checkbox} from 'material-ui';
+import moment from 'moment';
+import {SelectField, List, ListItem, ListDivider, RaisedButton, FlatButton, Avatar, Checkbox, DatePicker, DatePickerDialog, LinearProgress, Badge} from 'material-ui';
 import request from 'superagent';
 import Notification from '../../mixins/Notification';
 
+import TerminalActions from '../../actions/Terminal';
 import ProgramActions from '../../actions/Program';
 import TimebucketActions from '../../actions/Timebucket';
 import MaterialActions from '../../actions/Material';
+
+import TerminalStore from '../../stores/Terminal';
 import TimebucketStore from '../../stores/Timebucket';
 import MaterialStore from '../../stores/Material';
 
@@ -19,25 +23,55 @@ export default class edit extends React.Component {
     constructor() {
         super();
         this.state = {
+            searching: false,
+            keyword: '',
+            date: null,
+            terminalId: null,
             timebucketId: '',
             timebucketList: [
 
             ],
+            terminalList: [],
             materialList: []
         };
     }
 
     componentWillMount() {
         this.administration = JSON.parse(window.localStorage.getItem('administration'));
+
+        this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalStoreChange.bind(this));
         this.unsubscribeTimebucketStore = TimebucketStore.listen(this.onTimebucketStoreChange.bind(this));
         this.unsubscribeMaterialStore = MaterialStore.listen(this.onMaterialStoreChange.bind(this));
-        TimebucketActions.fetch(this.administration.administrationid);
-        MaterialActions.fetch(this.props.params.tid);
+
+        TerminalActions.fetchAll(this.administration.administrationid);
+
+        //TimebucketActions.fetch(this.administration.administrationid);
+        //MaterialActions.fetch(this.props.params.tid);
     }
 
     componentWillUnmount() {
+        this.unsubscribeTerminalStore();
         this.unsubscribeTimebucketStore();
         this.unsubscribeMaterialStore();
+    }
+
+    formatDate(date) {
+        return moment(date).format("YYYY-MM-DD");
+    }
+
+    onTerminalStoreChange(data) {
+        console.log(data);
+        if(data instanceof Array) {
+            console.log(data);
+            this.setState({terminalList: data});
+            if(!this.state.terminalId) {
+                this.setState({terminalId: this.state.terminalList[0].terminalid});
+                TerminalActions.getDateWithProgram(this.state.terminalId);
+            }
+        }
+        else if(data && data.enddate){
+            this.setState({date: new Date(moment(data.enddate, "YYYYMMDD").add(1, 'day').format("YYYY-MM-DD"))});
+        }
     }
 
     onTimebucketStoreChange(data) {
@@ -111,6 +145,27 @@ export default class edit extends React.Component {
         ProgramActions.create(this.administration.administrationid, this.props.params.tid, this.state.timebucketId, sequence);
     }
 
+    onTerminalChange(event) {
+        this.setState({terminalId: event.target.value});
+        TerminalActions.getDateWithProgram(this.state.terminalId);
+    }
+
+    onDateChange(event, date) {
+        this.setState({date: date});
+    }
+
+    startSearch() {
+        this.setState({searching: true});
+    }
+
+    cancelSearch() {
+        this.setState({searching: false});
+    }
+
+    onKeywordChange(event) {
+        this.setState({keyword: event.target.value});
+    }
+
     render() {
 
         var materialList = this.state.materialList.map((material, index)=>{
@@ -124,29 +179,121 @@ export default class edit extends React.Component {
             );
         });
 
+        var terminalList = this.state.terminalList.map((terminal, index)=>{
+            return (
+                <option key={"terminal-"+terminal.terminalid} value={terminal.terminalid}>{terminal.name}</option>
+            );
+        });
+
         return (
-            <div className="program-edit-page page bg-white">
+            <div className="program-edit-page">
+
                 <h2 className="title">
                     <a className="left" href="#terminal/list">返回</a>
-                    创建节目单
+                    <DatePicker
+                        value={this.state.date}
+                        onChange={this.onDateChange.bind(this)}
+                        formatDate={this.formatDate.bind(this)}
+                        style={{textAlign: 'center', width: '86px', margin: '0 auto', color: "#eee"}}
+                        textFieldStyle={{width: "86px", color: "#eee"}}
+                        autoOk={true} />
+                    <select
+                        value={this.state.terminalId}
+                        onChange={this.onTerminalChange.bind(this)}
+                        style={{position: 'absolute', right:'0.5rem', top: '1rem', width: '86px', height: '2rem', border: '1px solid transparent', outline: 'none', borderRadius: 'none'}}>
+                        {terminalList}
+                    </select>
                 </h2>
-                <p className="subtitle">{JSON.parse(window.localStorage.getItem('administration')).administrationName}</p>
+
+
+
+                <Badge style={{display: 'block', margin: '0.5rem'}} badgeContent={5} secondary={true}>
+                    <LinearProgress mode="determinate" value={50} />
+                </Badge>
+
+                <div className="filter-area" style={{display: this.state.searching?"none":"block"}}>
+                    <select style={{width: '3.6rem', height: '2rem', margin: '0 0.5rem 0 0', border: '1px solid #eee', outline: 'none', borderRadius: 'none', fontSize: '0.8rem'}}>
+                        <option>区域</option>
+                        <option>设备1</option>
+                        <option>设备1</option>
+                    </select>
+                    <select style={{width: '3.6rem', height: '2rem', margin: '0 0.5rem', border: '1px solid #eee', outline: 'none', borderRadius: 'none', fontSize: '0.8rem'}}>
+                        <option>内容</option>
+                        <option>设备1</option>
+                        <option>设备1</option>
+                    </select>
+                    <span className="time">
+                        时长 <Icon name="caret-down" />
+                    </span>
+
+                    <Icon className="search" name="search" onClick={this.startSearch.bind(this)} />
+                </div>
+
+                <div className="search-area" style={{display: this.state.searching?"":"none"}}>
+                    <input type="text" className="input-search" value={this.state.keyword} onChange={this.onKeywordChange.bind(this)} />
+                    <button className="cancel" onClick={this.cancelSearch.bind(this)}>取消</button>
+                </div>
+
+
+                <ul className="material-list">
+                    <li>
+                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
+                        <div className="right">
+                            <div className="duration">时长:</div>
+                            <div className="name">
+                                <span className="txt">节目名称</span>
+                                <button className="btn-add"><Icon name="plus" /></button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
+                        <div className="right">
+                            <div className="duration">时长:</div>
+                            <div className="name">
+                                <span className="txt">节目名称</span>
+                                <button className="btn-add"><Icon name="plus" /></button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
+                        <div className="right">
+                            <div className="duration">时长:</div>
+                            <div className="name">
+                                <span className="txt">节目名称</span>
+                                <button className="btn-add"><Icon name="plus" /></button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
+                        <div className="right">
+                            <div className="duration">时长:</div>
+                            <div className="name">
+                                <span className="txt">节目名称</span>
+                                <button className="btn-add"><Icon name="plus" /></button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
+                        <div className="right">
+                            <div className="duration">时长:</div>
+                            <div className="name">
+                                <span className="txt">节目名称</span>
+                                <button className="btn-add"><Icon name="plus" /></button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
 
                 <form>
-                    <SelectField
-                        floatingLabelText="选择时段"
-                        fullWidth={true}
-                        valueMember="serialno"
-                        displayMember="timebucket"
-                        value={this.state.timebucketId}
-                        onChange={this.onTimebucketChange.bind(this)}
-                        menuItems={this.state.timebucketList} />
-
-                    <div className="material-list">
-                        <List subheader="选择素材">
-                            {materialList}
-                        </List>
-                    </div>
 
                     <RaisedButton style={{marginTop: '2rem'}} label="提交" secondary={true} fullWidth={true} onClick={this.onSubmit.bind(this)} />
                 </form>

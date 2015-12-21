@@ -2,11 +2,16 @@ import React from 'react';
 import Icon from 'react-fa';
 import {List, ListItem, ListDivider, RaisedButton, Avatar, DatePicker, DatePickerDialog} from 'material-ui';
 import request from 'superagent';
+import moment from 'moment';
 import $ from 'jquery';
 import Notification from '../../mixins/Notification'
 
 import ProgramActions from '../../actions/Program';
 import ProgramStore from '../../stores/Program';
+
+
+import TerminalActions from '../../actions/Terminal';
+import TerminalStore from '../../stores/Terminal';
 
 import '../../styles/page.less';
 
@@ -16,22 +21,33 @@ export default class list extends React.Component {
     constructor() {
         super();
         this.state = {
-            loading: true,
+            date: new Date(),
+            startDate: new Date(),
+            endDate: null,
             programList: []
         };
     }
 
     componentWillMount() {
         this.unsubscribeProgramStore = ProgramStore.listen(this.onProgramStoreChange.bind(this));
-        ProgramActions.fetch(this.props.params.tid);
+        this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalStoreChange.bind(this));
+        ProgramActions.fetch(this.props.params.tid, this.state.date);
+        TerminalActions.getDateWithProgram(this.props.params.tid);
     }
 
     componentWillUnmount() {
         this.unsubscribeProgramStore();
+        this.unsubscribeTerminalStore();
+    }
+
+    onTerminalStoreChange(data) {
+        var startDate = new Date(moment(data.startdate, "YYYYMMDD").format("YYYY-MM-DD"));
+        var endDate   = new Date(moment(data.enddate, "YYYYMMDD").format("YYYY-MM-DD"));
+        this.setState({startDate: startDate, endDate: endDate});
     }
 
     onProgramStoreChange(data) {
-        this.setState({loading: false, programList: data});
+        this.setState({programList: data});
     }
 
 
@@ -39,23 +55,54 @@ export default class list extends React.Component {
         ProgramActions.push(this.props.params.tid);
     }
 
-    getPrograms(programs, levelStr) {
-        return programs.map((program)=>{
+    getPrograms(programs) {
+        if(programs.length > 0) {
+            return programs.map((program, index)=>{
 
-            var contentList = program.contentlist.map((content)=>{
-                return (
-                    <ListItem key={content.productid} primaryText={content.contenttitle} leftAvatar={<Avatar src={'http://106.38.138.61:8088/bms/public/' + content.imagepath} />} disabled={true}  />
-                );
-            });
+                    var timebuckets = program.timebucket.split("-");
+                    var startTime   = moment(timebuckets[0], "HHmm").format("HH:mm");
+                    var endTime     = moment(timebuckets[1], "HHmm").format("HH:mm");
+                    var timebucket  = startTime + '-' + endTime;
 
+                    var contentList = program.sequence.map((content, index)=>{
+                        return (
+                            <ListItem key={"content-" + index} primaryText={content.contenttitle} leftAvatar={<Avatar src={'http://106.38.138.61:8088/bms/public/' + content.imagepath} />} disabled={true}  />
+                        );
+                    });
+
+                    return (
+                        <List key={"program-" + index} subheader={timebucket + "(" + program.description + ")"}>
+                            {contentList}
+                        </List>
+                    )}
+            );
+        }
+        else {
             return (
-                <List key={program.programid} subheader={program.timebucket + "(" + levelStr + ")"}>
-                    {contentList}
-                </List>
-            )}
-        );
+                <p style={{textAlign: "center"}}>没有节目信息</p>
+            );
+        }
+
     }
 
+    formatDate(date) {
+        return moment(date).format("YYYY-MM-DD");
+    }
+
+    onDateChange(event, date) {
+        this.setState({date: date});
+        this.setState({programList: []});
+        ProgramActions.fetch(this.props.params.tid, this.state.date);
+    }
+
+    shouldDisableDate(date) {
+        if(date >= this.state.startDate && date <= this.state.endDate) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
     render() {
 
@@ -64,16 +111,21 @@ export default class list extends React.Component {
                 <h2 className="title">
                     <a className="left" href="#terminal/list">返回</a>
                     查看节目单
-                    <a className="right" href="#terminal/list">创建</a>
+                    <a className="right" href="#program/edit">创建</a>
                 </h2>
                 <p className="subtitle">{JSON.parse(window.localStorage.getItem('administration')).administrationName}</p>
-                <DatePicker defaultValue="12/15/2015" style={{textAlign: 'center'}} textFieldStyle={{width: "86px"}} />
+
+                <DatePicker
+                    value={this.state.date}
+                    style={{textAlign: 'center'}}
+                    textFieldStyle={{width: "86px"}}
+                    autoOk={true}
+                    shouldDisableDate={this.shouldDisableDate.bind(this)}
+                    formatDate={this.formatDate.bind(this)}
+                    onChange={this.onDateChange.bind(this)} />
 
 
-                {this.state.loading ? '' : this.getPrograms(this.state.programList.countryProgram, '卫计委时段')}
-                {this.state.loading ? '' : this.getPrograms(this.state.programList.provinceProgram, '省时段')}
-                {this.state.loading ? '' : this.getPrograms(this.state.programList.cityProgram, '市时段')}
-                {this.state.loading ? '' : this.getPrograms(this.state.programList.terminalProgram, '自选时段')}
+                {this.getPrograms(this.state.programList)}
             </div>
         );
     }
