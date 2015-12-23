@@ -12,24 +12,27 @@ var actions = Reflux.createActions({
  * 获取素材列表
  * @param terminalId String
  */
-actions.fetch.listen(function(terminalId) {
-    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/content').end((error, res)=>{
+actions.fetch.listen(function(terminalId, name, sort, page) {
+    console.log(name);
+    request
+        .get(ApiConfig.prefix + 'terminal/' + terminalId + '/content')
+        .query({name: name, sort: sort, page: page})
+        .end((error, res)=>{
 
-        if(error) {
-            notification.show(error);
-        }
-        else {
-            var result = res.body;
-
-            if(result.status == 200) {
-                var data = result.data;
-                this.completed(data);
+            if(error) {
+                notification.show(error);
             }
             else {
-                notification.show(result.message);
+                var result = res.body;
+                if(result.status == 200) {
+                    var data = result.data;
+                    this.completed(data);
+                }
+                else {
+                    notification.show(result.message);
+                }
             }
-        }
-    });
+        });
 });
 
 export default actions;

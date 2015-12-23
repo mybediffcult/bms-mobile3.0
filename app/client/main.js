@@ -32,7 +32,7 @@ let routes = (
             <Route path="terminal/list" component={TerminalListPage} />
             <Route path="terminal/edit" component={TerminalEditPage} />
             <Route path="terminal/:tid/program/list" component={ProgramListPage} />
-            <Route path="terminal/:tid/program/edit" component={ProgramEditPage} />
+            <Route path="program/edit" component={ProgramEditPage} />
             <Route path="administration/index" component={AdministrationIndexPage} />
             <Route path="administration/authorize" component={AdministrationAuthorizePage} />
             <Route path="administration/check" component={AdministrationCheckPage} />

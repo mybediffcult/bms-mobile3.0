@@ -11,17 +11,29 @@ var store = Reflux.createStore({
         npNum:0
     },
 
+    terminalList: [],
+
+    programDate: null,
+
     onFetchAllCompleted: function(data) {
-        this.trigger(data);
+        this.terminalList = data;
+        this.trigger(this.terminalList);
     },
+
     onGetOnlineNumCompleted: function (data) {
         this.statistics.onlineNum = data.onlineNum;
         this.statistics.offlineNum = data.offlineNum;
         this.trigger(this.statistics);
     },
+
     onGetNPNumCompleted: function (data) {
         this.statistics.npNum = data.np_terminal_num;
         this.trigger(this.statistics);
+    },
+
+    onGetDateWithProgramCompleted: function(date) {
+        this.programDate = date;
+        this.trigger(this.programDate);
     }
 });
 

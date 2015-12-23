@@ -23,7 +23,7 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                loaders: ['style', 'css', 'less']
+                loaders: ['style', 'css', 'autoprefixer?{browsers:["> 1%", "last 3 version", "Firefox ESR"]}', 'less']
             },
             {
                 test:/\.(png|jpg|bmp)$/,

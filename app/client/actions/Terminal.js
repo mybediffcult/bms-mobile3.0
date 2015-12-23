@@ -8,7 +8,8 @@ var actions = Reflux.createActions({
     'fetchAll': {children: ['completed']},
     'create': {children: ['completed']},
     'getOnlineNum': {children: ['completed']},
-    'getNPNum': {children: ['completed']}
+    'getNPNum': {children: ['completed']},
+    'getDateWithProgram' : {children: ['completed']}
 });
 
 /**
@@ -91,5 +92,29 @@ actions.getNPNum.listen(function(administrationId) {
         }
     })
 });
+
+/**
+ * 获取有节目单的日期
+ * @param administrationId Number
+ */
+actions.getDateWithProgram.listen(function(terminalId) {
+    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/date').end((error, res)=>{
+
+        if(error) {
+            notification.show(error);
+        }
+        else {
+            var result = res.body;
+            if(result.status == 200) {
+                var date = result.data;
+                this.completed(date);
+            }
+            else {
+                notification.show(result.message);
+            }
+        }
+    })
+});
+
 
 export default actions;
