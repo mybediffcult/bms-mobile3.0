@@ -25,28 +25,27 @@ export default class edit extends React.Component {
         this.state = {
             searching: false,
             keyword: '',
+            sort: 'desc',
+            page: 1,
+            isLastPage: false,
             date: null,
             terminalId: null,
-            timebucketId: '',
-            timebucketList: [
-
-            ],
+            progress: 0,
             terminalList: [],
-            materialList: []
+            materialList: [],
+            timebucketList: [],
+            selectedMaterialList: []
         };
     }
 
     componentWillMount() {
         this.administration = JSON.parse(window.localStorage.getItem('administration'));
-
         this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalStoreChange.bind(this));
         this.unsubscribeTimebucketStore = TimebucketStore.listen(this.onTimebucketStoreChange.bind(this));
         this.unsubscribeMaterialStore = MaterialStore.listen(this.onMaterialStoreChange.bind(this));
 
         TerminalActions.fetchAll(this.administration.administrationid);
-
-        //TimebucketActions.fetch(this.administration.administrationid);
-        //MaterialActions.fetch(this.props.params.tid);
+        TimebucketActions.fetch(this.administration.administrationid);
     }
 
     componentWillUnmount() {
@@ -55,18 +54,27 @@ export default class edit extends React.Component {
         this.unsubscribeMaterialStore();
     }
 
+    /**
+     * 格式化日期
+     * @param date
+     * @returns {*}
+     */
     formatDate(date) {
         return moment(date).format("YYYY-MM-DD");
     }
 
+    /**
+     * 监听设备数据变化
+     * @param data
+     */
     onTerminalStoreChange(data) {
-        console.log(data);
         if(data instanceof Array) {
-            console.log(data);
             this.setState({terminalList: data});
             if(!this.state.terminalId) {
-                this.setState({terminalId: this.state.terminalList[0].terminalid});
-                TerminalActions.getDateWithProgram(this.state.terminalId);
+                this.setState({terminalId: this.state.terminalList[0].terminalid}, function() {
+                    TerminalActions.getDateWithProgram(this.state.terminalId);
+                    MaterialActions.fetch(this.state.terminalId, this.state.keyword, 'length|' + this.state.sort);
+                });
             }
         }
         else if(data && data.enddate){
@@ -74,110 +82,295 @@ export default class edit extends React.Component {
         }
     }
 
+    /**
+     * 监听时间段数据变化
+     * @param data
+     */
     onTimebucketStoreChange(data) {
+        console.log(data);
         this.setState({timebucketList: data});
     }
 
+    /**
+     * 监听素材数据变化
+     * @param data
+     */
     onMaterialStoreChange(data) {
-        var materialList = data.map((item)=>{
-            item.checked = false;
-            return item;
-        });
-        this.setState({materialList: materialList});
+        if(data.length > 0 ) {
+            var materialList = this.state.materialList.concat(data);
+
+            this.setState({materialList: materialList, isLastPage: false});
+        }
+        else {
+            this.setState({isLastPage: true});
+        }
     }
 
+    /**
+     *
+     * @param index
+     */
     handleSelectMaterialItem(index) {
         var materialList = this.state.materialList;
         materialList[index].checked = !materialList[index].checked;
         this.setState({materialList: materialList});
     }
 
+    /**
+     * 加载更多素材
+     */
     loadMoreMaterial() {
-        var materialList = this.state.materialList;
-        materialList.push({
-            name: '火灾爆炸事件',
-            length: '30',
-            thumb: 'http://lorempixel.com/100/100/nature/',
-            checked: false
-        });
-
-        materialList.push({
-            name: '火灾爆炸事件',
-            length: '30',
-            thumb: 'http://lorempixel.com/100/100/nature/',
-            checked: false
-        });
-
-        materialList.push({
-            name: '火灾爆炸事件',
-            length: '30',
-            thumb: 'http://lorempixel.com/100/100/nature/',
-            checked: false
-        });
-
-        this.setState({materialList: materialList});
+        if(!this.state.isLastPage) {
+            var page = this.state.page + 1;
+            this.setState({page: page});
+            MaterialActions.fetch(this.state.terminalId, this.state.keyword, 'length|' + this.state.sort, page);
+        }
     }
+
 
     onTimebucketChange(event) {
         this.setState({timebucketId: event.target.value});
     }
 
-    onSubmit() {
-        if(!this.state.timebucketId) {
-            notification.show('请选择时段');
-            return;
-        }
-
-        var materialList = this.state.materialList.filter((material)=>{
-            return material.checked;
-        });
-
-        if(!materialList || materialList.length <= 0) {
-            notification.show('请选择素材');
-            return;
-        }
-
-
-        var sequence = materialList.map((material)=>{
-            return material.productid + '-' + material.length;
-        }).join(',');
-
-        ProgramActions.create(this.administration.administrationid, this.props.params.tid, this.state.timebucketId, sequence);
-    }
-
+    /**
+     * 监听设备选择列表变化
+     * @param event
+     */
     onTerminalChange(event) {
-        this.setState({terminalId: event.target.value});
-        TerminalActions.getDateWithProgram(this.state.terminalId);
+        var terminalId = event.target.value;
+        this.setState({terminalId: terminalId});
+        TerminalActions.getDateWithProgram(terminalId);
+
+        this.initializeMaterialList(terminalId, this.state.keyword, this.state.sort);
     }
 
+    /**
+     * 监听日期变化
+     * @param event
+     * @param date
+     */
     onDateChange(event, date) {
         this.setState({date: date});
     }
 
+    /**
+     * 开始搜索
+     */
     startSearch() {
         this.setState({searching: true});
     }
 
+    /**
+     * 取消搜索
+     */
     cancelSearch() {
         this.setState({searching: false});
     }
 
+
+    /**
+     * 监听搜索关键词变化
+     * @param event
+     */
     onKeywordChange(event) {
-        this.setState({keyword: event.target.value});
+        var keyword = event.target.value;
+        this.setState({keyword: keyword});
+        this.initializeMaterialList(this.state.terminalId, keyword, this.state.sort);
     }
+
+    /**
+     * 监听排序参数变化
+     */
+    onSortChange() {
+        var sort = '';
+        if(this.state.sort == 'asc') {
+            sort = 'desc';
+        }
+        else {
+            sort = 'asc';
+        }
+        this.setState({sort: sort});
+        this.initializeMaterialList(this.state.terminalId, this.state.keyword, sort);
+    }
+
+    /**
+     * 初始化素材列表
+     */
+    initializeMaterialList(terminalId, name, sort) {
+        this.setState({materialList: [], page: 1, isLastPage: false});
+        MaterialActions.fetch(terminalId, name, 'length|' + sort);
+    }
+
+    selectMaterial(material) {
+
+        material = {productid: material.productid, length: material.length};
+
+        var selectedMaterialList = this.state.selectedMaterialList;
+        var timebucketList = this.state.timebucketList;
+
+        // 获取当前时段serialno
+        if(selectedMaterialList.length <= 0) {
+            var currentSerialno = this.state.timebucketList[0].serialno;
+        }
+        else {
+            var currentSerialno = selectedMaterialList[selectedMaterialList.length - 1].serialno;
+        }
+
+        // 获取对应的下标
+        var index = timebucketList.findIndex((timebucket)=>{
+            return timebucket.serialno == currentSerialno;
+        });
+
+        while(index < timebucketList.length && !this.isMaterialFitForTimebucket(material, timebucketList[index])) {
+            index += 1;
+        }
+
+        if(index >= timebucketList.length) {
+            notification.show("节目长度超出所剩时长");
+            return;
+        }
+
+        material.serialno = timebucketList[index].serialno;
+        selectedMaterialList.push(material);
+        this.setState({selectedMaterialList: selectedMaterialList});
+    }
+
+    getProgress() {
+        var selectedMaterialList = this.state.selectedMaterialList;
+        var timebucketList = this.state.timebucketList;
+
+        /*** 计算时段总时长 ***/
+        var totalDuration = 0;
+        timebucketList.forEach((timebucket)=>{
+            totalDuration += timebucket.valid;
+        });
+
+        /*** 计算已选素材所占时长 ***/
+        var duration = 0;
+        if(selectedMaterialList.length > 0) {
+            var currentSerialno = selectedMaterialList[selectedMaterialList.length - 1].serialno;
+
+            // 获取对应的下标
+            var index = timebucketList.findIndex((timebucket)=>{
+                return timebucket.serialno == currentSerialno;
+            });
+
+            if(index == 0) {
+                selectedMaterialList.forEach((item)=>{
+                    duration += item.length;
+                });
+            }
+            else {
+                for(var i = 0; i < index; i++) {
+                    duration += timebucketList[i].valid;
+                }
+
+                selectedMaterialList.forEach((item)=>{
+                    if(item.serialno == currentSerialno) {
+                        duration += item.length;
+                    }
+                });
+            }
+        }
+        return (duration / totalDuration) * 100;
+    }
+
+
+    getRemainDuration() {
+        var timebucketList = this.state.timebucketList;
+
+        /*** 计算时段总时长 ***/
+        var totalDuration = 0;
+        timebucketList.forEach((timebucket)=>{
+            totalDuration += timebucket.valid;
+        });
+
+        var progress = this.getProgress();
+
+        return totalDuration * (100 - progress)/100;
+    }
+
+    isMaterialFitForTimebucket(material, timebucket) {
+        var selectedMaterialList = this.state.selectedMaterialList;
+
+        var duration = material.length;
+        selectedMaterialList.forEach((item)=>{
+            if(item.serialno == timebucket.serialno)
+                duration += item.length;
+        });
+
+        return duration <= timebucket.valid;
+    }
+
+
+
+    /**
+     * 提交表单
+     */
+    onSubmit() {
+        console.log(this.getRemainDuration() / 3600);
+        if(this.getRemainDuration() / 3600 >= 1){
+            notification.show("尚未完成,请继续");
+            return;
+        }
+
+        var selectedMaterialList = this.state.selectedMaterialList;
+        var timebucketList = this.state.timebucketList;
+
+        var program = timebucketList.map((timebucket)=>{
+            var sequence = selectedMaterialList
+                .filter((material)=>{
+                    return material.serialno == timebucket.serialno;
+                })
+                .map((material)=>{
+                    return material.productid;
+                }).join(",");
+
+            return {
+                serialno: timebucket.serialno,
+                sequence: sequence
+            };
+        });
+
+        console.log(program);
+
+        //ProgramActions.create(this.administration.administrationid, this.props.params.tid, this.state.timebucketId, sequence);
+    }
+
+
 
     render() {
 
-        var materialList = this.state.materialList.map((material, index)=>{
-            return (
-                <ListItem
-                    key={"m_" + index}
-                    primaryText={material.contenttitle}
-                    leftAvatar={<Avatar src={'http://106.38.138.61:8088/bms/public/' + material.imagepath} />}
-                    rightIcon={material.checked ? <Icon style={{color: '#00bcd4'}} name="check-square-o" /> : <Icon name="square-o" />}
-                    onTouchTap={this.handleSelectMaterialItem.bind(this, index)} />
+        if(this.state.materialList && this.state.materialList.length > 0) {
+            var materialList = this.state.materialList.map((material, index)=>{
+                var num = this.state.selectedMaterialList.filter((item)=>{
+                    return item.productid == material.productid;
+                }).length;
+
+                return (
+                    <li key={"material-" + index}>
+                        <span className="left"><img className="thumb" src={'http://106.38.138.61:8088/bms/public/' + material.imagepath} /></span>
+                        <div className="right">
+                            <div className="headline">
+                                <span className="duration">时长:{Math.ceil(material.length / 60)}分钟</span>
+                                <span className="num">{num ? num : ''}</span>
+                            </div>
+                            <div className="name">
+                                <span className="txt">{material.contenttitle}</span>
+
+                                <button className="btn-add" onClick={this.selectMaterial.bind(this, material)}><Icon name="plus" /></button>
+                            </div>
+                        </div>
+                    </li>
+                );
+            });
+        }
+        else {
+            var materialList = (
+                <p style={{textAlign: 'center'}}>该设备查询不到素材</p>
             );
-        });
+        }
+
 
         var terminalList = this.state.terminalList.map((terminal, index)=>{
             return (
@@ -207,23 +400,23 @@ export default class edit extends React.Component {
 
 
 
-                <Badge style={{display: 'block', margin: '0.5rem'}} badgeContent={5} secondary={true}>
-                    <LinearProgress mode="determinate" value={50} />
+                <Badge style={{display: 'block', margin: '0.5rem'}} badgeContent={this.state.selectedMaterialList.length} secondary={true}>
+                    <LinearProgress mode="determinate" value={this.getProgress.bind(this)()} />
                 </Badge>
 
                 <div className="filter-area" style={{display: this.state.searching?"none":"block"}}>
                     <select style={{width: '3.6rem', height: '2rem', margin: '0 0.5rem 0 0', border: '1px solid #eee', outline: 'none', borderRadius: 'none', fontSize: '0.8rem'}}>
                         <option>区域</option>
-                        <option>设备1</option>
-                        <option>设备1</option>
+                        <option>全国</option>
+                        <option>北京</option>
                     </select>
                     <select style={{width: '3.6rem', height: '2rem', margin: '0 0.5rem', border: '1px solid #eee', outline: 'none', borderRadius: 'none', fontSize: '0.8rem'}}>
                         <option>内容</option>
-                        <option>设备1</option>
-                        <option>设备1</option>
+                        <option>健康</option>
+                        <option>保健</option>
                     </select>
-                    <span className="time">
-                        时长 <Icon name="caret-down" />
+                    <span className="time" onClick={this.onSortChange.bind(this)}>
+                        时长 <Icon name={this.state.sort == 'asc' ? "caret-up" : "caret-down" } />
                     </span>
 
                     <Icon className="search" name="search" onClick={this.startSearch.bind(this)} />
@@ -236,62 +429,12 @@ export default class edit extends React.Component {
 
 
                 <ul className="material-list">
-                    <li>
-                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
-                        <div className="right">
-                            <div className="duration">时长:</div>
-                            <div className="name">
-                                <span className="txt">节目名称</span>
-                                <button className="btn-add"><Icon name="plus" /></button>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
-                        <div className="right">
-                            <div className="duration">时长:</div>
-                            <div className="name">
-                                <span className="txt">节目名称</span>
-                                <button className="btn-add"><Icon name="plus" /></button>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
-                        <div className="right">
-                            <div className="duration">时长:</div>
-                            <div className="name">
-                                <span className="txt">节目名称</span>
-                                <button className="btn-add"><Icon name="plus" /></button>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
-                        <div className="right">
-                            <div className="duration">时长:</div>
-                            <div className="name">
-                                <span className="txt">节目名称</span>
-                                <button className="btn-add"><Icon name="plus" /></button>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <span className="left"><img className="thumb" src="http://lorempixel.com/200/200/nature/" /></span>
-                        <div className="right">
-                            <div className="duration">时长:</div>
-                            <div className="name">
-                                <span className="txt">节目名称</span>
-                                <button className="btn-add"><Icon name="plus" /></button>
-                            </div>
-                        </div>
-                    </li>
+                    {materialList}
                 </ul>
 
+                <div style={{display: this.state.materialList && this.state.materialList.length >= 5 ? 'block' : 'none', width: "100%", boxSizing: "border-box", padding: "0 1.2rem"}}>
+                    <FlatButton style={{width: "100%"}} label={this.state.isLastPage ? "没有素材啦" : "加载更多"} onClick={this.loadMoreMaterial.bind(this)} />
+                </div>
 
                 <form>
 

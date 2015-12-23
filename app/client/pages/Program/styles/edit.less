@@ -136,10 +136,26 @@
       .right {
         flex: 3;
 
-        .duration {
-          display: block;
-          line-height: 2rem;
+        .headline {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .duration {
+            display: block;
+            flex: 1;
+            line-height: 2rem;
+          }
+
+          .num {
+            display: block;
+            height: 1.0rem;
+            padding: 0 0.8rem;
+            color: @warning-color;
+            font-size: 1.0rem;
+          }
         }
+
 
         .name {
           display: flex;

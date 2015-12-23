@@ -13,7 +13,7 @@ var actions = Reflux.createActions({
  * @param administrationId Number
  */
 actions.fetch.listen(function(administrationId) {
-    request.get(ApiConfig.prefix + 'administration/' + administrationId + '/timebuckets').end((error, res)=>{
+    request.get(ApiConfig.prefix + 'ad_timeBucket/' + administrationId).end((error, res)=>{
 
         if(error) {
             notification.show(error);
