@@ -13,8 +13,8 @@ import RegisterPage from './pages/Administration/register';
 import LoginPage from './pages/Administration/login';
 import AdministrationIndexPage from './pages/Administration/index';
 import TaskIndexPage from './pages/Task/index';
-
-
+import AdministrationAuthorizePage from './pages/Administration/authorize';
+import AdministrationCheckPage from './pages/Administration/check';
 
 import './styles/base.less';
 import './styles/common.less';
@@ -34,6 +34,8 @@ let routes = (
             <Route path="terminal/:tid/program/list" component={ProgramListPage} />
             <Route path="terminal/:tid/program/edit" component={ProgramEditPage} />
             <Route path="administration/index" component={AdministrationIndexPage} />
+            <Route path="administration/authorize" component={AdministrationAuthorizePage} />
+            <Route path="administration/check" component={AdministrationCheckPage} />
             <Route path="task/index" component={TaskIndexPage} />
         </Route>
         <Route path="/register" component={RegisterPage} />
