@@ -1,11 +1,14 @@
 .ad-index-page {
-	box-sizing: border-box;
-	
+	background: #fff;
+	font-size: 1.2rem;
+
 	.infor{
-		padding-left: 0.5rem;
+		box-sizing: border-box;
+		padding-left: 1.5rem;
 		border-bottom: 1px solid #d7d7d7;
 
 	 	p{
+	 		box-sizing: border-box;
 			margin:0.8rem 0 0.5rem 0.4rem;
 		}
 
@@ -15,12 +18,18 @@
 		  	list-style:none;
 
 		  	li{
+		  		box-sizing: border-box;
 		  		margin: 0.4rem 2rem;
-		  		font-size: 85%;
+		  		font-size: 1rem;
+
+			  	&:last-child{
+			  		margin-bottom:1.5rem;
+			  	}
 		  	}
 	  }
 	}
 	.other{
+		box-sizing: border-box;
 		ul{
 		  margin:0;
 		  padding:0;
@@ -30,18 +39,24 @@
 			border-bottom: 1px solid #d7d7d7;
 
 			a{
-				width:100%;
-				padding:0 0.8rem;
+				padding:0 2rem;
 				text-decoration: none;
 				display: block;
 				height: 3rem;
 				line-height:3rem;
 				color:#666;
+				
+				.text{
+					display: inline-block;
+					padding-left:2rem;
+				}
 
 				.icon{
 					float:left;
 				}
 			}
+
+
 		  }
 
 		}

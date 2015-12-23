@@ -64,16 +64,16 @@ export default class index extends React.Component {
 
                 <div className="other">
                     <ul>
-                        <li><a onClick={this.openDialog.bind(this)}>&nbsp;&nbsp;&nbsp;&nbsp;联系客服<span className="icon"><Icon name='phone'/></span></a></li>
-                        <li><a href="#/administration/check">&nbsp;&nbsp;&nbsp;&nbsp;故障报修<span className="icon"><Icon name='commenting-o'/></span></a></li>
-                        <li><a href="#/administration/authorize">&nbsp;&nbsp;&nbsp;&nbsp;节目委托<span className="icon"><Icon name='eye'/></span></a></li>
+                        <li><a onClick={this.openDialog.bind(this)}><span className="text">联系客服</span><span className="icon"><Icon name='phone'/></span></a></li>
+                        <li><a href="#/administration/check"><span className="text">故障报修</span><span className="icon"><Icon name='commenting-o'/></span></a></li>
+                        <li><a href="#/administration/authorize"><span className="text">节目委托</span><span className="icon"><Icon name='eye'/></span></a></li>
                     </ul>
                     <RaisedButton style={{width:'50%',margin:'1rem 25%',height: '40px'}} label="退出登录" secondary={true}  />
                 </div>
 
                 <Dialog
                     title="客服电话"
-                    actions={[{ text: '确定' },
+                    actions={[{ text: (<a href="tel:13141286492" style={{textDecoration:'none',color:'rgb(0,188,212)'}}>确定</a> )},
                     { text: '取消', onTouchTap: this.onCancel.bind(this) }]}
                     open={this.state.open} >
                     010-xxxxxx
