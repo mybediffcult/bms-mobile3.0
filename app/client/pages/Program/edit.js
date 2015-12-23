@@ -3,6 +3,7 @@ import Icon from 'react-fa';
 import moment from 'moment';
 import {SelectField, List, ListItem, ListDivider, RaisedButton, FlatButton, Avatar, Checkbox, DatePicker, DatePickerDialog, LinearProgress, Badge} from 'material-ui';
 import request from 'superagent';
+import ProgramPreview from '../../components/ProgramPreview';
 import Notification from '../../mixins/Notification';
 
 import TerminalActions from '../../actions/Terminal';
@@ -201,19 +202,24 @@ export default class edit extends React.Component {
         MaterialActions.fetch(terminalId, name, 'length|' + sort);
     }
 
-    selectMaterial(material) {
 
-        material = {productid: material.productid, length: material.length};
+    /**
+     * 把指定素材添加到选择队列尾部
+     * @param material
+     * @param quenue
+     */
+    pushMaterialToQuenue(material, quenue) {
+        material = {productid: material.productid, length: material.length, contenttitle: material.contenttitle, imagepath: material.imagepath};
 
-        var selectedMaterialList = this.state.selectedMaterialList;
         var timebucketList = this.state.timebucketList;
 
+
         // 获取当前时段serialno
-        if(selectedMaterialList.length <= 0) {
+        if(quenue.length <= 0) {
             var currentSerialno = this.state.timebucketList[0].serialno;
         }
         else {
-            var currentSerialno = selectedMaterialList[selectedMaterialList.length - 1].serialno;
+            var currentSerialno = quenue[quenue.length - 1].serialno;
         }
 
         // 获取对应的下标
@@ -221,7 +227,7 @@ export default class edit extends React.Component {
             return timebucket.serialno == currentSerialno;
         });
 
-        while(index < timebucketList.length && !this.isMaterialFitForTimebucket(material, timebucketList[index])) {
+        while(index < timebucketList.length && !this.isMaterialFitForTimebucket(material, quenue, timebucketList[index])) {
             index += 1;
         }
 
@@ -231,10 +237,35 @@ export default class edit extends React.Component {
         }
 
         material.serialno = timebucketList[index].serialno;
-        selectedMaterialList.push(material);
+        quenue.push(material);
+    }
+
+    /**
+     * 重排所选素材队列
+     * @param quenue
+     */
+    resortQuenue(quenue) {
+        var newQuenue = [];
+        quenue.forEach((material)=>{
+            this.pushMaterialToQuenue(material, newQuenue);
+        });
+        return newQuenue;
+    }
+
+    /**
+     * 选择素材
+     * @param material
+     */
+    selectMaterial(material) {
+        var selectedMaterialList = this.state.selectedMaterialList;
+        this.pushMaterialToQuenue(material, selectedMaterialList);
         this.setState({selectedMaterialList: selectedMaterialList});
     }
 
+    /**
+     * 获取进度
+     * @returns {number}
+     */
     getProgress() {
         var selectedMaterialList = this.state.selectedMaterialList;
         var timebucketList = this.state.timebucketList;
@@ -275,7 +306,10 @@ export default class edit extends React.Component {
         return (duration / totalDuration) * 100;
     }
 
-
+    /**
+     * 获取剩余时间
+     * @returns {number}
+     */
     getRemainDuration() {
         var timebucketList = this.state.timebucketList;
 
@@ -290,8 +324,15 @@ export default class edit extends React.Component {
         return totalDuration * (100 - progress)/100;
     }
 
-    isMaterialFitForTimebucket(material, timebucket) {
-        var selectedMaterialList = this.state.selectedMaterialList;
+    /**
+     * 判断当前时段是否能容纳指定素材
+     * @param material
+     * @param quenue
+     * @param timebucket
+     * @returns {boolean}
+     */
+    isMaterialFitForTimebucket(material, quenue, timebucket) {
+        var selectedMaterialList = quenue;
 
         var duration = material.length;
         selectedMaterialList.forEach((item)=>{
@@ -302,7 +343,17 @@ export default class edit extends React.Component {
         return duration <= timebucket.valid;
     }
 
+    preview() {
+        console.log('asdf');
+        this.refs.preview.show();
+    }
 
+    onPreviewCompleted(materialList) {
+        console.log(materialList);
+        materialList = this.resortQuenue(materialList);
+        console.log(materialList);
+        this.setState({selectedMaterialList: materialList});
+    }
 
     /**
      * 提交表单
@@ -323,7 +374,7 @@ export default class edit extends React.Component {
                     return material.serialno == timebucket.serialno;
                 })
                 .map((material)=>{
-                    return material.productid;
+                    return material.productid + "-" + material.length;
                 }).join(",");
 
             return {
@@ -334,7 +385,7 @@ export default class edit extends React.Component {
 
         console.log(program);
 
-        //ProgramActions.create(this.administration.administrationid, this.props.params.tid, this.state.timebucketId, sequence);
+        ProgramActions.create(this.administration.administrationid, this.state.terminalId, program);
     }
 
 
@@ -401,7 +452,7 @@ export default class edit extends React.Component {
 
 
                 <Badge style={{display: 'block', margin: '0.5rem'}} badgeContent={this.state.selectedMaterialList.length} secondary={true}>
-                    <LinearProgress mode="determinate" value={this.getProgress.bind(this)()} />
+                    <LinearProgress mode="determinate" value={this.getProgress.bind(this)()} onClick={this.preview.bind(this)} />
                 </Badge>
 
                 <div className="filter-area" style={{display: this.state.searching?"none":"block"}}>
@@ -440,6 +491,8 @@ export default class edit extends React.Component {
 
                     <RaisedButton style={{marginTop: '2rem'}} label="提交" secondary={true} fullWidth={true} onClick={this.onSubmit.bind(this)} />
                 </form>
+
+                <ProgramPreview previewList={this.state.selectedMaterialList} onCompleted={this.onPreviewCompleted.bind(this)} ref="preview"/>
             </div>
         );
     }

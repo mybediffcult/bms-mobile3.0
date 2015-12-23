@@ -42,12 +42,10 @@ actions.fetch.listen(function(terminalId, date) {
  * @param timebucketId String
  * @param sequence String
  */
-actions.create.listen(function(administrationId, terminalId, timebucketId,  sequence) {
+actions.create.listen(function(administrationId, terminalId, program) {
     request
-        .put(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/timeBucket/' + timebucketId + '/program')
-        .send({
-            sequence: sequence
-        }).end((error, res)=>{
+        .post(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/program')
+        .send(program).end((error, res)=>{
 
             if(error) {
                 notification.show(error);

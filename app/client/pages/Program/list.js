@@ -14,6 +14,7 @@ import TerminalActions from '../../actions/Terminal';
 import TerminalStore from '../../stores/Terminal';
 
 import '../../styles/page.less';
+import './styles/list.less';
 
 var notification = new Notification();
 

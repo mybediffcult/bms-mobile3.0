@@ -42,7 +42,7 @@ Navigation.defaultProps = {
         {
             title: '节目单管理',
             icon: 'tasks',
-            url: '#/task/index',
+            url: '#/program/edit',
             pattern: '#/task'
         },
         {

@@ -67,7 +67,7 @@ export default class login extends React.Component {
                     <RaisedButton style={{margin: '1rem 0 0 0'}} label="登录" secondary={true} fullWidth={true} onClick={this.handleLogin.bind(this)} />
 
                     <footer>
-                        <a className="right" href="#register">机构注册</a>
+                        <a className="right" href="javascript:;">忘记密码</a>
                     </footer>
                 </form>
 

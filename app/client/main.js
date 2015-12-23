@@ -26,7 +26,7 @@ let history = createHashHistory({
 let routes = (
     <Router history={history}>
         <Route path="/" component={App}>
-            <IndexRoute component={HomeIndexPage}/>
+            <IndexRoute component={TerminalListPage}/>
             <Route path="home" component={HomeIndexPage} />
             <Route path="terminal/index" component={TerminalIndexPage} />
             <Route path="terminal/list" component={TerminalListPage} />
