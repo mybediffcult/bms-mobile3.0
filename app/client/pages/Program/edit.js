@@ -196,8 +196,9 @@ export default class edit extends React.Component {
      * 初始化素材列表
      */
     initializeMaterialList() {
-        this.setState({materialList: [], page: 1, isLastPage: false});
-        MaterialActions.fetch(this.state.terminalId, this.state.keyword, 'length|' + this.state.sort);
+        this.setState({materialList: [], page: 1, isLastPage: false}, function() {
+            MaterialActions.fetch(this.state.terminalId, this.state.keyword, 'length|' + this.state.sort);
+        });
     }
 
 
