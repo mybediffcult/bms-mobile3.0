@@ -97,10 +97,15 @@ export default class edit extends React.Component {
      * @param data
      */
     onMaterialStoreChange(data) {
-        if(data.length > 0 ) {
-            var materialList = this.state.materialList.concat(data);
 
-            this.setState({materialList: materialList, isLastPage: false});
+        if(data.length > 0) {
+            if(this.state.page == 1) {
+                this.setState({materialList: data, isLastPage: false});
+            }
+            else {
+                var materialList = this.state.materialList.concat(data);
+                this.setState({materialList: materialList, isLastPage: false});
+            }
         }
         else {
             this.setState({isLastPage: true});
