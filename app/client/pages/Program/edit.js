@@ -139,10 +139,10 @@ export default class edit extends React.Component {
      */
     onTerminalChange(event) {
         var terminalId = event.target.value;
-        this.setState({terminalId: terminalId});
-        TerminalActions.getDateWithProgram(terminalId);
-
-        this.initializeMaterialList(terminalId, this.state.keyword, this.state.sort);
+        this.setState({terminalId: terminalId}, function() {
+            TerminalActions.getDateWithProgram(this.state.terminalId);
+            this.initializeMaterialList();
+        });
     }
 
     /**
@@ -175,8 +175,7 @@ export default class edit extends React.Component {
      */
     onKeywordChange(event) {
         var keyword = event.target.value;
-        this.setState({keyword: keyword});
-        this.initializeMaterialList(this.state.terminalId, keyword, this.state.sort);
+        this.setState({keyword: keyword}, this.initializeMaterialList.bind(this));
     }
 
     /**
@@ -190,16 +189,15 @@ export default class edit extends React.Component {
         else {
             sort = 'asc';
         }
-        this.setState({sort: sort});
-        this.initializeMaterialList(this.state.terminalId, this.state.keyword, sort);
+        this.setState({sort: sort}, this.initializeMaterialList);
     }
 
     /**
      * 初始化素材列表
      */
-    initializeMaterialList(terminalId, name, sort) {
+    initializeMaterialList() {
         this.setState({materialList: [], page: 1, isLastPage: false});
-        MaterialActions.fetch(terminalId, name, 'length|' + sort);
+        MaterialActions.fetch(this.state.terminalId, this.state.keyword, 'length|' + this.state.sort);
     }
 
 
