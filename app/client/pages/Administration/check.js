@@ -149,7 +149,7 @@ export default class check extends React.Component {
                      <p>{this.state.errors.phone}</p>
                    </div>
                    
-                    <RaisedButton style={{width:'84%',margin:'0.5rem 8%'}} label="提交" secondary={true} />
+                    <RaisedButton style={{width:'84%',margin:'0.5rem 8% 1rem 8%'}} label="提交" secondary={true} />
                 </form>  
             </div>
         );
