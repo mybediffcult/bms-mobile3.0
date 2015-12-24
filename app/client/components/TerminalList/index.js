@@ -7,24 +7,17 @@ export default class TerminalList extends React.Component {
         var list = this.props.terminalList.map((terminal, index) => {
             return (
                 <li key={"terminal_" + index}>
-                    <p>
-                        {terminal.terminalid}
-                    </p>
-                    <p>
-                        {terminal.name}
-                    </p>
+                    <a href={"#/terminal/" + terminal.terminalid + "/program/list"}>
+                        <div className="name">
+                            <img src="http://lorempixel.com/g/300/300"/>
+                            <p>{terminal.name}</p>
+                        </div>
 
-                    {terminal.onlinestate == 1 ? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
-
-                    <p>
-                        <a className="btn-warning" href={"#terminal/" + terminal.terminalid + "/program/list"}>
-                            <Icon name="search" />&nbsp;查看节目单
-                        </a>
-                        &nbsp;&nbsp;
-                        <a className="btn-primary" href={"#terminal/" + terminal.terminalid + "/program/edit"}>
-                            <Icon name="plus" />&nbsp;创建节目单
-                        </a>
-                    </p>
+                        <div className="state">
+                            {terminal.onlinestate==1? (<p className="border-on"></p>) : (<p className="border-off"></p>)}
+                            {terminal.onlinestate==1? (<p className="online">在线</p>) : (<p className="offline">离线</p>)}
+                        </div>
+                    </a>
                 </li>
             );
         });
@@ -41,19 +34,19 @@ export default class TerminalList extends React.Component {
 TerminalList.defaultProps = {
     terminalList: [
         {
-            terminal_no: '2EH00003377I',
-            name: '北京市海淀区神舟大厦-测',
-            online_state: 0
+            image: 'http://lorempixel.com/300/300/nature/',
+            name: '设备名称',
+            state: 0
         },
         {
-            terminal_no: '2EH00003377I',
-            name: '北京市海淀区神舟大厦-测',
-            online_state: 1
+            image: 'http://lorempixel.com/300/300/nature/',
+            name: '设备名称',
+            state: 1
         },
         {
-            terminal_no: '2EH00003377I',
-            name: '北京市海淀区神舟大厦-测',
-            online_state: 0
+            image: 'http://lorempixel.com/300/300/nature/',
+            name: '设备名称',
+            state: 0
         }
     ]
 };

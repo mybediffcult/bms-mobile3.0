@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import request from 'superagent';
+import moment from 'moment';
 import ApiConfig from '../config/api';
 import $ from 'jquery';
 import Notification from '../mixins/Notification';
@@ -15,8 +16,10 @@ var actions = Reflux.createActions({
  * 获取节目单列表
  * @param terminalId String
  */
-actions.fetch.listen(function(terminalId) {
-    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/programs').end((error, res)=>{
+actions.fetch.listen(function(terminalId, date) {
+    date = moment(date).format("YYYYMMDD");
+    console.log(ApiConfig.prefix + 'terminal/' + terminalId + '/' + date + '/programs');
+    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/' + date + '/programs').end((error, res)=>{
         if(error) {
             notification.show(error);
         }
@@ -39,12 +42,10 @@ actions.fetch.listen(function(terminalId) {
  * @param timebucketId String
  * @param sequence String
  */
-actions.create.listen(function(administrationId, terminalId, timebucketId,  sequence) {
+actions.create.listen(function(administrationId, terminalId, program) {
     request
-        .put(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/timeBucket/' + timebucketId + '/program')
-        .send({
-            sequence: sequence
-        }).end((error, res)=>{
+        .post(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/program')
+        .send(program).end((error, res)=>{
 
             if(error) {
                 notification.show(error);

@@ -33,11 +33,10 @@ export default class list extends React.Component {
         console.log(this.state.terminalList);
         return (
             <div className="terminal-list-page page">
-                <h2 className="title no-border">
+                <h2 className="title">
                     {JSON.parse(window.localStorage.getItem('administration')).administrationName}
-                    <a className="right" href="#/terminal/edit">创建设备</a>
                 </h2>
-                <TerminalList terminalList={this.state.terminalList}/>
+                <TerminalList terminalList={this.state.terminalList} />
             </div>
         );
     }

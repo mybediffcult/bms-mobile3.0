@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from 'react-fa';
-import {List, ListItem, ListDivider, RaisedButton} from 'material-ui';
+import {Dialog,RaisedButton} from 'material-ui';
 import './styles/index.less';
 import '../../styles/page.less';
 
@@ -10,7 +10,8 @@ export default class index extends React.Component {
         super();
         this.state = {
             loading: true,
-            administration: {}
+            administration: {},
+            open: false
         };
     }
 
@@ -24,6 +25,14 @@ export default class index extends React.Component {
         this.setState({loading: false, administration: JSON.parse(window.localStorage.getItem('administration'))});
     }
 
+    onCancel(event) {
+        this.setState({open:false});
+    }
+
+    openDialog(event){
+        this.setState({open:true});
+    }
+
     render() {
         console.log(this.state.administration);
         if(!this.state.loading)
@@ -33,21 +42,62 @@ export default class index extends React.Component {
                     {JSON.parse(window.localStorage.getItem('administration')).administrationName}
                 </h2>
 
-                <List subheader="机构归属地信息">
-                    <ListItem primaryText="省份" secondaryText={this.state.administration.province} leftIcon={<Icon name="bars" />} disabled={true} />
-                    <ListDivider inset={true} />
-                    <ListItem primaryText="市/地区" secondaryText={this.state.administration.city} leftIcon={<Icon name="bars" />} disabled={true} />
-                    <ListDivider inset={true} />
-                    <ListItem primaryText="详细地址" secondaryText={this.state.administration.address} leftIcon={<Icon name="bars" />} disabled={true} />
-                </List>
-                <ListDivider />
-                <List subheader="机构管理员信息">
-                    <ListItem primaryText="电话号码" secondaryText={this.state.administration.telephone} leftIcon={<Icon name="phone" />} disabled={true} />
-                    <ListDivider inset={true} />
-                    <ListItem primaryText="邮箱" secondaryText={this.state.administration.email ? this.state.administration.email : '无'} leftIcon={<Icon name="send" />} disabled={true} />
-                </List>
+                <div className="infor">
+                    <div className="retail">
+                        <p><Icon name='street-view'/> 机构归属地信息</p>
+                        <ul>
+                            <li>省&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;份：{"  "+this.state.administration.province}</li>
+                            <li>市&nbsp;/&nbsp;地区：{"  "+this.state.administration.city}</li>
+                            <li>详细地址：{"  "+this.state.administration.address}</li>
+                        </ul>
+                    </div>
 
-                <RaisedButton style={{width: '90%', margin: '2rem 5%', textAlign: 'center'}} backgroundColor="#d9534f" labelColor="#fff" label="退出登录" onClick={this.logout.bind(this)} />
+                    <div className="retail">
+                        <p><Icon name='user'/> 机构管理员信息</p>
+                        <ul>
+                            <li>电话号码：{this.state.administration.telephone}</li>
+                            <li>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：{this.state.administration.email ? this.state.administration.email : "无"}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="other">
+                    <ul>
+                        <li>
+                            <a onClick={this.openDialog.bind(this)}>
+                                <span className="text">联系客服</span>
+                                <span className="icon">
+                                    <Icon name='phone'/>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/administration/check">
+                                <span className="text">故障报修</span>
+                                <span className="icon">
+                                    <Icon name='commenting-o'/>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/administration/authorize">
+                                <span className="text">节目委托</span>
+                                <span className="icon">
+                                    <Icon name='eye'/>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <RaisedButton style={{width:'80%',margin:'1rem 10%'}} label="退出登录" secondary={true} onClick={this.logout.bind(this)}  />
+                </div>
+
+                <Dialog
+                    title="客服电话"
+                    actions={[{ text: (<a href="tel:13141286492" style={{textDecoration:'none',color:'rgb(0,188,212)'}}>确定</a> )},
+                    { text: '取消', onTouchTap: this.onCancel.bind(this) }]}
+                    open={this.state.open} >
+                    010-xxxxxx
+                </Dialog>
             </div>
         );
         else

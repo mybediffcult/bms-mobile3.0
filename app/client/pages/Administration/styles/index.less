@@ -1,5 +1,68 @@
+@import "../../../styles/var";
+@import "../../../styles/mixin";
+
 .ad-index-page {
-  min-height: 90vh;
-  padding-bottom: 2rem;
-  background: #fff;
+
+
+	.infor{
+		box-sizing: border-box;
+		padding-left: 1.5rem;
+		border-bottom: 1px solid #d7d7d7;
+
+	 	p{
+	 		box-sizing: border-box;
+			margin:0.8rem 0 0.5rem 0.4rem;
+		}
+
+	  	ul{
+		  	margin:0;
+		  	padding:0;
+		  	list-style:none;
+
+		  	li{
+		  		box-sizing: border-box;
+		  		margin: 0.4rem 2rem;
+		  		font-size: 1rem;
+
+			  	&:last-child{
+			  		margin-bottom:1.5rem;
+			  	}
+		  	}
+	  }
+	}
+	.other{
+		box-sizing: border-box;
+		ul{
+		  margin:0;
+		  padding:0;
+		  list-style:none;
+
+		  li{
+			border-bottom: 1px solid #d7d7d7;
+
+			a{
+				padding:0 2rem;
+				text-decoration: none;
+				display: block;
+				height: 3rem;
+				line-height:3rem;
+				color:#666;
+				
+				.text{
+					display: inline-block;
+					padding-left:1rem;
+				}
+
+				.icon{
+					float:left;
+				}
+			}
+
+
+		  }
+
+		}
+	}
+
 }
+
