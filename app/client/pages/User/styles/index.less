@@ -32,20 +32,29 @@
 		  font-size: 1.1rem;
 
 		  .icon {
+            display: block;
 			width: 1.6rem;
 			color: @theme-color;
 			font-size: 1.4rem;
 			text-align: center;
 		  }
+
+          .title {
+            display: block;
+            flex: 1;
+          }
 		}
 
 		.info-item-list {
 		  list-style: none;
+          width: 100%;
 		  margin: 0 0 0 1.6rem;
 		  padding: 0 1rem 0 0;
+          box-sizing: border-box;
 
 		  li {
 			display: flex;
+            width: 100%;
 			padding: 0.2rem 0;
 			font-size: 1.0rem;
 
@@ -53,13 +62,13 @@
 			  display: block;
 			  flex: 1;
 			  line-height: 1.6rem;
-
 			}
 
 			.content {
 			  display: block;
 			  flex: 3;
 			  line-height: 1.6rem;
+              text-align: left;
 			}
 		  }
 		}
@@ -86,11 +95,12 @@
       color: @primary-text-color;
       font-size: 1.1rem;
       .left {
+        display: block;
         flex: 1;
       }
 
       .right {
-
+        display: block;
       }
     }
 
