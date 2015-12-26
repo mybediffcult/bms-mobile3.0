@@ -7,9 +7,7 @@ export default class TerminalList extends React.Component {
         var list = this.props.terminalList.map((terminal, index) => {
             return (
                 <li key={"terminal_" + index}>
-                    <div className="left">
-                        <img src="http://lorempixel.com/g/300/300" />
-                    </div>
+                    <div className="left" style={{backgroundImage: 'url(http://lorempixel.com/g/300/300)'}}></div>
                     <div className="middle">
                         <p className="name">{terminal.name}</p>
                         <a className="btn-view" href={"#/terminal/" + terminal.terminalid + "/program/list"}>查看节目单</a>
