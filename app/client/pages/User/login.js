@@ -1,12 +1,11 @@
 import React from 'react';
-import {RaisedButton, FlatButton, TextField, SelectField} from 'material-ui';
 import request from 'superagent';
 import md5 from 'md5';
 import Notification from '../../mixins/Notification';
 
 import NavBar from '../../components/NavBar';
 
-import AdministrationActions from '../../actions/Administration';
+import UserActions from '../../actions/User';
 
 import '../../styles/form.less';
 import './styles/login.less';
@@ -32,7 +31,7 @@ export default class login extends React.Component {
             return;
         }
 
-        AdministrationActions.login(this.state.phone, md5(this.state.password));
+        UserActions.login(this.state.phone, md5(this.state.password));
     }
 
     /**

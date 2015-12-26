@@ -27,7 +27,7 @@ export default class index extends React.Component {
     logout() {
         window.localStorage.removeItem('isLogin');
         window.localStorage.removeItem('administration');
-        window.location.hash = '#/login';
+        window.location.hash = '#/user/login';
     }
 
 
@@ -112,7 +112,7 @@ export default class index extends React.Component {
                 </div>
 
                 <div className="logout">
-                    <button className="btn-logout">退出登录</button>
+                    <button className="btn-logout" onClick={this.logout.bind(this)}>退出登录</button>
                 </div>
 
                 <Navigation/>

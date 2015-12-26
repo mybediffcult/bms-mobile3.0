@@ -1,9 +1,7 @@
 import React from 'react';
 import Icon from 'react-fa';
 import moment from 'moment';
-import {SelectField, List, ListItem, ListDivider, RaisedButton, FlatButton, Avatar, Checkbox, DatePicker, DatePickerDialog, LinearProgress, Badge} from 'material-ui';
 import request from 'superagent';
-import ProgramPreview from '../../components/ProgramPreview';
 import Notification from '../../mixins/Notification';
 
 
@@ -13,14 +11,18 @@ import DayPicker, { DateUtils } from "react-day-picker";
 import LocaleUtils from "react-day-picker/moment";
 import TerminalPicker from '../../components/TerminalPicker';
 import ProgressBar from '../../components/ProgressBar';
+import ProgramPreview from '../../components/ProgramPreview';
+
+import UserStore from '../../stores/User';
+import UserActions from '../../actions/User';
 
 import TerminalActions from '../../actions/Terminal';
-import ProgramActions from '../../actions/Program';
-import TimebucketActions from '../../actions/Timebucket';
-import MaterialActions from '../../actions/Material';
-
 import TerminalStore from '../../stores/Terminal';
+
+import TimebucketActions from '../../actions/Timebucket';
 import TimebucketStore from '../../stores/Timebucket';
+
+import MaterialActions from '../../actions/Material';
 import MaterialStore from '../../stores/Material';
 
 
@@ -34,9 +36,9 @@ export default class edit extends React.Component {
     constructor() {
         super();
         this.state = {
+            administration: null,
             isDatePickerOpen: false,
             isTerminalPickerOpen: false,
-
             searching: false,
             keyword: '',
             sort: 'desc',
@@ -53,29 +55,31 @@ export default class edit extends React.Component {
     }
 
     componentWillMount() {
-        this.administration = JSON.parse(window.localStorage.getItem('administration'));
+        this.unsubscribeUserStore = UserStore.listen(this.onUserStoreChange.bind(this));
         this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalStoreChange.bind(this));
         this.unsubscribeTimebucketStore = TimebucketStore.listen(this.onTimebucketStoreChange.bind(this));
         this.unsubscribeMaterialStore = MaterialStore.listen(this.onMaterialStoreChange.bind(this));
-
-        TerminalActions.fetchAll(this.administration.administrationid);
-        TimebucketActions.fetch(this.administration.administrationid);
+        UserActions.getUser();
     }
 
     componentWillUnmount() {
+        this.unsubscribeUserStore();
         this.unsubscribeTerminalStore();
         this.unsubscribeTimebucketStore();
         this.unsubscribeMaterialStore();
     }
 
     /**
-     * 格式化日期
-     * @param date
-     * @returns {*}
+     * 监听用户数据变化
+     * @param data
      */
-    formatDate(date) {
-        return moment(date).format("YYYY-MM-DD");
+    onUserStoreChange(data) {
+        this.setState({administration: data}, function() {
+            TerminalActions.fetchAll(this.state.administration.administrationid);
+            TimebucketActions.fetch(this.state.administration.administrationid);
+        });
     }
+
 
     /**
      * 监听设备数据变化

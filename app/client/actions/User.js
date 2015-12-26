@@ -6,7 +6,9 @@ var notification = new Notification();
 
 var actions = Reflux.createActions({
     'create': {children: ['completed']},
-    'login': {children: ['completed']}
+    'login': {children: ['completed']},
+    'logout': {children: ['completed']},
+    'getUser': {children: ['completed']}
 });
 
 /**
@@ -50,9 +52,7 @@ actions.login.listen(function(username, password) {
 
             var result = res.body;
             if(result.status == 200) {
-                localStorage.setItem('isLogin', true);
                 localStorage.setItem('administration', JSON.stringify(result.data));
-
                 notification.show('登录成功', function() {
                     window.location.hash = '#/';
                 });
@@ -66,6 +66,31 @@ actions.login.listen(function(username, password) {
         }
 
     })
+});
+
+/**
+ * 登出
+ */
+actions.logout.listen(function() {
+    var localStorage = window.localStorage;
+    localStorage.removeItem('administration');
+    location.hash = '#/user/login';
+});
+
+
+/**
+ * 获取用户信息
+ */
+actions.getUser.listen(function() {
+    var localStorage = window.localStorage;
+    var administration = JSON.parse(localStorage.getItem('administration'));
+    if(!administration) {
+        location.hash = '#/user/login';
+    }
+    else {
+        this.completed(administration);
+    }
+
 });
 
 export default actions;

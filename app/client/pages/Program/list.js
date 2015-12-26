@@ -10,7 +10,8 @@ import DayPicker, { DateUtils } from "react-day-picker";
 import LocaleUtils from "react-day-picker/moment";
 import TerminalPicker from '../../components/TerminalPicker';
 
-
+import UserStore from '../../stores/User';
+import UserActions from '../../actions/User';
 
 import ProgramActions from '../../actions/Program';
 import ProgramStore from '../../stores/Program';
@@ -27,6 +28,7 @@ export default class list extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            administration: null,
             isDatePickerOpen: false,
             isTerminalPickerOpen: false,
             date: new Date(),
@@ -39,15 +41,26 @@ export default class list extends React.Component {
     }
 
     componentWillMount() {
-        this.administration = JSON.parse(window.localStorage.getItem('administration'));
+        this.unsubscribeUserStore = UserStore.listen(this.onUserStoreChange.bind(this));
         this.unsubscribeProgramStore = ProgramStore.listen(this.onProgramStoreChange.bind(this));
         this.unsubscribeTerminalStore = TerminalStore.listen(this.onTerminalStoreChange.bind(this));
-        TerminalActions.fetchAll(this.administration.administrationid);
+        UserActions.getUser();
     }
 
     componentWillUnmount() {
+        this.unsubscribeUserStore();
         this.unsubscribeProgramStore();
         this.unsubscribeTerminalStore();
+    }
+
+    /**
+     * 监听用户数据变化
+     * @param data
+     */
+    onUserStoreChange(data) {
+        this.setState({administration: data}, function() {
+            TerminalActions.fetchAll(this.state.administration.administrationid);
+        });
     }
 
     /**

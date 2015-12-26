@@ -9,7 +9,7 @@ import ProvinceStore from '../../stores/Province';
 import ProvinceActions from '../../actions/Province';
 import CityStore from '../../stores/City';
 import CityActions from '../../actions/City';
-import AdministrationActions from '../../actions/Administration';
+import AdministrationActions from '../../actions/User';
 
 import '../../styles/form.less';
 import './styles/register.less';
