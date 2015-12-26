@@ -14,7 +14,9 @@
   	.user-info {
 	  padding-left: 1rem;
 	  border-bottom: 1px solid @border-gray;
+      box-sizing: border-box;
 	  background: #fff;
+
 
 	  .info-box {
 		padding: 1.4rem 0;
@@ -47,25 +49,25 @@
 
 		.info-item-list {
 		  list-style: none;
-          width: 100%;
 		  margin: 0 0 0 1.6rem;
 		  padding: 0 1rem 0 0;
           box-sizing: border-box;
 
 		  li {
 			display: flex;
+            justify-content: space-between;
             width: 100%;
 			padding: 0.2rem 0;
 			font-size: 1.0rem;
 
 			.label {
-			  display: block;
+			  display: inline-block;
 			  flex: 1;
 			  line-height: 1.6rem;
 			}
 
 			.content {
-			  display: block;
+			  display: inline-block;
 			  flex: 3;
 			  line-height: 1.6rem;
               text-align: left;
