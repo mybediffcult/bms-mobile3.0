@@ -415,9 +415,7 @@ export default class edit extends React.Component {
             };
         });
 
-        console.log(program);
-
-        ProgramActions.create(this.administration.administrationid, this.state.terminalId, program);
+        ProgramActions.create(this.state.administration.administrationid, this.state.terminalId, program);
     }
 
     /**
