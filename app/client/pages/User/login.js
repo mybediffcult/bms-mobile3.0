@@ -48,7 +48,7 @@ export default class login extends React.Component {
     render() {
         return (
             <div className="user-login-page">
-                <NavBar/>
+                <NavBar mainText="登录" />
                 <form className="login-form">
                     <div className="form-control">
                         <input type="text" placeholder="用户名(预留手机号)" value={this.state.phone} onChange={this.onFieldChange.bind(this, 'phone')} />
