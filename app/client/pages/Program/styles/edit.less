@@ -1,84 +1,215 @@
 @import "../../../styles/var";
 @import "../../../styles/mixin";
 
+@date-height: 3rem;
+@progress-height: 6rem;
+@filter-height: 4rem;
+
 .program-edit-page {
-  form {
-    box-sizing: border-box;
-    margin: 1rem 0 0 0;
-    padding: 0 2rem 2rem 2rem;
+  width: 100%;
+  min-height: 100vh;
+  padding: (@navbar-height + @date-height + @progress-height + @filter-height) 0 0 0;
+  border-bottom: 1px solid transparent;
+  box-sizing: border-box;
+  background: @background-gray;
 
-    .material-list {
-      max-height: 20rem;
-      border: 1px solid #d7d7d7;
-      overflow: auto;
-    }
-  }
-
-  .title {
-    position: relative;
+  /****** 日期选择 ******/
+  .date {
+    position: fixed;
+    top: @navbar-height;
+    left: 0;
     width: 100%;
-    height: 4rem;
-    margin: 0;
-    padding: 0 5.5rem;
-    border-bottom: 1px solid #d7d7d7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    padding: 0 1rem;
+
     box-sizing: border-box;
-    background: #eee;
-    color: #6f6f6f;
-    
-    .text-overflow-ellipsis;
-    &.no-border {
-      border: none;
-    }
+    background: darken(@theme-color, 10%);
+    color: #fff;
+    z-index: 10;
 
-    a {
-      position: absolute;
-      top: 1rem;
-
+    .left, .right{
+      flex: 1;
       display: block;
-      padding: 0 0.5rem;
-      width: 4rem;
-      height: 2rem;
-
-      color: @primary-color;
+      height: 100%;
+      line-height: @date-height;
       font-size: 1.0rem;
-      font-weight: normal;
-      text-decoration: none;
-      line-height: 2rem;
-      .text-overflow-ellipsis;
-      &.left {
-        left: 0.5rem;
-      }
+      .wrapper {
+        display: inline-block;
+        width: auto;
+        padding: 0 0.4rem;
 
-      &.right {
-        right: 0.5rem;
+        &:active {
+          color: #eee;
+        }
+      }
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .middle {
+      display: block;
+      height: 100%;
+      line-height: @date-height;
+      font-size: 1.1rem;
+      text-align: center;
+
+      .icon {
+        display: inline-block;
+        width: 1.6rem;
+        text-align: center;
       }
     }
   }
 
-
-  .filter-area {
+  /******* 日期选择框 ******/
+  .date-picker-dialog {
+    position: fixed;
+    top: (@navbar-height + @date-height);
+    left: 0;
     width: 100%;
-    padding: 0 1.2rem;
+    padding: 0 0.5rem;
     box-sizing: border-box;
+    background: #fff;
+    transition: transform 0.3s ease;
+    z-index: 9;
 
-    .time {
-      display: inline-block;
-      width: 3.6rem;
-      height: 1.8rem;
-      line-height: 1.8rem;
-      background: #fff;
-      font-size: 0.8rem;
-      text-align: center;
+    &.hidden {
+      transform: translate(0, -100%);
+    }
+  }
+
+  /****** 进度 ******/
+  .progress {
+    position: fixed;
+    top: (@navbar-height + @date-height);
+    left: 0;
+    width: 100%;
+    height: @progress-height;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    background: @background-gray;
+    z-index: 8;
+  }
+
+  /****** 筛选 ******/
+  .filter {
+    position: fixed;
+    top: (@navbar-height + @date-height + @progress-height);
+    left: 0;
+    display: block;
+    width: 100%;
+    height: @filter-height;
+    padding: 1rem;
+    border-top: 1px solid @border-gray;
+    border-bottom: 1px solid @border-gray;
+    box-sizing: border-box;
+    background: #fff;
+    z-index: 8;
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      height: 2rem;
+      line-height: 2rem;
+
+      &.hidden {
+        display: none;
+      }
+
+      p {
+        display: block;
+        flex: 1;
+        margin: 0;
+        padding: 0;
+        border-right: 1px solid @border-gray;
+        color: @primary-text-color;
+        font-size: 1.1rem;
+        text-align: center;
+
+        &:last-child {
+          border: none;
+        }
+
+        &:active {
+          color: @theme-color;
+        }
+      }
     }
 
     .search {
-      float: right;
+      display: flex;
+      align-items: center;
       height: 2rem;
-      padding: 0 0.5rem;
       line-height: 2rem;
-      font-size: 1.2rem;
+      margin: 0;
+
+      &.hidden {
+        display: none;
+      }
+
+      .left {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+        height: 2.0rem;
+        padding: 0 0.8rem;
+        border-radius: 20px;
+        background: darken(@background-gray, 5%);
+
+        .search-icon {
+          margin-right: 0.8rem;
+          text-align: center;
+        }
+        input {
+          flex: 1;
+          height: 100%;
+          margin: 0;
+          padding: 0.2rem 0;
+          box-sizing: border-box;
+          outline: none;
+          border: none;
+          background: darken(@background-gray, 5%);
+          color: darken(@primary-text-color, 10%);
+          font-size: 1.0rem;
+        }
+        .clear-icon {
+          width: 1.6rem;
+          height: 1.6rem;
+          border-radius: 50%;
+
+          background: darken(@background-gray, 20%);
+          color: #fff;
+          text-align: center;
+          line-height: 1.6rem;
+
+          &:active {
+            background: darken(@background-gray, 30%);
+          }
+        }
+
+      }
+
+      .right {
+        height: 100%;
+        margin-left: 0.4rem;
+        padding: 0.4rem;
+        font-size: 1.1rem;
+        &:active {
+          color: @theme-color;
+        }
+      }
+
     }
+
   }
+
+
 
   .search-area {
     display: flex;
@@ -111,75 +242,106 @@
     }
   }
 
+
+  /****** 素材列表 ******/
   .material-list {
     list-style: none;
     margin: 0;
-    padding: 0 1.2rem;
+    padding: 0;
 
-    li {
+    > li {
       display: flex;
       align-items: center;
-      margin: 0.5rem 0;
-      padding: 0.8rem;
-      border: 1px solid #d7d7d7;
-      border-raius: 2px;
+      height: 5rem;
+      margin: 0;
+      padding: 1rem;
+      border-bottom: 1px solid @border-gray;
       background: #fff;
-      -webkit-user-select: none;
+
+      &:active {
+        background-color: @background-gray;
+      }
+
       .left {
-        flex: 1;
-        margin-right: 0.5rem;
+        width: 7rem;
+        height: 100%;
+        background: no-repeat center;
+        background-size: cover;
+
         .thumb {
           display: block;
-          max-width: 100%;
-          -webkit-user-select: none;
+          width: 100%;
+          height: 100%;
         }
       }
-      
+
       .right {
         flex: 3;
+        margin-left: 0.8rem;
 
-        .headline {
+        .title {
+          height: 3.6rem;
+          margin: 0;
+          color: @primary-text-color;
+          font-size: 1.1rem;
+          line-height: 1.8rem;
+          .multi-line-text-ellipsis(2);
+        }
+
+        .meta {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          height: 1.2rem;
+          margin: 0.2rem 0 0 0;
+          color: @secondary-text-color;
+          font-size: 0.9rem;
 
-          .duration {
+          .duration, .num {
             display: block;
-            flex: 1;
-            line-height: 2rem;
           }
 
           .num {
-            display: block;
-            height: 1.0rem;
-            padding: 0 0.8rem;
-            color: @warning-color;
-            font-size: 1.0rem;
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            background: @theme-color;
+            color: #fff;
+            font-size: 0.9rem;
+            text-align: center;
+            line-height: 2.0rem;
+            .text-overflow-ellipsis;
           }
         }
+      }
+    }
+  }
 
+  /****** 加载更多 ******/
+  .load-more {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 
-        .name {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .txt {
-            flex: auto;
-            line-height: 2rem;
-          }
+    &.hidden {
+      display: none;
+    }
 
-          .btn-add {
-            flex-basis: auto;
-            padding: 0.5rem 0.8rem;
-            background: #fff;
-            border: 1px solid #d7d7d7;
-            border-radius: 2px;
-            color: #6f6f6f;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-          }
-        }
+    .btn-load-more {
+      display: block;
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid @border-gray;
+      box-sizing: border-box;
+      background: #fff;
+      outline: none;
+      color: @primary-text-color;
+      text-align: center;
+      font-size: 1.1rem;
+
+      &:active {
+        background-color: darken(@background-gray, 5%);
       }
     }
   }

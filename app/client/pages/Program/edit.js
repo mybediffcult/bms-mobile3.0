@@ -6,6 +6,14 @@ import request from 'superagent';
 import ProgramPreview from '../../components/ProgramPreview';
 import Notification from '../../mixins/Notification';
 
+
+import NavBar from '../../components/NavBar';
+import Navigation from '../../components/Navigation';
+import DayPicker, { DateUtils } from "react-day-picker";
+import LocaleUtils from "react-day-picker/moment";
+import TerminalPicker from '../../components/TerminalPicker';
+import ProgressBar from '../../components/ProgressBar';
+
 import TerminalActions from '../../actions/Terminal';
 import ProgramActions from '../../actions/Program';
 import TimebucketActions from '../../actions/Timebucket';
@@ -15,7 +23,9 @@ import TerminalStore from '../../stores/Terminal';
 import TimebucketStore from '../../stores/Timebucket';
 import MaterialStore from '../../stores/Material';
 
-import '../../styles/page.less';
+
+import "moment/locale/zh-cn";
+import "../../styles/react-day-picker.less";
 import './styles/edit.less';
 
 var notification = new Notification();
@@ -24,6 +34,9 @@ export default class edit extends React.Component {
     constructor() {
         super();
         this.state = {
+            isDatePickerOpen: false,
+            isTerminalPickerOpen: false,
+
             searching: false,
             keyword: '',
             sort: 'desc',
@@ -173,6 +186,13 @@ export default class edit extends React.Component {
         this.setState({searching: false});
     }
 
+    /**
+     * 重置搜索条件
+     */
+    resetSearch() {
+        this.setState({keyword: ''}, this.initializeMaterialList.bind(this));
+
+    }
 
     /**
      * 监听搜索关键词变化
@@ -273,7 +293,8 @@ export default class edit extends React.Component {
     getProgress() {
         var selectedMaterialList = this.state.selectedMaterialList;
         var timebucketList = this.state.timebucketList;
-
+        //console.log(timebucketList);
+        //console.log(selectedMaterialList);
         /*** 计算时段总时长 ***/
         var totalDuration = 0;
         timebucketList.forEach((timebucket)=>{
@@ -292,21 +313,22 @@ export default class edit extends React.Component {
 
             if(index == 0) {
                 selectedMaterialList.forEach((item)=>{
-                    duration += item.length;
+                    duration += parseInt(item.length);
                 });
             }
             else {
                 for(var i = 0; i < index; i++) {
-                    duration += timebucketList[i].valid;
+                    duration += parseInt(timebucketList[i].valid);
                 }
 
                 selectedMaterialList.forEach((item)=>{
                     if(item.serialno == currentSerialno) {
-                        duration += item.length;
+                        duration += parseInt(item.length);
                     }
                 });
             }
         }
+
         return (duration / totalDuration) * 100;
     }
 
@@ -338,10 +360,10 @@ export default class edit extends React.Component {
     isMaterialFitForTimebucket(material, quenue, timebucket) {
         var selectedMaterialList = quenue;
 
-        var duration = material.length;
+        var duration = parseInt(material.length);
         selectedMaterialList.forEach((item)=>{
             if(item.serialno == timebucket.serialno)
-                duration += item.length;
+                duration += parseInt(item.length);
         });
 
         return duration <= timebucket.valid;
@@ -392,7 +414,57 @@ export default class edit extends React.Component {
         ProgramActions.create(this.administration.administrationid, this.state.terminalId, program);
     }
 
+    /**
+     * 日期选择触发
+     */
+    toggleDayPicker() {
+        this.setState({isDatePickerOpen: !this.state.isDatePickerOpen});
+    }
 
+    /**
+     * 日期选择回调
+     * @param e
+     * @param day
+     * @param modifiers
+     */
+    onDayPick(e, day, modifiers) {
+        if(modifiers == "disabled") {
+            return;
+        }
+        this.setState({date: day});
+        this.toggleDayPicker();
+    }
+
+    /**
+     * 后一天
+     */
+    onNextDay() {
+        var date = this.state.date;
+        this.setState({date: moment(date).add(1, 'day').toDate()});
+    }
+
+    /**
+     * 前一天
+     */
+    onPrevDay() {
+        var date = this.state.date;
+        this.setState({date: moment(date).subtract(1, 'day').toDate()});
+    }
+
+    /**
+     * 设备选择触发
+     */
+    toggleTerminalPicker() {
+        this.setState({isTerminalPickerOpen: !this.state.isTerminalPickerOpen});
+    }
+
+    /**
+     * 设备选择回调
+     * @param terminalid
+     */
+    onTerminalPick(terminalid) {
+        this.setState({isTerminalPickerOpen: false, terminalId: terminalid}, this.initializeMaterialList.bind(this));
+    }
 
     render() {
 
@@ -403,18 +475,15 @@ export default class edit extends React.Component {
                 }).length;
 
                 return (
-                    <li key={"material-" + index}>
-                        <span className="left"><img className="thumb" src={'http://106.38.138.99:8080/bms/public/' + material.imagepath} /></span>
+                    <li key={"material-" + index} onClick={this.selectMaterial.bind(this, material)}>
+                        <div className="left" style={{backgroundImage: 'url(' + 'http://106.38.138.99:8080/bms/public/' + material.imagepath + ')'}}>
+                        </div>
                         <div className="right">
-                            <div className="headline">
-                                <span className="duration">时长:{Math.ceil(material.length / 60)}分钟</span>
-                                <span className="num">{num ? num : ''}</span>
-                            </div>
-                            <div className="name">
-                                <span className="txt">{material.contenttitle}</span>
-
-                                <button className="btn-add" onClick={this.selectMaterial.bind(this, material)}><Icon name="plus" /></button>
-                            </div>
+                            <p className="title">{material.contenttitle}</p>
+                            <p className="meta">
+                                <span className="duration"><Icon name="clock-o"/> {Math.ceil(material.length / 60)}分钟</span>
+                                {num > 0 ? <span className="num">{num}</span> : ''}
+                            </p>
                         </div>
                     </li>
                 );
@@ -427,58 +496,75 @@ export default class edit extends React.Component {
         }
 
 
-        var terminalList = this.state.terminalList.map((terminal, index)=>{
-            return (
-                <option key={"terminal-"+terminal.terminalid} value={terminal.terminalid}>{terminal.name}</option>
-            );
+        let self = this;
+        const modifiers = {
+            selected: function(day) {
+                return DateUtils.isSameDay(day, self.state.date);
+            },
+            disabled: function(day) {
+                return day > self.state.endDate || day < self.state.startDate;
+            }
+        };
+
+        let terminal = this.state.terminalList.find((terminal)=>{
+            return terminal.terminalid == this.state.terminalId;
         });
 
         return (
             <div className="program-edit-page">
 
-                <h2 className="title">
-                    <a className="left" href="#terminal/list">返回</a>
-                    <DatePicker
-                        value={this.state.date}
-                        onChange={this.onDateChange.bind(this)}
-                        formatDate={this.formatDate.bind(this)}
-                        style={{textAlign: 'center', width: '86px', margin: '0 auto', color: "#eee"}}
-                        textFieldStyle={{width: "86px", color: "#eee"}}
-                        autoOk={true} />
-                    <select
-                        value={this.state.terminalId}
-                        onChange={this.onTerminalChange.bind(this)}
-                        style={{position: 'absolute', right:'0.5rem', top: '1rem', width: '86px', height: '2rem', border: '1px solid transparent', outline: 'none', borderRadius: 'none'}}>
-                        {terminalList}
-                    </select>
-                </h2>
+                <NavBar
+                    mainText={terminal ? terminal.name : ''}
+                    mainIcon={<Icon name="angle-down" />}
+                    leftText="取消"
+                    rightText="提交"
+                    onLeftClick={()=>{window.location.hash = '#/program/list'}}
+                    onMainClick={this.toggleTerminalPicker.bind(this)}
+                    onRightClick={this.onSubmit.bind(this)} />
 
 
-                <Badge style={{display: 'block', margin: '0.5rem'}} badgeContent={this.state.selectedMaterialList.length} secondary={true}>
-                    <LinearProgress mode="determinate" value={this.getProgress.bind(this)()} onClick={this.preview.bind(this)} />
-                </Badge>
+                <div className="date">
+                    <div className="left">
+                        <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
+                    </div>
 
-                <div className="filter-area" style={{display: this.state.searching?"none":"block"}}>
-                    <select style={{width: '3.6rem', height: '2rem', margin: '0 0.5rem 0 0', border: '1px solid #eee', outline: 'none', borderRadius: 'none', fontSize: '0.8rem'}}>
-                        <option>区域</option>
-                        <option>全国</option>
-                        <option>北京</option>
-                    </select>
-                    <select style={{width: '3.6rem', height: '2rem', margin: '0 0.5rem', border: '1px solid #eee', outline: 'none', borderRadius: 'none', fontSize: '0.8rem'}}>
-                        <option>内容</option>
-                        <option>健康</option>
-                        <option>保健</option>
-                    </select>
-                    <span className="time" onClick={this.onSortChange.bind(this)}>
-                        时长 <Icon name={this.state.sort == 'asc' ? "caret-up" : "caret-down" } />
-                    </span>
+                    <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
+                        {moment(this.state.date).format("YYYY-MM-DD")}
+                        <span className="icon">
+                            <Icon name="angle-down" />
+                        </span>
+                    </div>
 
-                    <Icon className="search" name="search" onClick={this.startSearch.bind(this)} />
+                    <div className="right">
+                        <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
+                    </div>
                 </div>
 
-                <div className="search-area" style={{display: this.state.searching?"":"none"}}>
-                    <input type="text" className="input-search" value={this.state.keyword} onChange={this.onKeywordChange.bind(this)} />
-                    <button className="cancel" onClick={this.cancelSearch.bind(this)}>取消</button>
+                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
+                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                </div>
+
+                <div className="progress">
+                    <p style={{textAlign: 'center'}}>当天添加视频进度已完成{this.getProgress().toFixed(2)}%</p>
+                    <ProgressBar value={this.getProgress.bind(this)()} label={this.state.selectedMaterialList.length} onClick={this.preview.bind(this)} />
+                </div>
+
+                <div className="filter">
+                    <div className={"toolbar" + (this.state.searching ? ' hidden' : '')}>
+                        <p><span className="txt">地区</span> <Icon className="icon" name="angle-down" /></p>
+                        <p><span className="txt" onClick={this.onSortChange.bind(this)}>时长</span> <Icon className="icon" name={this.state.sort == 'desc' ? "angle-down" : "angle-up"} /></p>
+                        <p><span className="txt">筛选</span> <Icon className="icon" name="filter" /></p>
+                        <p onClick={this.startSearch.bind(this)}><Icon className="icon" name="search" /></p>
+                    </div>
+
+                    <div className={"search" + (this.state.searching ? '' : ' hidden')}>
+                        <div className="left">
+                            <Icon className="search-icon" name="search"/>
+                            <input type="text" placeholder="搜索您想要的节目" value={this.state.keyword} onChange={this.onKeywordChange.bind(this)} />
+                            <Icon className="clear-icon" name="close" onClick={this.resetSearch.bind(this)} />
+                        </div>
+                        <div className="right" onClick={this.cancelSearch.bind(this)}>取消</div>
+                    </div>
                 </div>
 
 
@@ -486,14 +572,16 @@ export default class edit extends React.Component {
                     {materialList}
                 </ul>
 
-                <div style={{display: this.state.materialList && this.state.materialList.length >= 5 ? 'block' : 'none', width: "100%", boxSizing: "border-box", padding: "0 1.2rem"}}>
-                    <FlatButton style={{width: "100%"}} label={this.state.isLastPage ? "没有素材啦" : "加载更多"} onClick={this.loadMoreMaterial.bind(this)} />
+                <div className={"load-more" + (this.state.materialList && this.state.materialList.length >= 5 ? '' : ' hidden')}>
+                    <button className="btn-load-more" onClick={this.loadMoreMaterial.bind(this)}>{this.state.isLastPage ? "没有素材啦" : "加载更多"}</button>
                 </div>
 
-                <form>
-
-                    <RaisedButton style={{marginTop: '2rem'}} label="提交" secondary={true} fullWidth={true} onClick={this.onSubmit.bind(this)} />
-                </form>
+                <TerminalPicker
+                    open={this.state.isTerminalPickerOpen}
+                    value={this.state.terminalId}
+                    terminalList={this.state.terminalList}
+                    onPick={this.onTerminalPick.bind(this)}
+                    onCancel={()=>{this.setState({isTerminalPickerOpen: false})}} />
 
                 <ProgramPreview previewList={this.state.selectedMaterialList} onCompleted={this.onPreviewCompleted.bind(this)} ref="preview"/>
             </div>

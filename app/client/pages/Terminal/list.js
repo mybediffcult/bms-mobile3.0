@@ -1,4 +1,6 @@
 import React from 'react';
+import NavBar from '../../components/NavBar';
+import Navigation from '../../components/Navigation';
 import TerminalList from '../../components/TerminalList';
 
 import TerminalStore from '../../stores/Terminal';
@@ -32,11 +34,10 @@ export default class list extends React.Component {
     render() {
         console.log(this.state.terminalList);
         return (
-            <div className="terminal-list-page page">
-                <h2 className="title">
-                    {JSON.parse(window.localStorage.getItem('administration')).administrationName}
-                </h2>
+            <div className="terminal-list-page">
+                <NavBar mainText="设备状态" />
                 <TerminalList terminalList={this.state.terminalList} />
+                <Navigation/>
             </div>
         );
     }

@@ -1,0 +1,57 @@
+@import "../../../styles/var";
+@import "../../../styles/mixin";
+
+.user-login-page {
+  min-height: 100vh;
+  padding: @navbar-height 1rem 0 1rem;
+  box-sizing: border-box;
+  background: @background-gray;
+
+  .login-form {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    border: 1px solid @border-gray;;
+    box-sizing: border-box;
+
+    .form-control {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border-bottom: 1px solid @border-gray;
+      background: #fff;
+      input {
+        flex: 1;
+        height: 3.6rem;
+        margin: 0;
+        padding: 0 0.6rem;
+        border: none;
+        box-sizing: border-box;
+        outline: none;
+        color: @primary-text-color;
+        font-size: 1.2rem;
+      }
+      .label {
+        display: block;
+        padding: 0 1rem;
+        border-left: 1px solid @border-gray;
+        color: @primary-text-color;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .btn-login {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.8rem 0;
+    border: 1px solid @theme-color;
+    border-radius: @border-radius;
+    background: @theme-color;
+    outline: none;
+    color: #fff;
+    font-size: 1.3rem;
+  }
+}

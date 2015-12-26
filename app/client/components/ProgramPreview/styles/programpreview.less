@@ -1,0 +1,221 @@
+@import "../../../styles/var.less";
+@import "../../../styles/mixin.less";
+
+.program-preview {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 4rem 0 4rem 0;
+  background: #eee;
+  overflow: auto;
+  z-index: 11;
+  transition: transform 0.3s ease;
+
+  &.hidden {
+    transform: translate(100%, 0);
+  }
+
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 4rem;
+    line-height: 4rem;
+    padding: 0 1rem;
+
+    box-sizing: border-box;
+    border-bottom: 1px solid @theme-color;
+    background: @theme-color;
+    color: #fff;
+    z-index: 6;
+
+    .left {
+      font-size: 1.2rem;
+    }
+
+    .middle {
+      flex: 1;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    .right {
+      width: 2.4rem;
+      font-size: 1.1rem;
+      text-align: center;
+      .icon {
+        font-size: 1.2rem;
+      }
+    }
+
+  }
+
+
+
+  .preview-list {
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    > li {
+      display: flex;
+      align-items: center;
+      height: 5rem;
+      margin: 0;
+      padding: 1rem;
+      border-bottom: 1px solid @border-gray;
+      background: #fff;
+
+      &:active {
+        background-color: @background-gray;
+      }
+
+      input[type="checkbox"] {
+        position: relative;
+        display: block;
+        appearance: none;
+        width: 1.4rem;
+        height: 1.4rem;
+        margin: 0 0.4rem 0 0;
+        padding: 0;
+        vertical-align: middle;
+        border: 1px solid rgb(169, 170, 171);
+        border-radius: 50%;
+        box-sizing: border-box;
+        outline: none;
+        background: #fff;
+        -webkit-tap-highlight-color: transparent;
+        transition: all 0.3s ease;
+
+        &:checked {
+          border: 1px solid @theme-color;
+          background: @theme-color;
+        }
+
+
+        &:checked:before {
+          content: '\2713';
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          box-sizing: border-box;
+
+          color: #fff;
+          font-size: 1.1rem;
+          line-height: 1.2rem;
+          text-align: center;
+          z-index: 4;
+        }
+
+        &.hidden {
+          //transform: translate(-200%, 0);
+          display: none;
+        }
+      }
+
+      .left {
+        width: 7rem;
+        height: 100%;
+        background: no-repeat center;
+        background-size: cover;
+
+        .thumb {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .right {
+        flex: 3;
+        margin-left: 0.8rem;
+
+        .title {
+          height: 3.6rem;
+          margin: 0;
+          color: @primary-text-color;
+          font-size: 1.1rem;
+          line-height: 1.8rem;
+          .multi-line-text-ellipsis(2);
+        }
+
+        .meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: 1.2rem;
+          margin: 0.2rem 0 0 0;
+          color: @secondary-text-color;
+          font-size: 0.9rem;
+
+          .duration, .num {
+            display: block;
+          }
+
+          .num {
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            background: @theme-color;
+            color: #fff;
+            font-size: 0.9rem;
+            text-align: center;
+            line-height: 2.0rem;
+            .text-overflow-ellipsis;
+          }
+        }
+      }
+    }
+  }
+
+  .btn-edit-group {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 4rem;
+    border-top: 1px solid darken(@border-gray, 10%);
+    background: @background-gray;
+    transition: transform 0.3s ease;
+
+    &.hidden {
+      transform: translate(0, 100%);
+    }
+
+    button {
+      display: inline-block;
+      width: 50%;
+      height: 2rem;
+      border: none;
+      background: @background-gray;
+      color: #6f6f6f;
+      font-size: 1.3rem;
+      outline: none;
+
+      &.select-all {
+        border-right: 1px solid #d7d7d7;
+        color: #333;
+      }
+
+      &.del {
+        color: @theme-color;
+      }
+    }
+
+
+
+  }
+}

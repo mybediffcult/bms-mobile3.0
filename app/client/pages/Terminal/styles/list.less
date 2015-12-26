@@ -1,6 +1,11 @@
+@import "../../../styles/var";
+@import "../../../styles/mixin";
+
 .terminal-list-page {
-  padding-bottom: 2rem;
-  .terminal-list {
-    margin-top: 1rem;
-  }
+  width: 100%;
+  min-height: 100vh;
+  padding: @navbar-height 1rem @navigation-height 1rem;
+  border-bottom: 1px solid transparent;
+  box-sizing: border-box;
+  background: @background-gray;
 }

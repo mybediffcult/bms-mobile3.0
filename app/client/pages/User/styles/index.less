@@ -1,0 +1,158 @@
+@import "../../../styles/var";
+@import "../../../styles/mixin";
+
+.user-index-page {
+    width: 100%;
+  	min-height: 100vh;
+	padding-top: @navbar-height;
+    padding-bottom: @navigation-height;
+    border-bottom: 1px solid transparent;
+	box-sizing: border-box;
+	background: @background-gray;
+
+    /****** 用户和机构信息 ******/
+  	.user-info {
+	  padding-left: 1rem;
+	  border-bottom: 1px solid @border-gray;
+	  background: #fff;
+
+	  .info-box {
+		padding: 1.4rem 0;
+
+		&.border{
+		  border-bottom: 1px solid @border-gray;
+		}
+
+		background: #fff;
+		.header {
+		  display: flex;
+		  align-items: center;
+		  padding: 0.4rem 0;
+		  color: @primary-text-color;
+		  font-size: 1.1rem;
+
+		  .icon {
+			width: 1.6rem;
+			color: @theme-color;
+			font-size: 1.4rem;
+			text-align: center;
+		  }
+		}
+
+		.info-item-list {
+		  list-style: none;
+		  margin: 0 0 0 1.6rem;
+		  padding: 0 1rem 0 0;
+
+		  li {
+			display: flex;
+			padding: 0.2rem 0;
+			font-size: 1.0rem;
+
+			.label {
+			  display: block;
+			  flex: 1;
+			  line-height: 1.6rem;
+
+			}
+
+			.content {
+			  display: block;
+			  flex: 3;
+			  line-height: 1.6rem;
+			}
+		  }
+		}
+	  }
+	}
+
+  	/****** 列表项 ******/
+    .cell-box {
+      width: 100%;
+      margin: 1rem 0;
+      border-top: 1px solid @border-gray;
+      border-bottom: 1px solid @border-gray;
+    }
+
+    .cell {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      box-sizing: border-box;
+      background: #fff;
+
+      color: @primary-text-color;
+      font-size: 1.1rem;
+      .left {
+        flex: 1;
+      }
+
+      .right {
+
+      }
+    }
+
+    .btn-authorize {
+      padding: 0.4rem 1rem;
+      border: 1px solid @theme-color;
+      border-radius: @border-radius;
+      background: @theme-color;
+      color: #fff;
+      font-size: 1.0rem;
+      outline: none;
+
+      &:active {
+        background: darken(@theme-color, 10%);
+      }
+    }
+
+    .maintain {
+      border-bottom: 1px solid @border-gray;
+      text-decoration: none;
+      &:active {
+        background: @background-gray;
+      }
+    }
+
+    .customer_service {
+      display: block;
+      padding: 1rem;
+      background: #fff;
+
+      color: @theme-color;
+      font-size: 1.1rem;
+      text-decoration: none;
+      text-align: center;
+
+      &:active {
+        color: darken(@theme-color, 20%);
+      }
+    }
+
+    .logout {
+      width: 100%;
+      margin: 2rem 0;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    .btn-logout {
+      display: block;
+      width: 100%;
+      padding: 0.8rem 0;
+      border: 1px solid @danger-color;
+      border-radius: @border-radius;
+      background: @danger-color;
+      outline: none;
+      color: #fff;
+      font-size: 1.2rem;
+
+      &:active {
+        background: darken(@danger-color, 10%);
+      }
+    }
+
+}
+

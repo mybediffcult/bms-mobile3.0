@@ -13,7 +13,6 @@ var actions = Reflux.createActions({
  * @param terminalId String
  */
 actions.fetch.listen(function(terminalId, name, sort, page) {
-    console.log(name);
     request
         .get(ApiConfig.prefix + 'terminal/' + terminalId + '/content')
         .query({name: name, sort: sort, page: page})
