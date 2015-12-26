@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import FastClick from 'fastclick';
 import { Router, Route, IndexRoute } from 'react-router';
 import createHashHistory from 'history/lib/createHashHistory.js';
 import Container from './pages/Container';
@@ -55,3 +56,4 @@ let injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 ReactDOM.render(routes, document.getElementById("app"));
+FastClick.attach(document.body);

@@ -25,6 +25,8 @@ import TimebucketStore from '../../stores/Timebucket';
 import MaterialActions from '../../actions/Material';
 import MaterialStore from '../../stores/Material';
 
+import ProgramActions from '../../actions/Program';
+
 
 import "moment/locale/zh-cn";
 import "../../styles/react-day-picker.less";
