@@ -247,7 +247,7 @@ export default class list extends React.Component {
                 </div>
 
                 <div className="program-list-box">
-                    {this.getPrograms(this.state.programList) ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
+                    {this.state.programList ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
                 </div>
 
                 <TerminalPicker
