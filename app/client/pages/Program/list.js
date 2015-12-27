@@ -19,7 +19,7 @@ import ProgramStore from '../../stores/Program';
 import TerminalActions from '../../actions/Terminal';
 import TerminalStore from '../../stores/Terminal';
 
-//import "moment/locale/zh-cn";
+import "moment/locale/zh-cn";
 import "../../styles/react-day-picker.less";
 import './styles/list.less';
 
@@ -225,37 +225,7 @@ export default class list extends React.Component {
                     onRightClick={()=>{window.location.href = "#/program/edit"}}
                     onMainClick={this.toggleTerminalPicker.bind(this)} />
 
-                <div className="date">
-                    <div className="left">
-                        <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
-                    </div>
 
-                    <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
-                        {moment(this.state.date).format("YYYY-MM-DD")}
-                        <span className="icon">
-                            <Icon name="angle-down" />
-                        </span>
-                    </div>
-
-                    <div className="right">
-                        <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
-                    </div>
-                </div>
-
-                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
-                    <DayPicker modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
-                </div>
-
-                <div className="program-list-box">
-                    {this.state.programList ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
-                </div>
-
-                <TerminalPicker
-                    open={this.state.isTerminalPickerOpen}
-                    value={this.state.terminalId}
-                    terminalList={this.state.terminalList}
-                    onPick={this.onTerminalPick.bind(this)}
-                    onCancel={()=>{this.setState({isTerminalPickerOpen: false})}} />
                 <Navigation/>
             </div>
         );
