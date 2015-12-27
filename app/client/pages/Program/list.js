@@ -218,10 +218,7 @@ export default class list extends React.Component {
 
         if(this.state.loaded) {
 
-            var terminal = this.state.terminalList.find((item)=>{
-                return item.terminalid == this.state.terminalId;
-            });
-            console.log(terminal);
+            var terminal = {name: 'haha'};
 
 
             return (
