@@ -172,9 +172,11 @@ export default class list extends React.Component {
      */
     onNextDay() {
         var date = this.state.date;
-        this.setState({date: moment(date).add(1, 'day').toDate()});
-        this.setState({programList: []});
-        ProgramActions.fetch(this.state.terminalId, this.state.date);
+        this.setState({date: moment(date).add(1, 'day').toDate()}, function() {
+            this.setState({programList: []});
+            ProgramActions.fetch(this.state.terminalId, this.state.date);
+        });
+
     }
 
     /**
@@ -182,9 +184,10 @@ export default class list extends React.Component {
      */
     onPrevDay() {
         var date = this.state.date;
-        this.setState({date: moment(date).subtract(1, 'day').toDate()});
-        this.setState({programList: []});
-        ProgramActions.fetch(this.state.terminalId, this.state.date);
+        this.setState({date: moment(date).subtract(1, 'day').toDate()}, function() {
+            this.setState({programList: []});
+            ProgramActions.fetch(this.state.terminalId, this.state.date);
+        });
     }
 
     /**
