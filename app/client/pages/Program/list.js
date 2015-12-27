@@ -225,30 +225,7 @@ export default class list extends React.Component {
                     onRightClick={()=>{window.location.href = "#/program/edit"}}
                     onMainClick={this.toggleTerminalPicker.bind(this)} />
 
-                <div className="date">
-                    <div className="left">
-                        <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
-                    </div>
 
-                    <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
-                        {moment(this.state.date).format("YYYY-MM-DD")}
-                        <span className="icon">
-                            <Icon name="angle-down" />
-                        </span>
-                    </div>
-
-                    <div className="right">
-                        <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
-                    </div>
-                </div>
-
-                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
-                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
-                </div>
-
-                <div className="program-list-box">
-                    {this.state.programList ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
-                </div>
 
                 <TerminalPicker
                     open={this.state.isTerminalPickerOpen}
