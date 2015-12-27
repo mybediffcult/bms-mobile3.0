@@ -202,8 +202,8 @@ export default class list extends React.Component {
     }
 
     render() {
-        let self = this;
-        const modifiers = {
+        var self = this;
+        var modifiers = {
             selected: function(day) {
                 return DateUtils.isSameDay(day, self.state.date);
             },
@@ -212,14 +212,14 @@ export default class list extends React.Component {
             }
         };
 
-        let terminal = this.state.terminalList.find((terminal)=>{
+        var terminal = this.state.terminalList.find((terminal)=>{
             return terminal.terminalid == this.state.terminalId;
         });
 
         return (
             <div className="program-list-page">
                 <NavBar
-                    mainText={terminal ? terminal.name : ''}
+                    mainText={(terminal && terminal.name) ? terminal.name : ''}
                     mainIcon={<Icon name="angle-down" />}
                     rightText="创建"
                     onRightClick={()=>{window.location.href = "#/program/edit"}}
