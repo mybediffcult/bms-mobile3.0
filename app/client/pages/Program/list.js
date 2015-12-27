@@ -84,13 +84,12 @@ export default class list extends React.Component {
         else if(data){
             console.log(data);
             if(data.startdate) {
-                this.setState({startDate: new Date(moment(data.startdate, "YYYYMMDD").format("YYYY-MM-DD HH:mm:ss"))});
+                this.setState({startDate: moment(data.startdate, "YYYYMMDD").toDate()});
             }
 
             if(data.enddate) {
-                this.setState({endDate: new Date(moment(data.enddate, "YYYYMMDD").format("YYYY-MM-DD HH:mm:ss"))});
+                this.setState({endDate: moment(data.enddate, "YYYYMMDD").toDate()});
             }
-
         }
     }
 
@@ -203,6 +202,7 @@ export default class list extends React.Component {
      */
     onTerminalPick(terminalid) {
         this.setState({isTerminalPickerOpen: false, terminalId: terminalid}, function() {
+            this.setState({programList: []});
             ProgramActions.fetch(this.state.terminalId, this.state.date);
         });
     }
@@ -253,9 +253,7 @@ export default class list extends React.Component {
 
                     <div className="date">
                         <div className="left">
-                            {
-                                moment(this.state.date).subtract(1, 'day').toDate() > this.state.startDate ? <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span> : ''
-                            }
+                            <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
                         </div>
 
                         <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
@@ -266,9 +264,7 @@ export default class list extends React.Component {
                         </div>
 
                         <div className="right">
-                            {
-                                this.state.date <= this.state.endDate ? <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span> : ''
-                            }
+                            <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
                         </div>
                     </div>
 

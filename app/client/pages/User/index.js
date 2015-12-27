@@ -113,7 +113,7 @@ export default class index extends React.Component {
 
                     <div className="cell-box">
                         <a className="cell maintain" href="#/user/repair">
-                            <span className="left">一键保修</span>
+                            <span className="left">一键报修</span>
                             <span className="right">
                                 <Icon name="chevron-right" />
                             </span>
