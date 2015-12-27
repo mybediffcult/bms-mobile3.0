@@ -83,11 +83,11 @@ export default class list extends React.Component {
         }
         else if(data){
             if(data.startdate) {
-                this.setState({startDate: moment(data.startdate, "YYYYMMDD").toDate()});
+                this.setState({startDate: new Date(moment(data.startdate, "YYYYMMDD").format("YYYY-MM-DD HH:mm:ss"))});
             }
 
             if(data.enddate) {
-                this.setState({endDate: moment(data.enddate, "YYYYMMDD").add(1, "day").toDate()});
+                this.setState({endDate: new Date(moment(data.enddate, "YYYYMMDD").format("YYYY-MM-DD HH:mm:ss"))});
             }
 
         }
@@ -176,7 +176,6 @@ export default class list extends React.Component {
             this.setState({programList: []});
             ProgramActions.fetch(this.state.terminalId, this.state.date);
         });
-
     }
 
     /**
@@ -214,7 +213,7 @@ export default class list extends React.Component {
                 return DateUtils.isSameDay(day, self.state.date);
             },
             disabled: function(day) {
-                return day > self.state.endDate || day < self.state.startDate;
+                return moment(day).subtract(1, 'day').toDate() > self.state.endDate || day < self.state.startDate;
             }
         };
 
@@ -251,7 +250,9 @@ export default class list extends React.Component {
 
                     <div className="date">
                         <div className="left">
-                            <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
+                            {
+                                moment(this.state.date).subtract(1, 'day').toDate() > this.state.startDate ? <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span> : ''
+                            }
                         </div>
 
                         <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
@@ -262,7 +263,9 @@ export default class list extends React.Component {
                         </div>
 
                         <div className="right">
-                            <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
+                            {
+                                this.state.date <= this.state.endDate ? <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span> : ''
+                            }
                         </div>
                     </div>
 
