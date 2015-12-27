@@ -512,15 +512,20 @@ export default class edit extends React.Component {
         };
 
         if(this.state.loaded) {
-            let terminal = this.state.terminalList.find((item)=>{
-                return item.terminalid == this.state.terminalId;
+            var terminalList = this.state.terminalList;
+            var terminalId   = this.state.terminalId;
+            var terminalName = '';
+            terminalList.forEach((terminal)=>{
+                if(terminal.terminalid == terminalId) {
+                    terminalName = terminal.name;
+                }
             });
 
             return (
                 <div className="program-edit-page">
 
                     <NavBar
-                        mainText={terminal ? terminal.name : ''}
+                        mainText={terminalName}
                         mainIcon={<Icon name="angle-down" />}
                         leftText="取消"
                         rightText="提交"
