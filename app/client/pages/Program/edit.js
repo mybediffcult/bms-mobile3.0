@@ -292,7 +292,6 @@ export default class edit extends React.Component {
      */
     selectMaterial(material) {
         var selectedMaterialList = this.state.selectedMaterialList;
-        alert("push material to quenue");
         this.pushMaterialToQuenue(material, selectedMaterialList);
         this.setState({selectedMaterialList: selectedMaterialList});
     }
@@ -318,8 +317,11 @@ export default class edit extends React.Component {
             var currentSerialno = selectedMaterialList[selectedMaterialList.length - 1].serialno;
 
             // 获取对应的下标
-            var index = timebucketList.findIndex((timebucket)=>{
-                return timebucket.serialno == currentSerialno;
+            var index = 0;
+            timebucketList.forEach((timebucket, i)=>{
+                if(timebucket.serialno == currentSerialno) {
+                    index = i;
+                }
             });
 
             if(index == 0) {
