@@ -38,6 +38,7 @@ export default class edit extends React.Component {
     constructor() {
         super();
         this.state = {
+            loaded: false,
             administration: null,
             isDatePickerOpen: false,
             isTerminalPickerOpen: false,
@@ -89,7 +90,7 @@ export default class edit extends React.Component {
      */
     onTerminalStoreChange(data) {
         if(data instanceof Array) {
-            this.setState({terminalList: data});
+            this.setState({terminalList: data, loaded: true});
             if(!this.state.terminalId) {
                 this.setState({terminalId: this.state.terminalList[0].terminalid}, function() {
                     TerminalActions.getDateWithProgram(this.state.terminalId);
@@ -510,85 +511,94 @@ export default class edit extends React.Component {
             }
         };
 
-        let terminal = this.state.terminalList.find((terminal)=>{
-            return terminal.terminalid == this.state.terminalId;
-        });
+        if(this.state.loaded) {
+            let terminal = this.state.terminalList.find((item)=>{
+                return item.terminalid == this.state.terminalId;
+            });
 
-        return (
-            <div className="program-edit-page">
+            return (
+                <div className="program-edit-page">
 
-                <NavBar
-                    mainText={terminal ? terminal.name : ''}
-                    mainIcon={<Icon name="angle-down" />}
-                    leftText="取消"
-                    rightText="提交"
-                    onLeftClick={()=>{window.location.hash = '#/program/list'}}
-                    onMainClick={this.toggleTerminalPicker.bind(this)}
-                    onRightClick={this.onSubmit.bind(this)} />
+                    <NavBar
+                        mainText={terminal ? terminal.name : ''}
+                        mainIcon={<Icon name="angle-down" />}
+                        leftText="取消"
+                        rightText="提交"
+                        onLeftClick={()=>{window.location.hash = '#/program/list'}}
+                        onMainClick={this.toggleTerminalPicker.bind(this)}
+                        onRightClick={this.onSubmit.bind(this)} />
 
 
-                <div className="date">
-                    <div className="left">
-                        <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
-                    </div>
+                    <div className="date">
+                        <div className="left">
+                            <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
+                        </div>
 
-                    <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
-                        {moment(this.state.date).format("YYYY-MM-DD")}
+                        <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
+                            {moment(this.state.date).format("YYYY-MM-DD")}
                         <span className="icon">
                             <Icon name="angle-down" />
                         </span>
-                    </div>
-
-                    <div className="right">
-                        <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
-                    </div>
-                </div>
-
-                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
-                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
-                </div>
-
-                <div className="progress">
-                    <p style={{textAlign: 'center'}}>当天添加视频进度已完成{this.getProgress().toFixed(2)}%</p>
-                    <ProgressBar value={this.getProgress.bind(this)()} label={this.state.selectedMaterialList.length} onClick={this.preview.bind(this)} />
-                </div>
-
-                <div className="filter">
-                    <div className={"toolbar" + (this.state.searching ? ' hidden' : '')}>
-                        <p><span className="txt">地区</span> <Icon className="icon" name="angle-down" /></p>
-                        <p><span className="txt" onClick={this.onSortChange.bind(this)}>时长</span> <Icon className="icon" name={this.state.sort == 'desc' ? "angle-down" : "angle-up"} /></p>
-                        <p><span className="txt">筛选</span> <Icon className="icon" name="filter" /></p>
-                        <p onClick={this.startSearch.bind(this)}><Icon className="icon" name="search" /></p>
-                    </div>
-
-                    <div className={"search" + (this.state.searching ? '' : ' hidden')}>
-                        <div className="left">
-                            <Icon className="search-icon" name="search"/>
-                            <input type="text" placeholder="搜索您想要的节目" value={this.state.keyword} onChange={this.onKeywordChange.bind(this)} />
-                            <Icon className="clear-icon" name="close" onClick={this.resetSearch.bind(this)} />
                         </div>
-                        <div className="right" onClick={this.cancelSearch.bind(this)}>取消</div>
+
+                        <div className="right">
+                            <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
+                        </div>
                     </div>
+
+                    <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
+                        <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                    </div>
+
+                    <div className="progress">
+                        <p style={{textAlign: 'center'}}>当天添加视频进度已完成{this.getProgress().toFixed(2)}%</p>
+                        <ProgressBar value={this.getProgress.bind(this)()} label={this.state.selectedMaterialList.length} onClick={this.preview.bind(this)} />
+                    </div>
+
+                    <div className="filter">
+                        <div className={"toolbar" + (this.state.searching ? ' hidden' : '')}>
+                            <p><span className="txt">地区</span> <Icon className="icon" name="angle-down" /></p>
+                            <p><span className="txt" onClick={this.onSortChange.bind(this)}>时长</span> <Icon className="icon" name={this.state.sort == 'desc' ? "angle-down" : "angle-up"} /></p>
+                            <p><span className="txt">筛选</span> <Icon className="icon" name="filter" /></p>
+                            <p onClick={this.startSearch.bind(this)}><Icon className="icon" name="search" /></p>
+                        </div>
+
+                        <div className={"search" + (this.state.searching ? '' : ' hidden')}>
+                            <div className="left">
+                                <Icon className="search-icon" name="search"/>
+                                <input type="text" placeholder="搜索您想要的节目" value={this.state.keyword} onChange={this.onKeywordChange.bind(this)} />
+                                <Icon className="clear-icon" name="close" onClick={this.resetSearch.bind(this)} />
+                            </div>
+                            <div className="right" onClick={this.cancelSearch.bind(this)}>取消</div>
+                        </div>
+                    </div>
+
+
+                    <ul className="material-list">
+                        {materialList}
+                    </ul>
+
+                    <div className={"load-more" + (this.state.materialList && this.state.materialList.length >= 5 ? '' : ' hidden')}>
+                        <button className="btn-load-more" onClick={this.loadMoreMaterial.bind(this)}>{this.state.isLastPage ? "没有素材啦" : "加载更多"}</button>
+                    </div>
+
+                    <TerminalPicker
+                        open={this.state.isTerminalPickerOpen}
+                        value={this.state.terminalId}
+                        terminalList={this.state.terminalList}
+                        onPick={this.onTerminalPick.bind(this)}
+                        onCancel={()=>{this.setState({isTerminalPickerOpen: false})}} />
+
+                    <ProgramPreview previewList={this.state.selectedMaterialList} onCompleted={this.onPreviewCompleted.bind(this)} ref="preview"/>
                 </div>
+            );
+        }
+        else {
+            return (
+                <div className="blank-page"></div>
+            );
+        }
 
 
-                <ul className="material-list">
-                    {materialList}
-                </ul>
-
-                <div className={"load-more" + (this.state.materialList && this.state.materialList.length >= 5 ? '' : ' hidden')}>
-                    <button className="btn-load-more" onClick={this.loadMoreMaterial.bind(this)}>{this.state.isLastPage ? "没有素材啦" : "加载更多"}</button>
-                </div>
-
-                <TerminalPicker
-                    open={this.state.isTerminalPickerOpen}
-                    value={this.state.terminalId}
-                    terminalList={this.state.terminalList}
-                    onPick={this.onTerminalPick.bind(this)}
-                    onCancel={()=>{this.setState({isTerminalPickerOpen: false})}} />
-
-                <ProgramPreview previewList={this.state.selectedMaterialList} onCompleted={this.onPreviewCompleted.bind(this)} ref="preview"/>
-            </div>
-        );
     }
 }
