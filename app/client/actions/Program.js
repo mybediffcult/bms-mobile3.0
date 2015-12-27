@@ -42,9 +42,9 @@ actions.fetch.listen(function(terminalId, date) {
  * @param timebucketId String
  * @param sequence String
  */
-actions.create.listen(function(administrationId, terminalId, program) {
+actions.create.listen(function(administrationId, terminalId, program, date) {
     request
-        .post(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/program')
+        .post(ApiConfig.prefix + 'administration/' + administrationId + '/terminal/' + terminalId + '/program/' + date)
         .send(program).end((error, res)=>{
 
             if(error) {

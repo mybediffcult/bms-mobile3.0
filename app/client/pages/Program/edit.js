@@ -422,7 +422,7 @@ export default class edit extends React.Component {
             };
         });
 
-        ProgramActions.create(this.state.administration.administrationid, this.state.terminalId, program);
+        ProgramActions.create(this.state.administration.administrationid, this.state.terminalId, program, moment(this.state.date).format("YYYYMMDD"));
     }
 
     /**
