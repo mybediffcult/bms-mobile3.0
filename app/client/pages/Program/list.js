@@ -218,13 +218,25 @@ export default class list extends React.Component {
 
         if(this.state.loaded) {
 
-            var terminal = {name: 'haha'};
+            var terminalList = this.state.terminalList;
+            var terminalId   = this.state.terminalId;
+            var terminalName = '';
+            terminalList.forEach((terminal)=>{
+                if(terminal.terminalid == terminalId) {
+                    terminalName = terminal.name;
+                }
+            });
+
+            var terminal = this.state.terminalList.find((item)=>{
+                return item.terminalid == this.state.terminalId;
+            });
+            console.log(terminal);
 
 
             return (
                 <div className="program-list-page">
                     <NavBar
-                        mainText={terminal.name ? terminal.name : ''}
+                        mainText={terminalName}
                         mainIcon={<Icon name="angle-down" />}
                         rightText="创建"
                         onRightClick={()=>{window.location.href = "#/program/edit"}}
