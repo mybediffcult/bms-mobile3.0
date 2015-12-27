@@ -163,10 +163,12 @@
         background: darken(@background-gray, 5%);
 
         .search-icon {
+          display: block;
           margin-right: 0.8rem;
           text-align: center;
         }
         input {
+          display: block;
           flex: 1;
           height: 100%;
           margin: 0;
@@ -179,6 +181,7 @@
           font-size: 1.0rem;
         }
         .clear-icon {
+          display: block;
           width: 1.6rem;
           height: 1.6rem;
           border-radius: 50%;
@@ -257,7 +260,7 @@
       padding: 1rem;
       border-bottom: 1px solid @border-gray;
       background: #fff;
-      -webkit-user-select: none;
+      //-webkit-user-select: none;
 
       &:active {
         background-color: @background-gray;
