@@ -9,7 +9,8 @@ var actions = Reflux.createActions({
     'create': {children: ['completed']},
     'getOnlineNum': {children: ['completed']},
     'getNPNum': {children: ['completed']},
-    'getDateWithProgram' : {children: ['completed']}
+    'getDateWithProgram' : {children: ['completed']},
+    'reportProblem': {children: ['completed']}
 });
 
 /**
@@ -108,6 +109,35 @@ actions.getDateWithProgram.listen(function(terminalId) {
             if(result.status == 200) {
                 var date = result.data;
                 this.completed(date);
+            }
+            else {
+                notification.show(result.message);
+            }
+        }
+    })
+});
+
+
+/**
+ * 报修
+ * @param administrationId Number
+ */
+actions.reportProblem.listen(function(tids, problem, reporterName, reporterContact) {
+    request.post(ApiConfig.prefix + 'terminal/repair').send({
+        tids: tids,
+        description: problem,
+        repair_user: reporterName,
+        contact_info: reporterContact
+    }).end((error, res)=>{
+        if(error) {
+            notification.show(error);
+        }
+        else {
+            var result = res.body;
+            if(result.status == 200) {
+                notification.show("报修信息提交成功",function() {
+                    window.location.hash = "#/user/index";
+                });
             }
             else {
                 notification.show(result.message);

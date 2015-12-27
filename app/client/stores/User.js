@@ -6,6 +6,10 @@ var store = Reflux.createStore({
 
     onGetUserCompleted: function(data) {
         this.trigger(data);
+    },
+
+    onAuthorizeCompleted: function(data) {
+        this.trigger(data);
     }
 });
 

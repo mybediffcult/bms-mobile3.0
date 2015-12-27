@@ -166,5 +166,72 @@
       }
     }
 
+  /****** 授权对话框 ******/
+  .authorize-dialog {
+    position: fixed;
+    top: 50%;
+    left: 5%;
+    width: 90%;
+    border-radius: 10px;
+    background: rgba(24, 25, 26, 0.9);
+    transition: all 0.5s ease;
+    transform: translate(0, -50%);
+    z-index: 9001;
+
+    &.hidden {
+      top: 0%;
+      transform: translate(0, -100%);
+    }
+
+    .header {
+      display: block;
+      height: 4rem;
+      border-bottom: 1px solid #fff;
+      line-height: 4rem;
+      color: #fff;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+
+    .body {
+      display: block;
+      padding: 1rem 1rem 4rem 1rem;
+      box-sizing: border-box;
+      color: #fff;
+      font-size: 1.1rem;
+      line-height: 1.8rem;
+    }
+
+
+    .footer {
+      display: block;
+      height: 4rem;
+      line-height: 4rem;
+      text-align: center;
+
+      button {
+        display: inline-block;
+        width: 40%;
+        height: 2.8rem;
+        margin: 0 5%;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1.2rem;
+
+        &.cancel {
+          border: 1px solid rgb(152, 153, 154);
+          background: rgb(152, 153, 154);
+        }
+
+        &.confirm {
+          border: 1px solid @theme-color;
+          background: @theme-color;
+        }
+      }
+    }
+
+
+  }
+
 }
 

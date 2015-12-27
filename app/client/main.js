@@ -13,8 +13,10 @@ import ProgramEditPage from './pages/Program/edit';
 
 import UserLoginPage from './pages/User/login';
 import UserIndexPage from './pages/User/index';
+import UserRepairPage from './pages/User/repair';
 
 import TaskIndexPage from './pages/Task/index';
+
 import AdministrationAuthorizePage from './pages/User/authorize';
 import AdministrationCheckPage from './pages/User/check';
 
@@ -36,11 +38,15 @@ let routes = (
             <Route path="terminal/:tid/program/list" component={ProgramListPage} />
             <Route path="program/list" component={ProgramListPage} />
             <Route path="program/edit" component={ProgramEditPage} />
+
             <Route path="user/index" component={UserIndexPage} />
+            <Route path="user/login" component={UserLoginPage} />
+            <Route path="user/repair" component={UserRepairPage} />
+
             <Route path="administration/authorize" component={AdministrationAuthorizePage} />
             <Route path="administration/check" component={AdministrationCheckPage} />
             <Route path="task/index" component={TaskIndexPage} />
-            <Route path="user/login" component={UserLoginPage} />
+
         </Route>
     </Router>
 );

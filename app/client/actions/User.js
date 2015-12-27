@@ -8,7 +8,8 @@ var actions = Reflux.createActions({
     'create': {children: ['completed']},
     'login': {children: ['completed']},
     'logout': {children: ['completed']},
-    'getUser': {children: ['completed']}
+    'getUser': {children: ['completed']},
+    'authorize': {children: ['completed']}
 });
 
 /**
@@ -92,5 +93,32 @@ actions.getUser.listen(function() {
     }
 
 });
+
+
+/**
+ * 授权
+ * @param administration Object
+ */
+actions.authorize.listen(function(aid) {
+    request.post(ApiConfig.prefix + 'administration/' + aid + '/authorized').end((error, res)=>{
+        if(error) {
+            notification.show(error);
+        }
+        else {
+            var result = res.body;
+            if(result.status == 200) {
+                var localStorage = window.localStorage;
+                var administration = JSON.parse(localStorage.getItem('administration'));
+                administration.is_authorized = 1;
+                localStorage.setItem('administration', JSON.stringify(administration));
+                this.completed(administration);
+            }
+            else {
+                notification.show(result.message);
+            }
+        }
+    })
+});
+
 
 export default actions;

@@ -1,2 +1,2 @@
-import TerminalSelecotr from './TerminalPicker';
-export default TerminalSelecotr;
+import TerminalPicker from './TerminalPicker';
+export default TerminalPicker;

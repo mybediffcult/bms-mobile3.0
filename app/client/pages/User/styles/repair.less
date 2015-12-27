@@ -1,0 +1,279 @@
+@import "../../../styles/var";
+@import "../../../styles/mixin";
+
+.user-repair-page {
+  min-height: 100vh;
+  padding: @navbar-height 0 3rem 0;
+  border-bottom: 1px solid transparent;
+  box-sizing: border-box;
+  background: @background-gray;
+
+  /****** 设备 ******/
+  .terminal-box {
+    display: block;
+    width: 100%;
+    border-top: 1px solid @border-gray;
+    border-bottom: 1px solid @border-gray;
+    box-sizing: border-box;
+    background: #fff;
+
+    .terminal-picker-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      .left {
+        display: block;
+        width: 2.4rem;
+        color: @theme-color;
+        font-size: 1.4rem;
+        text-align: center;
+      }
+
+      .middle {
+        display: block;
+        flex: 1;
+        color: @primary-text-color;
+        font-size: 1.1rem;
+      }
+
+      .right {
+        display: block;
+        color: @secondary-text-color;
+        font-size: 1.8rem;
+      }
+    }
+
+    .selected-terminal-list {
+      list-style: none;
+      margin: 0 0 0 3.4rem;
+      padding: 0;
+
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1rem 1rem 0;
+        border-top: 1px solid @border-gray;
+        .name {
+          display: block;
+          flex: 1;
+          color: @primary-text-color;
+          font-size: 1.1rem;
+        }
+
+        .icon {
+          display: block;
+          width: 1.4rem;
+          height: 1.4rem;
+          border-radius: 50%;
+          background: darken(@background-gray, 15%);
+          color: #fff;
+          font-size: 0.9rem;
+          text-align: center;
+          line-height: 1.4rem;
+        }
+      }
+
+    }
+  }
+
+
+  /****** 故障 ******/
+  .problem {
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+    border-top: 1px solid @border-gray;
+    border-bottom: 1px solid @border-gray;
+    background: #fff;
+
+
+    .problem-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+        border-bottom: 1px solid @border-gray;
+        box-sizing: border-box;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+
+        input[type="radio"] {
+          position: relative;
+          display: block;
+          appearance: none;
+          width: 1.4rem;
+          height: 1.4rem;
+          margin: 0 0.5rem;
+          padding: 0;
+          vertical-align: middle;
+          border: 1px solid rgb(169, 170, 171);
+          border-radius: 50%;
+          box-sizing: border-box;
+          outline: none;
+          background: #fff;
+          -webkit-tap-highlight-color: transparent;
+          transition: all 0.3s ease;
+
+          &:checked {
+            border: 1px solid @theme-color;
+            background: @theme-color;
+          }
+
+
+          &:checked:before {
+            content: '\2713';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            box-sizing: border-box;
+
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.2rem;
+            text-align: center;
+            z-index: 4;
+          }
+        }
+
+        label {
+          display: block;
+          flex: 1;
+          padding: 1rem 0;
+          color: @primary-text-color;
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+
+    .other-problem {
+      display: block;
+      margin: 0 0 1rem 3.4rem;
+      padding: 0 1rem 0 0;
+      box-sizing: border-box;
+
+      &.hidden {
+        display: none;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        height: 5.4rem;
+        line-height: 1.8rem;
+        padding: 0 0.4rem;
+        border: 1px solid @border-gray;
+        box-sizing: border-box;
+        resize: none;
+        outline: none;
+        color: @primary-text-color;
+        font-size: 1.1rem;
+      }
+
+    }
+  }
+
+  /****** 报修 ******/
+  .report {
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+    border-top: 1px solid @border-gray;
+    border-bottom: 1px solid @border-gray;
+    background: #fff;
+
+    .man, .contact {
+      display: flex;
+      align-items: center;
+      height: 3.8rem;
+      padding: 0rem 1rem;
+      border-bottom: 1px  solid @border-gray;
+      box-sizing: border-box;
+      line-height: 3.8rem;
+      label {
+        display: block;
+        padding: 0 0.4rem;
+        color: @primary-text-color;
+        font-size: 1.1rem;
+      }
+
+      input {
+        display: block;
+        flex: 1;
+        height: 100%;
+        margin: 0;
+        padding: 0 0.4rem;
+        border: none;
+        outline: none;
+        color: @primary-text-color;
+        font-size: 1.1rem;
+      }
+    }
+
+
+    .date {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.8rem;
+      padding: 0rem 1rem;
+      border-bottom: 1px  solid @border-gray;
+      box-sizing: border-box;
+      line-height: 3.8rem;
+
+      label {
+        display: block;
+        padding: 0 0.4rem;
+        color: @primary-text-color;
+        font-size: 1.1rem;
+      }
+
+      .right {
+        display: block;
+        .val {
+          display: inline-block;
+          vertical-align: middle;
+          color: @primary-text-color;
+          font-size: 1.0rem;
+        }
+
+        .icon {
+          display: inline-block;
+          vertical-align: middle;
+          width: 1.8rem;
+          font-size: 1.4rem;
+          text-align: center;
+
+        }
+      }
+
+    }
+  }
+
+  /******* 日期选择框 ******/
+  .date-picker-dialog {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    background: #fff;
+    transition: transform 0.3s ease;
+    z-index: 8;
+
+    &.hidden {
+      transform: translate(0, 100%);
+    }
+  }
+}

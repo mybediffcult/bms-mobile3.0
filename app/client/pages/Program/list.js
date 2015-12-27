@@ -230,12 +230,21 @@ export default class list extends React.Component {
 
             return (
                 <div className="program-list-page">
-                    <NavBar
-                        mainText={terminalName}
-                        mainIcon={<Icon name="angle-down" />}
-                        rightText="创建"
-                        onRightClick={()=>{window.location.href = "#/program/edit"}}
-                        onMainClick={this.toggleTerminalPicker.bind(this)} />
+                    {
+                        this.state.administration.is_authorized == 1 ?
+                        <NavBar
+                            mainText={terminalName}
+                            mainIcon={<Icon name="angle-down" />}
+                            onMainClick={this.toggleTerminalPicker.bind(this)} />
+                            :
+                            <NavBar
+                                mainText={terminalName}
+                                mainIcon={<Icon name="angle-down" />}
+                                rightText="创建"
+                                onRightClick={()=>{window.location.href = "#/program/edit"}}
+                                onMainClick={this.toggleTerminalPicker.bind(this)} />
+                    }
+
 
                     <div className="date">
                         <div className="left">

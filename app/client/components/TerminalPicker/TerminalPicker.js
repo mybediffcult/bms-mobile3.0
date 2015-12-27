@@ -2,7 +2,7 @@ import React from 'react';
 
 import './styles/terminalpicker.less';
 
-export default class TerminalSelector extends React.Component {
+export default class TerminalPicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,14 +15,53 @@ export default class TerminalSelector extends React.Component {
     }
 
     onChange(event) {
-        this.setState({value: event.target.value});
+        var targetValue = event.target.value;
+        if(this.props.multiple) {
+
+            var value = this.state.value;
+
+            if(value) {
+                if(value instanceof Array) {
+
+                    var selected = false;
+                    var newValue = [];
+                    value.forEach((e)=>{
+                        if(e != targetValue) {
+                            newValue.push(e);
+                        }
+                        else {
+                            selected = true;
+                        }
+                    })
+
+                    if(!selected) {
+                        newValue.push(targetValue);
+                    }
+                    this.setState({value: newValue});
+                }
+                else {
+                    if(value == targetValue) {
+                        this.setState({value: null});
+                    }
+                    else {
+                        this.setState({value: [value, targetValue]});
+                    }
+                }
+            }
+            else {
+                this.setState({value: [targetValue]});
+            }
+
+        }
+        else {
+            this.setState({value: targetValue});
+        }
     }
 
     onConfirm() {
         if(this.props.onPick){
             this.props.onPick(this.state.value);
         }
-
     }
 
     onCancel() {
@@ -34,11 +73,31 @@ export default class TerminalSelector extends React.Component {
     render() {
 
         var terminalList = this.props.terminalList.map((terminal, index)=>{
+            var checked = false;
+
+            if(this.props.multiple) {
+                var value = this.state.value;
+                if(value) {
+                    if(value instanceof Array) {
+                        checked = value.some(function(e) {
+                            return e == terminal.terminalid;
+                        });
+                    }
+                    else {
+                        checked = (this.state.value == terminal.terminalid);
+                    }
+                }
+            }
+
+            else {
+                checked = (this.state.value == terminal.terminalid);
+            }
+
             return (
                 <li key={"terminal-" + index}>
                     <input type="radio"
                            id={"radio-" + index}
-                           checked={this.state.value == terminal.terminalid}
+                           checked={checked}
                            value={terminal.terminalid}
                            onChange={this.onChange.bind(this)} />
 
@@ -62,8 +121,8 @@ export default class TerminalSelector extends React.Component {
     }
 }
 
-TerminalSelector.defaultProps = {
-    value: '1212',
+TerminalPicker.defaultProps = {
+    value: '',
     terminalList: [
         {
             terminalid: '1212',
