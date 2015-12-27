@@ -227,7 +227,7 @@ export default class list extends React.Component {
             return (
                 <div className="program-list-page">
                     <NavBar
-                        mainText={"af"}
+                        mainText={this.state.terminalId}
                         mainIcon={<Icon name="angle-down" />}
                         rightText="创建"
                         onRightClick={()=>{window.location.href = "#/program/edit"}}
