@@ -242,7 +242,9 @@ export default class list extends React.Component {
                     </div>
                 </div>
 
-
+                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
+                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                </div>
 
                 <div className="program-list-box">
                     {this.state.programList ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
