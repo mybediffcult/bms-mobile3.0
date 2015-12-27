@@ -502,7 +502,7 @@ export default class edit extends React.Component {
         }
         else {
             var materialList = (
-                <p style={{textAlign: 'center'}}>该设备查询不到素材</p>
+                <p style={{textAlign: 'center'}}></p>
             );
         }
 
