@@ -68,7 +68,28 @@ export default class list extends React.Component {
      * @param data
      */
     onTerminalStoreChange(data) {
+        if(data instanceof Array) {
+            if(!this.state.terminalId && data.length > 0)
+                this.setState({terminalList: data, terminalId: data[0].terminalid}, function() {
+                    TerminalActions.getDateWithProgram(this.state.terminalId);
+                    ProgramActions.fetch(this.state.terminalId, this.state.date);
+                });
+            else
+                this.setState({terminalList: data}, function() {
+                    TerminalActions.getDateWithProgram(this.state.terminalId);
+                    ProgramActions.fetch(this.state.terminalId, this.state.date);
+                });
+        }
+        else if(data){
+            if(data.startdate) {
+                this.setState({startDate: moment(data.startdate, "YYYYMMDD").toDate()});
+            }
 
+            if(data.enddate) {
+                this.setState({endDate: moment(data.enddate, "YYYYMMDD").toDate()});
+            }
+
+        }
     }
 
     /**
@@ -221,9 +242,7 @@ export default class list extends React.Component {
                     </div>
                 </div>
 
-                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
-                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
-                </div>
+
 
                 <div className="program-list-box">
                     {this.state.programList ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
