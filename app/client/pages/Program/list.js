@@ -202,12 +202,24 @@ export default class list extends React.Component {
     }
 
     render() {
+        let self = this;
+        const modifiers = {
+            selected: function(day) {
+                return DateUtils.isSameDay(day, self.state.date);
+            },
+            disabled: function(day) {
+                return day > self.state.endDate || day < self.state.startDate;
+            }
+        };
 
+        let terminal = this.state.terminalList.find((terminal)=>{
+            return terminal.terminalid == this.state.terminalId;
+        });
 
         return (
             <div className="program-list-page">
                 <NavBar
-                    mainText="设备"
+                    mainText={terminal ? terminal.name : ''}
                     mainIcon={<Icon name="angle-down" />}
                     rightText="创建"
                     onRightClick={()=>{window.location.href = "#/program/edit"}}
