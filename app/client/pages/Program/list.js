@@ -82,6 +82,7 @@ export default class list extends React.Component {
                 });
         }
         else if(data){
+            console.log(data);
             if(data.startdate) {
                 this.setState({startDate: new Date(moment(data.startdate, "YYYYMMDD").format("YYYY-MM-DD HH:mm:ss"))});
             }
@@ -201,7 +202,9 @@ export default class list extends React.Component {
      * @param terminalid
      */
     onTerminalPick(terminalid) {
-        this.setState({isTerminalPickerOpen: false, terminalId: terminalid});
+        this.setState({isTerminalPickerOpen: false, terminalId: terminalid}, function() {
+            ProgramActions.fetch(this.state.terminalId, this.state.date);
+        });
     }
 
     render() {
