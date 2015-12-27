@@ -212,7 +212,7 @@ export default class list extends React.Component {
             }
         };
 
-        if(this.state.terminalId && this.state.terminalList) {
+        if(this.state.terminalId && this.state.terminalList.length > 0) {
             var terminal = this.state.terminalList.find((item)=>{
                 return item.terminalid == this.state.terminalId;
             });
