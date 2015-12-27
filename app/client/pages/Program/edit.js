@@ -254,8 +254,11 @@ export default class edit extends React.Component {
         }
 
         // 获取对应的下标
-        var index = timebucketList.findIndex((timebucket)=>{
-            return timebucket.serialno == currentSerialno;
+        var index = 0;
+        timebucketList.forEach((timebucket, i)=>{
+            if(timebucket.serialno == currentSerialno) {
+                index = i;
+            }
         });
 
         while(index < timebucketList.length && !this.isMaterialFitForTimebucket(material, quenue, timebucketList[index])) {
@@ -289,6 +292,7 @@ export default class edit extends React.Component {
      */
     selectMaterial(material) {
         var selectedMaterialList = this.state.selectedMaterialList;
+        alert("push material to quenue");
         this.pushMaterialToQuenue(material, selectedMaterialList);
         this.setState({selectedMaterialList: selectedMaterialList});
     }
