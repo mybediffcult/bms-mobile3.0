@@ -19,7 +19,7 @@ import ProgramStore from '../../stores/Program';
 import TerminalActions from '../../actions/Terminal';
 import TerminalStore from '../../stores/Terminal';
 
-import "moment/locale/zh-cn";
+//import "moment/locale/zh-cn";
 import "../../styles/react-day-picker.less";
 import './styles/list.less';
 
@@ -243,7 +243,7 @@ export default class list extends React.Component {
                 </div>
 
                 <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
-                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                    <DayPicker modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
                 </div>
 
                 <div className="program-list-box">
