@@ -87,7 +87,7 @@ export default class list extends React.Component {
             }
 
             if(data.enddate) {
-                this.setState({endDate: moment(data.enddate, "YYYYMMDD").toDate()});
+                this.setState({endDate: moment(data.enddate, "YYYYMMDD").add(1, "day").toDate()});
             }
 
         }
