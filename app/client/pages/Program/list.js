@@ -48,7 +48,7 @@ export default class list extends React.Component {
     }
 
     componentWillUnmount() {
-        this.unsubscribeUserStore();
+        this.unsubscribeUserStore
         this.unsubscribeProgramStore();
         this.unsubscribeTerminalStore();
     }
@@ -202,8 +202,8 @@ export default class list extends React.Component {
     }
 
     render() {
-        var self = this;
-        var modifiers = {
+        let self = this;
+        const modifiers = {
             selected: function(day) {
                 return DateUtils.isSameDay(day, self.state.date);
             },
@@ -212,18 +212,50 @@ export default class list extends React.Component {
             }
         };
 
-
+        let terminal = this.state.terminalList.find((item)=>{
+            return item.terminalid == this.state.terminalId;
+        });
 
         return (
             <div className="program-list-page">
                 <NavBar
-                    mainText={'设备'}
+                    mainText={terminal ? terminal.name : ''}
                     mainIcon={<Icon name="angle-down" />}
                     rightText="创建"
                     onRightClick={()=>{window.location.href = "#/program/edit"}}
                     onMainClick={this.toggleTerminalPicker.bind(this)} />
 
+                <div className="date">
+                    <div className="left">
+                        <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
+                    </div>
 
+                    <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
+                        {moment(this.state.date).format("YYYY-MM-DD")}
+                        <span className="icon">
+                            <Icon name="angle-down" />
+                        </span>
+                    </div>
+
+                    <div className="right">
+                        <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
+                    </div>
+                </div>
+
+                <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
+                    <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                </div>
+
+                <div className="program-list-box">
+                    {this.getPrograms(this.state.programList) ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
+                </div>
+
+                <TerminalPicker
+                    open={this.state.isTerminalPickerOpen}
+                    value={this.state.terminalId}
+                    terminalList={this.state.terminalList}
+                    onPick={this.onTerminalPick.bind(this)}
+                    onCancel={()=>{this.setState({isTerminalPickerOpen: false})}} />
                 <Navigation/>
             </div>
         );
