@@ -32,10 +32,10 @@ export default class list extends React.Component {
             administration: null,
             isDatePickerOpen: false,
             isTerminalPickerOpen: false,
-            date: new Date(),
+            date: props.params.date ? moment(props.params.date, "YYYYMMDD").toDate() : new Date(),
             startDate: new Date("2015-10-01"),
             endDate: null,
-            terminalId: props.tid ? props.tid : null,
+            terminalId: props.params.tid ? props.params.tid : null,
             terminalList: [],
             programList: []
         };
@@ -231,7 +231,6 @@ export default class list extends React.Component {
                     terminalName = terminal.name;
                 }
             });
-
 
             return (
                 <div className="program-list-page">

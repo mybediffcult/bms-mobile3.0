@@ -54,7 +54,7 @@ actions.create.listen(function(administrationId, terminalId, program, date) {
                 var result = res.body;
                 if(result.status == 200) {
                     notification.show('节目单创建成功', function() {
-                        window.location.hash = '#/terminal/' + terminalId + '/program/list';
+                        window.location.hash = '#/terminal/' + terminalId + '/program/list/' + date;
                     });
                 }
                 else {

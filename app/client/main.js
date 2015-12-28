@@ -36,7 +36,9 @@ let routes = (
             <Route path="terminal/list" component={TerminalListPage} />
             <Route path="terminal/edit" component={TerminalEditPage} />
             <Route path="terminal/:tid/program/list" component={ProgramListPage} />
+            <Route path="terminal/:tid/program/list/:date" component={ProgramListPage} />
             <Route path="program/list" component={ProgramListPage} />
+            <Route path="program/list/:date" component={ProgramListPage} />
             <Route path="program/edit" component={ProgramEditPage} />
 
             <Route path="user/index" component={UserIndexPage} />
