@@ -451,6 +451,9 @@ export default class edit extends React.Component {
      * @param modifiers
      */
     onDayPick(e, day, modifiers) {
+        if(modifiers == 'disabled') {
+            return;
+        }
         this.setState({date: day});
         this.toggleDayPicker();
     }
@@ -522,7 +525,7 @@ export default class edit extends React.Component {
                 return DateUtils.isSameDay(day, self.state.date);
             },
             disabled: function(day) {
-                return moment(day).subtract(1, 'day').toDate() > self.state.endDate || day < self.state.startDate;
+                return moment(day).subtract(1, 'day').toDate() <= self.state.endDate && day >= self.state.startDate;
             }
         };
 
@@ -551,7 +554,7 @@ export default class edit extends React.Component {
 
                     <div className="date">
                         <div className="left">
-                            <span className="wrapper" onClick={this.onPrevDay.bind(this)}>前一天</span>
+
                         </div>
 
                         <div className="middle" onClick={this.toggleDayPicker.bind(this)}>
@@ -562,7 +565,7 @@ export default class edit extends React.Component {
                         </div>
 
                         <div className="right">
-                            <span className="wrapper" onClick={this.onNextDay.bind(this)}>后一天</span>
+
                         </div>
                     </div>
 
@@ -579,9 +582,9 @@ export default class edit extends React.Component {
 
                     <div className="filter">
                         <div className={"toolbar" + (this.state.searching ? ' hidden' : '')}>
-                            <p><span className="txt">地区</span> <Icon className="icon" name="angle-down" /></p>
+
                             <p><span className="txt" onClick={this.onSortChange.bind(this)}>时长</span> <Icon className="icon" name={this.state.sort == 'desc' ? "angle-down" : "angle-up"} /></p>
-                            <p><span className="txt">筛选</span> <Icon className="icon" name="filter" /></p>
+
                             <p onClick={this.startSearch.bind(this)}><Icon className="icon" name="search" /></p>
                         </div>
 
