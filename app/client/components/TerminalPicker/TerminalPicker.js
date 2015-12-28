@@ -108,6 +108,7 @@ export default class TerminalPicker extends React.Component {
 
         return (
             <div className={"terminal-selector" + (this.props.open ? " open" : " hidden")}>
+                <div className="wrapper">
                 <header className="header">
                     <span className="cancel" onClick={this.onCancel.bind(this)}>取消</span>
                     <span className="confirm" onClick={this.onConfirm.bind(this)}>确定</span>
@@ -116,6 +117,7 @@ export default class TerminalPicker extends React.Component {
                 <ul className="terminal-option-list">
                     {terminalList}
                 </ul>
+                </div>
             </div>
         );
     }

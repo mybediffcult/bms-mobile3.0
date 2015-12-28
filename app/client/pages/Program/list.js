@@ -269,7 +269,9 @@ export default class list extends React.Component {
                     </div>
 
                     <div className={"date-picker-dialog" + (this.state.isDatePickerOpen ? "" : " hidden")}>
-                        <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                        <div className="wrapper">
+                            <DayPicker localeUtils={LocaleUtils} locale="zh-cn" modifiers={modifiers} onDayClick={this.onDayPick.bind(this)} />
+                        </div>
                     </div>
 
                     <div className="program-list-box">
