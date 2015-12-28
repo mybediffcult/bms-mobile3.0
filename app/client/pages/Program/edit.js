@@ -583,7 +583,7 @@ export default class edit extends React.Component {
                     <div className="filter">
                         <div className={"toolbar" + (this.state.searching ? ' hidden' : '')}>
 
-                            <p><span className="txt" onClick={this.onSortChange.bind(this)}>时长</span> <Icon className="icon" name={this.state.sort == 'desc' ? "angle-down" : "angle-up"} /></p>
+                            <p onClick={this.onSortChange.bind(this)}><span className="txt">时长</span> <Icon className="icon" name="sort" /></p>
 
                             <p onClick={this.startSearch.bind(this)}><Icon className="icon" name="search" /></p>
                         </div>

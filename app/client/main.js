@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
-import { Router, Route, IndexRoute } from 'react-router';
+import { Router, Route, IndexRoute, Redirect } from 'react-router';
 import createHashHistory from 'history/lib/createHashHistory.js';
 import Container from './pages/Container';
 import HomeIndexPage from './pages/Home/index';
@@ -29,8 +29,8 @@ let history = createHashHistory({
 
 let routes = (
     <Router history={history}>
+        <Redirect from="/" to="/terminal/list" />
         <Route path="/" component={Container}>
-            <IndexRoute component={TerminalListPage}/>
             <Route path="home" component={HomeIndexPage} />
             <Route path="terminal/index" component={TerminalIndexPage} />
             <Route path="terminal/list" component={TerminalListPage} />
