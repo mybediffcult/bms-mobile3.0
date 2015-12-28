@@ -47,7 +47,9 @@ export default class edit extends React.Component {
             sort: 'desc',
             page: 1,
             isLastPage: false,
-            date: null,
+            date: new Date(),
+            startDate: null,
+            endDate: null,
             terminalId: null,
             progress: 0,
             terminalList: [],
@@ -99,7 +101,17 @@ export default class edit extends React.Component {
             }
         }
         else if(data && data.enddate){
-            this.setState({date: new Date(moment(data.enddate, "YYYYMMDD").add(1, 'day').format("YYYY-MM-DD"))});
+            if(data.startdate) {
+                this.setState({startDate: moment(data.startdate, "YYYYMMDD").toDate()});
+            }
+
+            if(data.enddate) {
+                this.setState({endDate: moment(data.enddate, "YYYYMMDD").toDate()});
+                this.setState({date: new Date(moment(data.enddate, "YYYYMMDD").add(1, 'day').format("YYYY-MM-DD"))});
+            }
+            else {
+                this.setState({date: new Date()});
+            }
         }
     }
 
@@ -439,9 +451,6 @@ export default class edit extends React.Component {
      * @param modifiers
      */
     onDayPick(e, day, modifiers) {
-        if(modifiers == "disabled") {
-            return;
-        }
         this.setState({date: day});
         this.toggleDayPicker();
     }
@@ -513,7 +522,7 @@ export default class edit extends React.Component {
                 return DateUtils.isSameDay(day, self.state.date);
             },
             disabled: function(day) {
-                return day > self.state.endDate || day < self.state.startDate;
+                return moment(day).subtract(1, 'day').toDate() > self.state.endDate || day < self.state.startDate;
             }
         };
 
