@@ -33,9 +33,9 @@ export default class list extends React.Component {
             isDatePickerOpen: false,
             isTerminalPickerOpen: false,
             date: props.params.date ? moment(props.params.date, "YYYYMMDD").toDate() : new Date(),
-            startDate: new Date("2015-10-01"),
+            startDate: new Date("2016-5-11"),
             endDate: null,
-            terminalId: props.params.tid ? props.params.tid : null,
+            terminalId: props.params.tid ? props.params.tid : 3,
             terminalList: [],
             programList: []
         };
@@ -60,7 +60,7 @@ export default class list extends React.Component {
      */
     onUserStoreChange(data) {
         this.setState({administration: data}, function() {
-            TerminalActions.fetchAll(this.state.administration.administrationid);
+            TerminalActions.fetchAll(1,200);
         });
     }
 
@@ -164,7 +164,7 @@ export default class list extends React.Component {
         this.setState({date: day});
         this.toggleDayPicker();
         this.setState({programList: []});
-        ProgramActions.fetch(this.state.terminalId, this.state.date);
+        ProgramActions.fetch(this.state.terminalId);
     }
 
     /**
@@ -203,13 +203,14 @@ export default class list extends React.Component {
     onTerminalPick(terminalid) {
         this.setState({isTerminalPickerOpen: false, terminalId: terminalid}, function() {
             this.setState({programList: []});
-            ProgramActions.fetch(this.state.terminalId, this.state.date);
+            ProgramActions.fetch(this.state.terminalId);
         });
     }
 
     render() {
 
-
+        console.log(this.props);
+        console.log(this.props.params);
         let self = this;
         const modifiers = {
             selected: function(day) {

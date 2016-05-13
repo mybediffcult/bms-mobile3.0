@@ -17,9 +17,10 @@ var actions = Reflux.createActions({
  * 获取设备列表
  * @param administrationId Number
  */
-actions.fetchAll.listen(function(administrationId) {
-    request.get(ApiConfig.prefix + 'administration/' + administrationId + '/terminals').end((error, res)=>{
-
+actions.fetchAll.listen(function(page,size) {
+    request
+    .get(ApiConfig.api.base + 'terminals/show/'+page+'/'+size)
+    .end((error, res)=>{
         if(error) {
             notification.show(error);
         }

@@ -14,6 +14,7 @@ import ProgramEditPage from './pages/Program/edit';
 import UserLoginPage from './pages/User/login';
 import UserIndexPage from './pages/User/index';
 import UserRepairPage from './pages/User/repair';
+import UserUpdataPage from './pages/User/updata';
 
 import TaskIndexPage from './pages/Task/index';
 
@@ -28,9 +29,9 @@ let history = createHashHistory({
 });
 
 let routes = (
-    <Router history={history}>
+    <Router history={history}>    
         <Redirect from="/" to="/terminal/list" />
-        <Route path="/" component={Container}>
+            <Route path="/" component={Container}>
             <Route path="home" component={HomeIndexPage} />
             <Route path="terminal/index" component={TerminalIndexPage} />
             <Route path="terminal/list" component={TerminalListPage} />
@@ -42,6 +43,7 @@ let routes = (
             <Route path="program/edit" component={ProgramEditPage} />
 
             <Route path="user/index" component={UserIndexPage} />
+            <Route path="user/updata" component={UserUpdataPage} />
             <Route path="user/login" component={UserLoginPage} />
             <Route path="user/repair" component={UserRepairPage} />
 

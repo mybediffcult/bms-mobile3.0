@@ -51,6 +51,8 @@ export default class index extends React.Component {
 
 
     render() {
+        console.log(this.state.administration);
+        console.log(data);
         if(this.state.loaded) {
             return (
                 <div className="user-index-page">

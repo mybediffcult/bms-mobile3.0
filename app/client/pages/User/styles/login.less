@@ -13,7 +13,6 @@
     margin-top: 2rem;
     border: 1px solid @border-gray;;
     box-sizing: border-box;
-
     .form-control {
       display: flex;
       align-items: center;
@@ -21,6 +20,7 @@
       width: 100%;
       border-bottom: 1px solid @border-gray;
       background: #fff;
+      margin:0 0 0.5rem 0;
       input {
         flex: 1;
         height: 3.6rem;
@@ -32,13 +32,30 @@
         color: @primary-text-color;
         font-size: 1.2rem;
       }
-      .label {
+      .findBack {
         display: block;
         padding: 0 1rem;
-        border-left: 1px solid @border-gray;
-        color: @primary-text-color;
+        border-left: 2px solid @border-gray;
         text-decoration: none;
       }
+    }
+    .form-save {
+      display:flex;
+      justify-content:space-between;
+      width:100%;
+      margin:0.3rem 0;
+      .left {
+        display:flex;
+        justify-content:flex-start;
+        .remember{
+         margin:0;
+        }
+      }
+      .right {
+        display:block;
+        padding:0 1rem;
+        text-decoration: none;
+      }      
     }
   }
 
@@ -53,5 +70,14 @@
     outline: none;
     color: #fff;
     font-size: 1.3rem;
+  }
+  .btn-footer {
+    display:block;
+    position:fixed;
+    width:100%;
+    left:0;
+    bottom:3rem;
+    text-align:center;
+    font-size:1rem;
   }
 }

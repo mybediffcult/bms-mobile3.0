@@ -45,7 +45,7 @@ export default class index extends React.Component {
 
                 <p>
                     <a className="btn-add-terminal btn-danger" href="#terminal/edit">
-                        <Icon name="plus" />&nbsp;添加设备
+                        <Icon name="plus" />添加设备
                     </a>
                 </p>
             </div>

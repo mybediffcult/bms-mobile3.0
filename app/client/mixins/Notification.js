@@ -2,8 +2,8 @@ export default class Notification {
     constructor(config){
         if(!config)
             config = {
-                transitionDuration: 700,
-                autoHideDuration: 1500
+                transitionDuration: 300,
+                autoHideDuration: 500
             };
 
         this.transitionDuration = config.transitionDuration ? config.transitionDuration : 700;

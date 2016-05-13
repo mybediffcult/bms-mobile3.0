@@ -16,10 +16,11 @@ var actions = Reflux.createActions({
  * 获取节目单列表
  * @param terminalId String
  */
-actions.fetch.listen(function(terminalId, date) {
-    date = moment(date).format("YYYYMMDD");
-    console.log(ApiConfig.prefix + 'terminal/' + terminalId + '/' + date + '/programs');
-    request.get(ApiConfig.prefix + 'terminal/' + terminalId + '/' + date + '/programs').end((error, res)=>{
+actions.fetch.listen(function(terminalId) {
+    console.log(ApiConfig.api.base + 'programs/showadministration/' + terminalId);
+    request
+    .get(ApiConfig.api.base + 'programs/showadministration/' + terminalId)
+    .end((error, res)=>{
         if(error) {
             notification.show(error);
         }

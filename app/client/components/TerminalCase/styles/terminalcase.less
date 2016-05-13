@@ -1,0 +1,33 @@
+@import "../../../styles/var.less";
+@import "../../../styles/mixin.less";
+
+.terminalcase-page {
+	position: fixed;
+  top:0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+
+	background: rgba(0,0,0,0.4);
+	z-index: 9100;
+	transition: transform 0.3s ease, background 0.3s ease 0.2s;
+
+  &.hidden {
+    transition: background 0.1s, transform 0.3s ease 0.05s;
+    transform: translate(0, 100%);
+    background: rgba(0, 0, 0, 0);
+  }
+  .caseList {
+  	position: absolute;
+  	width: 100%;
+  	bottom:0;
+  	left: 0;
+  	background: #fff;
+  	border-top: 1px solid @border-gray;
+
+  	.RadioButton {
+  		font-size: 1.3rem;
+  		margin-bottom: 0.2rem;
+  	}
+  }
+}
