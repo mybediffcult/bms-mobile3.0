@@ -51,8 +51,6 @@ export default class index extends React.Component {
 
 
     render() {
-        console.log(this.state.administration);
-        console.log(data);
         if(this.state.loaded) {
             return (
                 <div className="user-index-page">
@@ -68,17 +66,17 @@ export default class index extends React.Component {
                             <ul className="info-item-list">
                                 <li>
                                     <label className="label">省份</label>
-                                    <span className="content">{this.state.administration.province}</span>
+                                    <span className="content">{this.state.administration.province? this.state.administration.province:"北京市"}</span>
                                 </li>
 
                                 <li>
                                     <label className="label">市/地区</label>
-                                    <span className="content">{this.state.administration.city}</span>
+                                    <span className="content">{this.state.administration.city? this.state.administration.city:"北京市"}</span>
                                 </li>
 
                                 <li>
                                     <label className="label">详细地址</label>
-                                    <span className="content">{this.state.administration.address}</span>
+                                    <span className="content">{this.state.administration.address? this.state.administration.address:"北京市海淀区知春路9号坤讯大厦"}</span>
                                 </li>
                             </ul>
                         </article>
@@ -92,7 +90,7 @@ export default class index extends React.Component {
                             <ul className="info-item-list">
                                 <li>
                                     <label className="label">手机号码</label>
-                                    <span className="content">{this.state.administration.telephone}</span>
+                                    <span className="content">{this.state.administration.telephone? tis.state.administration.telephone:"无"}</span>
                                 </li>
 
                                 <li>

@@ -5,11 +5,11 @@ import terminalActions from '../actions/Terminal';
 var store = Reflux.createStore({
     listenables: [terminalActions],
 
-    statistics: {
-        onlineNum: 0,
-        offlineNum: 0,
-        npNum:0
-    },
+    // statistics: {
+    //     onlineNum: 0,
+    //     offlineNum: 0,
+    //     npNum:0
+    // },
 
     terminalList: [],
 
@@ -34,7 +34,27 @@ var store = Reflux.createStore({
     onGetDateWithProgramCompleted: function(date) {
         this.programDate = date;
         this.trigger(this.programDate);
-    }
+    },
+
+
+    
+    onGetByOrganizationCodeCompleted:function(data){
+        this.terminalList=data;
+        this.trigger(this.terminalList);
+    },
+    onGetByStatusCompleted:function(data){
+        this.terminalList=data;
+        this.trigger(this.terminalList);
+    },
+    onGetByIdCompleted:function(data){
+        this.terminalList=data;
+        this.trigger(this.terminalList);
+    },
+    onGetByTermianlCodeCompleted:function(data){
+        this.terminalList=data;
+        this.trigger(this.terminalList);
+    },
+
 });
 
 export default store;

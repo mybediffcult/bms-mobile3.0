@@ -4,6 +4,8 @@ import NavBar from '../../components/NavBar';
 import Navigation from '../../components/Navigation';
 import TerminalList from '../../components/TerminalList';
 import TerminalCase from '../../components/TerminalCase';
+import SearchBar from   '../../components/SearchBar';
+import Notification from '../../mixins/Notification';
 
 import TerminalStore from '../../stores/Terminal';
 import TerminalActions from '../../actions/Terminal';
@@ -14,6 +16,7 @@ import UserActions from '../../actions/User';
 import './styles/list.less';
 import '../../styles/page.less';
 
+var notification = new Notification();
 export default class list extends React.Component {
     constructor() {
         super();
@@ -52,16 +55,85 @@ export default class list extends React.Component {
       *设备选择框状态转换
     */
     onToggleCase(){
-        this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+        if(this.state.isSearchBarOpen){
+            this.setState({
+                isToggleCaseOpen:!this.state.isToggleCaseOpen,
+                isSearchBarOpen:!this.state.isSearchBarOpen
+            });
+        }
+        else {
+            this.setState({
+                isToggleCaseOpen:!this.state.isToggleCaseOpen
+            });
+        }
     }
     
     /*
       *设备搜索框显示
     */
     showSearchBar(){
-        this.setState({isSearchBarOpen:!this.state.isSearchBarOpen});
+         if(this.state.isToggleCaseOpen){
+            this.setState({
+                isToggleCaseOpen:!this.state.isToggleCaseOpen,
+                isSearchBarOpen:!this.state.isSearchBarOpen
+            });
+        }
+        else {
+            this.setState({
+                isSearchBarOpen:!this.state.isSearchBarOpen
+            });
+        }
     }
 
+    /*
+      *搜索提交
+    */
+    onSubmit(code){
+        console.log(code);
+        if(/[0-9]{1,6}/.test(code)){
+            TerminalActions.getByOrganizationCode(code);
+            this.setState({
+                isSearchBarOpen:!this.state.isSearchBarOpen
+            });
+        }
+        else if(code>=1 &&code<=200){
+            TerminalActions.getById(code);
+            this.setState({
+                isSearchBarOpen:!this.state.isSearchBarOpen
+            });
+        }
+        else if(/[A-Z][0-9]{10}/.test(code)){
+            TerminalActions.getByTermianlCode(code);
+            this.setState({
+                isSearchBarOpen:!this.state.isSearchBarOpen
+            });
+        }        
+        else {
+            notification.show("搜索条件不正确");
+        }
+
+    }
+    /*
+      *显示设备提交
+    */
+    onButtonSelect(field){
+        console.log(fourth);
+       if(field=="first"){
+         TerminalActions.getByStatus("1");
+       }
+       if(field=="second"){
+         TerminalActions.getByStatus("0");
+       }
+       if(field=="third"){
+        return;
+       }
+       if(field=="fourth"){
+         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+       }
+       else{
+
+       }
+    }
     render() {
         return (
             <div className="terminal-list-page">
@@ -72,8 +144,11 @@ export default class list extends React.Component {
                   rightText="搜索"
                   onRightClick={this.showSearchBar.bind(this)}  />
                 <TerminalList terminalList={this.state.terminalList} />
-                <SearhBar open={this.state.isSearchBarOpen} />
-                <TerminalCase open={this.state.isToggleCaseOpen} />
+                <SearchBar open={this.state.isSearchBarOpen} 
+                onShowSearchBar={this.showSearchBar.bind(this)}
+                 onSubmit={this.onSubmit.bind(this)}/>
+                <TerminalCase open={this.state.isToggleCaseOpen} 
+                onButtonSelect={this.onButtonSelect.bind(this)}/>
                 <Navigation/>
             </div>
         );

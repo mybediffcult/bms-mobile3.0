@@ -7,6 +7,10 @@ var notification = new Notification();
 var actions = Reflux.createActions({
     'fetchAll': {children: ['completed']},
     'create': {children: ['completed']},
+    'getById':{children:['completed']},
+    'getByOrganizationCode':{children:['completed']},
+    'getByTermianlCode':{children:['completed']},
+    'getByStatus':{children:['completed']},
     'getOnlineNum': {children: ['completed']},
     'getNPNum': {children: ['completed']},
     'getDateWithProgram' : {children: ['completed']},
@@ -37,6 +41,96 @@ actions.fetchAll.listen(function(page,size) {
     })
 });
 
+/*
+  * 根据省/市/机构查询设备信息
+*/
+actions.getByOrganizationCode.listen(function(code){
+    request
+    .get(ApiConfig.api.base + 'terminals/search/'+code+'/'+1+'/'+200)
+    .end((error,res)=>{
+        if(error) {
+            notification.show(error);
+        }
+        else {
+            var result =res.body;
+            if(result.status==200){
+                var terminalList=result.data;
+                this.completed(terminalList);
+            }
+            else {
+                notification.show(result.message);
+            }
+        }
+    })
+});
+
+/*
+  *根据在线状态查询设备信息
+*/
+actions.getByStatus.listen(function(online){
+  request
+  .get(ApiConfig.api.base + 'terminals/show/'+1+200+'?online='+online)
+  .end((error,res)=>{
+    if(error){
+        notification.show(error);
+    }
+    else {
+        var result=res.body;
+        if (result,status==200) {
+            var terminalList=result.data;
+            this.completed(terminalList);   
+        }
+        else {
+            notification.show(result.message);
+        }
+    }
+  })
+});
+
+/*
+  *根据设备编号查询设备信息
+*/
+actions.getById.listen(function(id){
+    request
+    .get(ApiConfig.api.base + 'terminals/' + id)
+    .end((error,res)=>{
+        if(error){
+            notification.show(error);
+        }
+        else {
+            var result=res.body;
+            if(result.status==200){
+                var terminalList=result.data;
+                this.completed(terminalList);
+            }
+            else {
+                notification.show(result.message);
+            }
+        }
+    })
+});
+/*
+  *根据设备编号查询设备信息
+*/
+actions.getByTermianlCode.listen(function(code){
+  request
+  .get(ApiConfig.api.base + 'terminals/searchbyno/' + 1 + 200 +'?terminal_no='+ code)
+  .end((error,res)=>{
+    if(error){
+        notification.show(error);        
+    }
+    else {
+        var result=res.body;
+        if(result.status==200){
+            var terminalList=result.data;
+            this.completed(terminalList);
+        }
+        else {
+            notification.show(result.message);
+        }
+    }
+  })
+});
 /**
  * 创建设备
  * @param terminal Object
