@@ -69,14 +69,14 @@ actions.getByOrganizationCode.listen(function(code){
 */
 actions.getByStatus.listen(function(online){
   request
-  .get(ApiConfig.api.base + 'terminals/show/'+1+200+'?online='+online)
+  .get(ApiConfig.api.base + 'terminals/show/'+1+'/'+200+'?online='+online)
   .end((error,res)=>{
     if(error){
         notification.show(error);
     }
     else {
         var result=res.body;
-        if (result,status==200) {
+        if (result.status==200) {
             var terminalList=result.data;
             this.completed(terminalList);   
         }
@@ -114,7 +114,7 @@ actions.getById.listen(function(id){
 */
 actions.getByTermianlCode.listen(function(code){
   request
-  .get(ApiConfig.api.base + 'terminals/searchbyno/' + 1 + 200 +'?terminal_no='+ code)
+  .get(ApiConfig.api.base + 'terminals/searchbyno/' + 1 +'/'+ 200 +'?terminal_no='+ code)
   .end((error,res)=>{
     if(error){
         notification.show(error);        

@@ -17,12 +17,17 @@ import './styles/list.less';
 import '../../styles/page.less';
 
 var notification = new Notification();
+
 export default class list extends React.Component {
     constructor() {
         super();
         this.state = {
             page:1,
             size:200,
+            buttonone:"查看在线设备",
+            buttontwo:"查看离线设备",
+            buttonthree:"查看所有设备",
+            buttonfour:"取消",
             isToggleCaseOpen:false,
             isSearchBarOpen:false,
             administration: null,
@@ -90,24 +95,24 @@ export default class list extends React.Component {
     */
     onSubmit(code){
         console.log(code);
-        if(/[0-9]{1,6}/.test(code)){
-            TerminalActions.getByOrganizationCode(code);
+        if(/[A-Z0-9]{10,12}/.test(code)){
+            TerminalActions.getByTermianlCode(code);
             this.setState({
                 isSearchBarOpen:!this.state.isSearchBarOpen
             });
-        }
-        else if(code>=1 &&code<=200){
+        } 
+        else if(code>=1 && code<=200){
             TerminalActions.getById(code);
             this.setState({
                 isSearchBarOpen:!this.state.isSearchBarOpen
             });
         }
-        else if(/[A-Z][0-9]{10}/.test(code)){
-            TerminalActions.getByTermianlCode(code);
+        else if(/[0-9]{6}/.test(code)){
+            TerminalActions.getByOrganizationCode(code);
             this.setState({
                 isSearchBarOpen:!this.state.isSearchBarOpen
             });
-        }        
+        }
         else {
             notification.show("搜索条件不正确");
         }
@@ -117,21 +122,24 @@ export default class list extends React.Component {
       *显示设备提交
     */
     onButtonSelect(field){
-        console.log(fourth);
-       if(field=="first"){
+        console.log(field);
+       if(field=="online"){
          TerminalActions.getByStatus("1");
+         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
        }
-       if(field=="second"){
+       else if(field=="offline"){
          TerminalActions.getByStatus("0");
+         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
        }
-       if(field=="third"){
-        return;
+       else if(field=="all"){
+         TerminalActions.fetchAll(this.state.page,this.state.size);
+         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
        }
-       if(field=="fourth"){
+      else if(field=="cancel"){
          this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
        }
        else{
-
+        notification.show(error);
        }
     }
     render() {
@@ -148,7 +156,8 @@ export default class list extends React.Component {
                 onShowSearchBar={this.showSearchBar.bind(this)}
                  onSubmit={this.onSubmit.bind(this)}/>
                 <TerminalCase open={this.state.isToggleCaseOpen} 
-                onButtonSelect={this.onButtonSelect.bind(this)}/>
+                onButtonSelect={this.onButtonSelect.bind(this)}
+                onstate={this.state}/>
                 <Navigation/>
             </div>
         );

@@ -5,6 +5,7 @@ var store = Reflux.createStore({
     listenables: [programActions],
 
     onFetchCompleted: function(data) {
+    	console.log(data);
         this.trigger(data);
     }
 });

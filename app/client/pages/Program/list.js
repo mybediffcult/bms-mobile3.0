@@ -70,16 +70,21 @@ export default class list extends React.Component {
      */
     onTerminalStoreChange(data) {
         if(data instanceof Array) {
-            if(!this.state.terminalId && data.length > 0)
-                this.setState({terminalList: data, terminalId: data[0].terminalid, loaded: true}, function() {
+            if(!this.state.terminalId && data.length > 0){
+                this.setState({
+                    terminalList: data,
+                     terminalId: data[0].terminalid, 
+                     loaded: true}); 
+                TerminalActions.getDateWithProgram(this.state.terminalId);
+                ProgramActions.fetch(this.state.terminalId);
+                }
+               
+            else{
+                this.setState({terminalList: data, loaded: true});
                     TerminalActions.getDateWithProgram(this.state.terminalId);
-                    ProgramActions.fetch(this.state.terminalId, this.state.date);
-                });
-            else
-                this.setState({terminalList: data, loaded: true}, function() {
-                    TerminalActions.getDateWithProgram(this.state.terminalId);
-                    ProgramActions.fetch(this.state.terminalId, this.state.date);
-                });
+                    ProgramActions.fetch(this.state.terminalId);
+                }
+                
         }
         else if(data){
             console.log(data);
@@ -98,6 +103,7 @@ export default class list extends React.Component {
      * @param data
      */
     onProgramStoreChange(data) {
+        console.log(data);
         this.setState({programList: data});
     }
 
@@ -107,22 +113,23 @@ export default class list extends React.Component {
      * @param programs
      * @returns {*}
      */
-    getPrograms(programs) {
+   getPrograms(programs) {
+    console.log(programs);
         if(programs.length > 0) {
             return programs.map((program, index)=>{
 
-                    var timebuckets = program.timebucket.split("-");
-                    var startTime   = moment(timebuckets[0], "HHmm").format("HH:mm");
-                    var endTime     = moment(timebuckets[1], "HHmm").format("HH:mm");
-
-                    var contentList = program.sequence.map((content, index)=>{
+                    var timebucket=program.timebucket;
+                    var startTime   = moment(timebucket.start_time).format("HH:mm");
+                    var endTime     = moment(timebucket.end_time).format("HH:mm");
+                    var length=timebucket.end_time-timebucket.start_time;
+                    var contentList = program.data.map((content, index)=>{
                         return (
                             <li key={"material-" + index}>
-                                <div className="left" style={{backgroundImage: 'url(' + 'http://106.38.138.99:8080/bms/public/' + content.imagepath + ')'}}>
+                                <div className="left" style={{backgroundImage: 'url(' + 'http://106.38.138.99:8080/bms/public/' + content.thumb + ')'}}>
                                 </div>
                                 <div className="right">
-                                    <p className="title">{content.contenttitle}</p>
-                                    <p className="duration"><Icon name="clock-o"/> {Math.ceil(content.length / 60)}分钟</p>
+                                    <p className="title">{content.title}</p>
+                                    <p className="duration"><Icon name="clock-o"/> {Math.ceil(length / 60)}分钟</p>
                                 </div>
                             </li>
                         );
@@ -135,8 +142,8 @@ export default class list extends React.Component {
                                 {contentList}
                             </ul>
                         </li>
-                    )}
-            );
+                    )
+                });
         }
         else {
             return null;
@@ -174,7 +181,7 @@ export default class list extends React.Component {
         var date = this.state.date;
         this.setState({date: moment(date).add(1, 'day').toDate()}, function() {
             this.setState({programList: []});
-            ProgramActions.fetch(this.state.terminalId, this.state.date);
+            ProgramActions.fetch(this.state.terminalId);
         });
     }
 
@@ -185,7 +192,7 @@ export default class list extends React.Component {
         var date = this.state.date;
         this.setState({date: moment(date).subtract(1, 'day').toDate()}, function() {
             this.setState({programList: []});
-            ProgramActions.fetch(this.state.terminalId, this.state.date);
+            ProgramActions.fetch(this.state.terminalId);
         });
     }
 
@@ -210,7 +217,7 @@ export default class list extends React.Component {
     render() {
 
         console.log(this.props);
-        console.log(this.props.params);
+        console.log(this.state.administration);
         let self = this;
         const modifiers = {
             selected: function(day) {
@@ -228,8 +235,8 @@ export default class list extends React.Component {
             var terminalId   = this.state.terminalId;
             var terminalName = '';
             terminalList.forEach((terminal)=>{
-                if(terminal.terminalid == terminalId) {
-                    terminalName = terminal.name;
+                if(terminal.id == terminalId) {
+                    terminalName = terminal.administration_name;
                 }
             });
 
@@ -275,7 +282,7 @@ export default class list extends React.Component {
                     </div>
 
                     <div className="program-list-box">
-                        {this.getPrograms(this.state.programList) ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}></p>}
+                        {this.getPrograms(this.state.programList) ? <ul className="program-list">{this.getPrograms(this.state.programList)}</ul> : <p style={{textAlign: 'center'}}>没有节目数据</p>}
                     </div>
 
                     <TerminalPicker

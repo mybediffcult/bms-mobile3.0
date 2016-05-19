@@ -7,27 +7,28 @@ export default class TerminalCase extends React.Component {
 	constructor(props){
 		super(props);
 		this.state={
-			value:"1",
-		};
+			buttonone:this.props.onstate.buttonone,
+			buttontwo:this.props.onstate.buttontwo,
+			buttonthree:this.props.onstate.buttonthree,
+			buttonfour:this.props.onstate.buttonfour
+		}
 	}
+    // componentWillReceiveProps(props){
+    // 	this.setState({open:this.props.open});
+    // }
+    buttonSelect(event,value){
+    	this.props.onButtonSelect(value);
+    }
 
-	componentWillReceiveProps(props){
-		this.setState({value:this.props.value});
-	}
-    
-    onButtonSelect(field){
-    	this.props.onButtonSelect(field);
-        }
 	render(){
-		console.log(this.props.open);
 		if(this.props.open){
 		  return (
-			<div className="terminalcase-page">
-			    <RadioButtonGroup name="button"  className="caseList" defaultSelceted="fourth">
-                   <RadioButton value="first" label="查看在线设备" onChange={this.onButtonSelect.bind(this,"first")}/>
-                   <RadioButton value="second" label="查看离线设备" onChange={this.onButtonSelect.bind(this,"second")} />
-                   <RadioButton value="third" label="查看所有设备"  onChange={this.onButtonSelect.bind(this,"third")}/>
-                   <RadioButton value="fourth" label="取消" onChange={this.onButtonSelect.bind(this,"fourth")} />
+			<div className="terminalcase-page" >
+			    <RadioButtonGroup name="button"  className="caseList" onChange={this.buttonSelect.bind(this)}>
+                   <RadioButton value="online" label={this.state.buttonone} />
+                   <RadioButton value="offline" label={this.state.buttontwo}  />
+                   <RadioButton value="all" label={this.state.buttonthree}  />
+                   <RadioButton value="cancel" label={this.state.buttonfour}  />
 			    </RadioButtonGroup>   
             </div>
 			);

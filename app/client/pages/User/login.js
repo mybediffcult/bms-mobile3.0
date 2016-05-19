@@ -16,8 +16,8 @@ export default class login extends React.Component {
 	constructor() {
 		super();
 		this.state={
-      phone:JSON.parse(localStorage.getItem('admins')).phone,
-      password:JSON.parse(localStorage.getItem('admins')).password,
+      phone:JSON.parse(localStorage.getItem('admins')) ? JSON.parse(localStorage.getItem('admins')).phone:'',
+      password:JSON.parse(localStorage.getItem('admins'))?  JSON.parse(localStorage.getItem('admins')).password:'',
       check:false
 		}
 	}

@@ -26,8 +26,9 @@ actions.fetch.listen(function(terminalId) {
         }
         else {
             var result = res.body;
+            console.log(result);
             if(result.status == 200) {
-                this.completed(result.data);
+                this.completed(result.program);
             }
             else {
                 notification.show(result.message);

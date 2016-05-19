@@ -47,7 +47,7 @@ var store = Reflux.createStore({
         this.trigger(this.terminalList);
     },
     onGetByIdCompleted:function(data){
-        this.terminalList=data;
+        this.terminalList=[data];
         this.trigger(this.terminalList);
     },
     onGetByTermianlCodeCompleted:function(data){

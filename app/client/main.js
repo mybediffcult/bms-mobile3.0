@@ -10,6 +10,7 @@ import TerminalListPage from './pages/Terminal/list';
 import TerminalEditPage from './pages/Terminal/edit';
 import ProgramListPage from './pages/Program/list';
 import ProgramEditPage from './pages/Program/edit';
+import ProgramShowPage from './pages/Program/show';
 
 import UserLoginPage from './pages/User/login';
 import UserIndexPage from './pages/User/index';
@@ -41,6 +42,7 @@ let routes = (
             <Route path="program/list" component={ProgramListPage} />
             <Route path="program/list/:date" component={ProgramListPage} />
             <Route path="program/edit" component={ProgramEditPage} />
+            <Route path="program/show" component={ProgramShowPage} />
 
             <Route path="user/index" component={UserIndexPage} />
             <Route path="user/updata" component={UserUpdataPage} />

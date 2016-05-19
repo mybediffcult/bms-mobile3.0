@@ -1,4 +1,5 @@
 import React from 'react';
+import {RaisedButton} from 'material-ui';
 
 import './styles/searchbar.less';
 
@@ -42,8 +43,8 @@ export default class SearchBar extends React.Component {
                         onChange={this.onFieldChange.bind(this)}
                         onKeyUp={this.onKeySubmit.bind(this)}/>
                         <div className="choosebutton">
-                            <button onClick={this.onClickSubmit.bind(this)}>搜索</button>
-                            <button onClick={this.props.onShowSearchBar}>取消</button>
+                            <RaisedButton className="button"    onMouseDown={this.onClickSubmit.bind(this)} label="搜索" primary={true}/>
+                            <RaisedButton className="button" onMouseDown={this.props.onShowSearchBar} label="取消" secondary={true}/>
                         </div>
                     </div>    
                 </div>
