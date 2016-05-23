@@ -6,7 +6,7 @@ export default class Navigation extends React.Component {
     render() {
         var list = this.props.navList.map((nav, index)=>{
             return (
-                <li key={"nav_" + index} className={window.location.hash.indexOf(nav.pattern) != -1 ? "active" : ""}>
+                <li key={"nav_" + index} className={window.location.hash.match(nav.sign) != null ? "active" : ""}>
                     <a href={nav.url}>
                         <p className="icon">
                             <Icon name={nav.icon}/>
@@ -36,19 +36,23 @@ Navigation.defaultProps = {
             title: '设备巡检',
             icon: 'television',
             url: '#/terminal/list',
-            pattern: '#/terminal'
+            pattern: '#/terminal',
+            sign:'/terminal/list'
         },
         {
             title: '节目单管理',
             icon: 'list',
             url: '#/program/list',
-            pattern: '#/program'
+            pattern: '#/program',
+            sign:'/program/list'
+
         },
         {
             title: '用户',
             icon: 'user',
             url: '#/user/index',
-            pattern: '#/user'
+            pattern: '#/user',
+            sign: '/user/index'
         }
     ]
 };

@@ -6,6 +6,10 @@ import TerminalList from '../../components/TerminalList';
 import TerminalCase from '../../components/TerminalCase';
 import SearchBar from   '../../components/SearchBar';
 import Notification from '../../mixins/Notification';
+import DropDownMenus from '../../components/DropDownMenus';
+
+import DropDownMenu from 'material-ui';
+import MenuItem from 'material-ui';
 
 import TerminalStore from '../../stores/Terminal';
 import TerminalActions from '../../actions/Terminal';
@@ -22,11 +26,13 @@ export default class list extends React.Component {
     constructor() {
         super();
         this.state = {
+            value:1,
             page:1,
             size:200,
-            buttonone:"查看在线设备",
-            buttontwo:"查看离线设备",
-            buttonthree:"查看所有设备",
+            mainText:"所有设备",
+            buttonone:"所有设备",
+            buttontwo:"离线设备",
+            buttonthree:"在线设备",
             buttonfour:"取消",
             isToggleCaseOpen:false,
             isSearchBarOpen:false,
@@ -123,41 +129,83 @@ export default class list extends React.Component {
     */
     onButtonSelect(field){
         console.log(field);
+        //setTimeOut(3000);
        if(field=="online"){
          TerminalActions.getByStatus("1");
-         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+         this.setState({mainText:"在线设备"});
        }
        else if(field=="offline"){
          TerminalActions.getByStatus("0");
-         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+         this.setState({
+          mainText:"离线设备"
+          });
        }
        else if(field=="all"){
          TerminalActions.fetchAll(this.state.page,this.state.size);
-         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+         this.setState({
+          mainText:"所有设备"
+          });
        }
       else if(field=="cancel"){
-         this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
        }
        else{
         notification.show(error);
        }
+      // this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
     }
+
+    /*
+     *切换显示
+    */
+    handleChange(event,index,value){
+      console.log(value);
+      if(value==1){
+        TerminalActions.getByStatus("1");
+        this.setState({
+          mainText:"所有设备",
+          isToggleCaseOpen:!this.state.isToggleCaseOpen});
+      }   
+      else if(value==2){
+         TerminalActions.getByStatus("0");
+         this.setState({
+          mainText:"离线设备",
+          isToggleCaseOpen:!this.state.isToggleCaseOpen});        
+      }
+      else if(value==3){
+         TerminalActions.fetchAll(this.state.page,this.state.size);
+         this.setState({
+          mainText:"在线设备",
+          isToggleCaseOpen:!this.state.isToggleCaseOpen});        
+      }
+      else if(value==4){
+         this.setState({
+          mainText:"所有设备",
+          isToggleCaseOpen:!this.state.isToggleCaseOpen});
+      }
+      else{
+        notification.show(error);
+       }
+      this.setState({value:value});
+    }
+                    
     render() {
+
+
         return (
             <div className="terminal-list-page">
-                <NavBar
-                  mainText="设备状态" 
+              <NavBar
+                  mainText={this.state.mainText}
                   mainIcon={<Icon name="angle-down"/>}
                   onMainClick={this.onToggleCase.bind(this)} 
-                  rightText="搜索"
+                  rightText="搜索"                 
                   onRightClick={this.showSearchBar.bind(this)}  />
                 <TerminalList terminalList={this.state.terminalList} />
                 <SearchBar open={this.state.isSearchBarOpen} 
                 onShowSearchBar={this.showSearchBar.bind(this)}
                  onSubmit={this.onSubmit.bind(this)}/>
-                <TerminalCase open={this.state.isToggleCaseOpen} 
+                <TerminalCase open={this.state.isToggleCaseOpen}
                 onButtonSelect={this.onButtonSelect.bind(this)}
-                onstate={this.state}/>
+                 onstate={this.state} />
                 <Navigation/>
             </div>
         );

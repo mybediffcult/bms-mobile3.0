@@ -21,6 +21,7 @@ export default class TerminalCase extends React.Component {
     }
 
 	render(){
+		console.log(this.props.open);
 		if(this.props.open){
 		  return (
 			<div className="terminalcase-page" >
