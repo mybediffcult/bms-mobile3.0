@@ -17,7 +17,7 @@ export default class TerminalCase extends React.Component {
     // 	this.setState({open:this.props.open});
     // }
     buttonSelect(event,value){
-    	this.props.onButtonSelect(value);
+      this.props.onButtonSelect(value);
     }
 
 	render(){

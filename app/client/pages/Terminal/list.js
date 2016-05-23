@@ -30,9 +30,9 @@ export default class list extends React.Component {
             page:1,
             size:200,
             mainText:"所有设备",
-            buttonone:"所有设备",
+            buttonone:"在线设备",
             buttontwo:"离线设备",
-            buttonthree:"在线设备",
+            buttonthree:"所有设备",
             buttonfour:"取消",
             isToggleCaseOpen:false,
             isSearchBarOpen:false,
@@ -128,8 +128,8 @@ export default class list extends React.Component {
       *显示设备提交
     */
     onButtonSelect(field){
+        var isToggleCaseOpen=this.state.isToggleCaseOpen;
         console.log(field);
-        //setTimeOut(3000);
        if(field=="online"){
          TerminalActions.getByStatus("1");
          this.setState({mainText:"在线设备"});
@@ -151,7 +151,8 @@ export default class list extends React.Component {
        else{
         notification.show(error);
        }
-      // this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+      //this.setState({isToggleCaseOpen:!this.state.isToggleCaseOpen});
+     setTimeout(this.setState({isToggleCaseOpen:!isToggleCaseOpen}),10000);
     }
 
     /*

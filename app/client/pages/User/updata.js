@@ -1,5 +1,5 @@
 import React from 'react';
-import {RaisedButton, FlatButton, TextField, SelectField} from 'material-ui';
+import {RaisedButton, FlatButton, TextField, SelectField,AutoComplete} from 'material-ui';
 import request from 'superagent';
 import Notification from '../../mixins/Notification';
 import NavBar from '../../components/NavBar';
@@ -71,6 +71,28 @@ export default class updata extends React.Component {
          <div className="updata">
             <NavBar mainText="修改个人的信息" />
             <div className="editItem">
+            <AutoComplete type="password" hintText="请输入初始密码(必填)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'password')} />
+            </div>
+            <div className="editItem">
+            <AutoComplete hintText="用户名(需要更改则填写)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'username')} />
+            </div>
+            <div className="editItem">
+            <AutoComplete hintText="电话(需要更改则填写)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'phone')} />
+            </div>
+            <div className="editItem">
+            <AutoComplete hintText="姓名(需要更改则填写)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'name')} />
+            </div>
+            <div className="editItem">
+            <AutoComplete hintText="邮箱(需要更改则填写)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'email')} />
+            </div>
+            <div className="editItem">
+            <AutoComplete  type="password" hintText="请输入新密码(必填)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'newpassword1')} />
+            </div>
+            <div className="editItem">
+            <AutoComplete type="password" hintText="请再次输入新密码(必填)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'newpassword2')} />
+            </div>
+
+            {/*<div className="editItem">
               <span>&nbsp;请输入初始密码:</span>
               <input type='password'placeholder="您的初始密码(必填)" className='inputItem'value={this.state.fields.password} onChange={this.onHandleChange.bind(this,'password')}/>
             </div>
@@ -97,7 +119,7 @@ export default class updata extends React.Component {
             <div className="editItem">
                <span>&nbsp;请再次输入新密码:</span>
                <input className='inputItem' placeholder="确认新密码"type="password" value={this.state.fields.newpassword2} onChange={this.onHandleChange.bind(this,'newpassword2')}/>
-            </div>
+            </div>*/}
             <footer className="button">
               <RaisedButton className="raisedbutton"  label="提交修改" secondary={true} onClick={this.onHandleUpdata.bind(this)}/>
             </footer>

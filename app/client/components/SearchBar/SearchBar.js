@@ -43,8 +43,8 @@ export default class SearchBar extends React.Component {
                         onChange={this.onFieldChange.bind(this)}
                         onKeyUp={this.onKeySubmit.bind(this)}/>
                         <div className="choosebutton">
-                            <RaisedButton className="button"    onMouseDown={this.onClickSubmit.bind(this)} label="搜索" primary={true}/>
-                            <RaisedButton className="button" onMouseDown={this.props.onShowSearchBar} label="取消" secondary={true}/>
+                            <RaisedButton className="button"   onMouseDown={this.onClickSubmit.bind(this)} label="搜索" primary={true}/>
+                            <RaisedButton className="button"  onMouseDown={this.props.onShowSearchBar} label="取消" secondary={true}/>
                         </div>
                     </div>    
                 </div>
