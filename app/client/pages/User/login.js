@@ -68,8 +68,15 @@ export default class login extends React.Component {
       onCheck(){
         var localStorage=window.localStorage;
        var admin=JSON.parse(localStorage.getItem('admin'));
-       console.log(admin.phone);
-      UserActions.check(admin.phone);
+       console.log(admin.phone);   
+      if(!admin.phone){
+        notification.show('请填写登录手机号');
+            return;   
+      }
+      else{
+           UserActions.check(admin.phone);
+      }
+
       }
 
     render(){

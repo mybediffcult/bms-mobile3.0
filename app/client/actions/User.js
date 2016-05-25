@@ -25,8 +25,6 @@ var actions = Reflux.createActions({
         phone:phone
     })
     .end((error, res)=>{
-        console.log(res);
-
         if(error) {
             notification.show(error);
             
@@ -35,13 +33,12 @@ var actions = Reflux.createActions({
             var localStorage=window.localStorage;
             var result=res.result;
             var text=JSON.parse(res.text);
-            console.log(res.body.data.salt);
             console.log("111");
-            localStorage.setItem('salt',res.body.data.salt);
             if(text.status==200){
                 notification.show('用户验证成功',function(){
                  window.location.hash="#/user/updata";
                 });
+                localStorage.setItem('salt',res.body.data.salt);
             }
             else{
                 notification.show('不存在此用户',function(){

@@ -66,10 +66,14 @@ export default class updata extends React.Component {
        UserActions.updata(admin.phone,this.state.fields);
 
     }
+    onBack(){
+      window.location.href="#/User/login";
+    }
    render(){
    	return(
          <div className="updata">
-            <NavBar mainText="修改个人的信息" />
+            <NavBar mainText="修改个人的信息"  rightText="返回"
+            onRightClick={this.onBack.bind(this)}/>
             <div className="editItem">
             <AutoComplete type="password" hintText="请输入初始密码(必填)" fullWidth={true} onHandleChange={this.onHandleChange.bind(this,'password')} />
             </div>
